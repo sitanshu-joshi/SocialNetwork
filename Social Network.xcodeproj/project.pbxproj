@@ -53,6 +53,7 @@
 		F4BDDFA81983A50500C52E97 /* Social NetworkTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Social NetworkTests-Info.plist"; sourceTree = "<group>"; };
 		F4BDDFAA1983A50500C52E97 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F4BDDFAC1983A50500C52E97 /* Social_NetworkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Social_NetworkTests.m; sourceTree = "<group>"; };
+		F4BDDFB91983A9B100C52E97 /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,11 +113,11 @@
 		F4BDDF871983A50500C52E97 /* Social Network */ = {
 			isa = PBXGroup;
 			children = (
+				F4BDDFB71983A8DC00C52E97 /* Utility */,
+				F4BDDFB61983A71000C52E97 /* ViewControllers */,
 				F4BDDF901983A50500C52E97 /* AppDelegate.h */,
 				F4BDDF911983A50500C52E97 /* AppDelegate.m */,
 				F4BDDF931983A50500C52E97 /* Main.storyboard */,
-				F4BDDF961983A50500C52E97 /* ViewController.h */,
-				F4BDDF971983A50500C52E97 /* ViewController.m */,
 				F4BDDF991983A50500C52E97 /* Images.xcassets */,
 				F4BDDF881983A50500C52E97 /* Supporting Files */,
 			);
@@ -150,6 +151,23 @@
 				F4BDDFA91983A50500C52E97 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F4BDDFB61983A71000C52E97 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F4BDDF961983A50500C52E97 /* ViewController.h */,
+				F4BDDF971983A50500C52E97 /* ViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		F4BDDFB71983A8DC00C52E97 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				F4BDDFB91983A9B100C52E97 /* Constant.h */,
+			);
+			name = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -460,6 +478,7 @@
 				F4BDDFB21983A50500C52E97 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F4BDDFB31983A50500C52E97 /* Build configuration list for PBXNativeTarget "Social NetworkTests" */ = {
 			isa = XCConfigurationList;
@@ -468,6 +487,7 @@
 				F4BDDFB51983A50500C52E97 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
