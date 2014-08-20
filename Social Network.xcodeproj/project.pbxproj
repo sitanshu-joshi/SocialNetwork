@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5616CFA919A4FEAC001FF581 /* FlightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5616CFA819A4FEAC001FF581 /* FlightViewController.m */; };
+		5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5616CFAB19A507A1001FF581 /* HomeViewController.m */; };
+		56A74243199E64C700CAAE1E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A74242199E64C700CAAE1E /* FacebookSDK.framework */; };
 		F4BDDF821983A50500C52E97 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF811983A50500C52E97 /* Foundation.framework */; };
 		F4BDDF841983A50500C52E97 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF831983A50500C52E97 /* CoreGraphics.framework */; };
 		F4BDDF861983A50500C52E97 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF851983A50500C52E97 /* UIKit.framework */; };
@@ -14,7 +17,6 @@
 		F4BDDF8E1983A50500C52E97 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BDDF8D1983A50500C52E97 /* main.m */; };
 		F4BDDF921983A50500C52E97 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BDDF911983A50500C52E97 /* AppDelegate.m */; };
 		F4BDDF951983A50500C52E97 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4BDDF931983A50500C52E97 /* Main.storyboard */; };
-		F4BDDF981983A50500C52E97 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BDDF971983A50500C52E97 /* ViewController.m */; };
 		F4BDDF9A1983A50500C52E97 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4BDDF991983A50500C52E97 /* Images.xcassets */; };
 		F4BDDFA11983A50500C52E97 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDFA01983A50500C52E97 /* XCTest.framework */; };
 		F4BDDFA21983A50500C52E97 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF811983A50500C52E97 /* Foundation.framework */; };
@@ -34,6 +36,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5616CFA719A4FEAC001FF581 /* FlightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightViewController.h; sourceTree = "<group>"; };
+		5616CFA819A4FEAC001FF581 /* FlightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightViewController.m; sourceTree = "<group>"; };
+		5616CFAA19A507A1001FF581 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		5616CFAB19A507A1001FF581 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		56A74242199E64C700CAAE1E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		F4BDDF7E1983A50500C52E97 /* Social Network.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Social Network.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BDDF811983A50500C52E97 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F4BDDF831983A50500C52E97 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -45,8 +52,6 @@
 		F4BDDF901983A50500C52E97 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F4BDDF911983A50500C52E97 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F4BDDF941983A50500C52E97 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		F4BDDF961983A50500C52E97 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		F4BDDF971983A50500C52E97 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		F4BDDF991983A50500C52E97 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F4BDDF9F1983A50500C52E97 /* Social NetworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Social NetworkTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BDDFA01983A50500C52E97 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -62,6 +67,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4BDDF841983A50500C52E97 /* CoreGraphics.framework in Frameworks */,
+				56A74243199E64C700CAAE1E /* FacebookSDK.framework in Frameworks */,
 				F4BDDF861983A50500C52E97 /* UIKit.framework in Frameworks */,
 				F4BDDF821983A50500C52E97 /* Foundation.framework in Frameworks */,
 			);
@@ -102,6 +108,7 @@
 		F4BDDF801983A50500C52E97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				56A74242199E64C700CAAE1E /* FacebookSDK.framework */,
 				F4BDDF811983A50500C52E97 /* Foundation.framework */,
 				F4BDDF831983A50500C52E97 /* CoreGraphics.framework */,
 				F4BDDF851983A50500C52E97 /* UIKit.framework */,
@@ -156,8 +163,10 @@
 		F4BDDFB61983A71000C52E97 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				F4BDDF961983A50500C52E97 /* ViewController.h */,
-				F4BDDF971983A50500C52E97 /* ViewController.m */,
+				5616CFAA19A507A1001FF581 /* HomeViewController.h */,
+				5616CFAB19A507A1001FF581 /* HomeViewController.m */,
+				5616CFA719A4FEAC001FF581 /* FlightViewController.h */,
+				5616CFA819A4FEAC001FF581 /* FlightViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -214,7 +223,7 @@
 		F4BDDF761983A50500C52E97 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Sitanshu Joshi";
 				TargetAttributes = {
 					F4BDDF9E1983A50500C52E97 = {
@@ -267,8 +276,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4BDDF981983A50500C52E97 /* ViewController.m in Sources */,
 				F4BDDF921983A50500C52E97 /* AppDelegate.m in Sources */,
+				5616CFA919A4FEAC001FF581 /* FlightViewController.m in Sources */,
+				5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */,
 				F4BDDF8E1983A50500C52E97 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,7 +333,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -362,7 +371,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -396,6 +404,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Social Network/Social Network-Prefix.pch";
 				INFOPLIST_FILE = "Social Network/Social Network-Info.plist";
@@ -409,6 +421,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Social Network/Social Network-Prefix.pch";
 				INFOPLIST_FILE = "Social Network/Social Network-Info.plist";
@@ -420,7 +436,6 @@
 		F4BDDFB41983A50500C52E97 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Social Network.app/Social Network";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -443,7 +458,6 @@
 		F4BDDFB51983A50500C52E97 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Social Network.app/Social Network";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

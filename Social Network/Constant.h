@@ -11,5 +11,19 @@
 
 #define kBase_URL       @""
 
+/*
+ Segue Identifier
+ */
+#define kPush_To_FlightVC_segue  @"pushToFlightVC"
+
+
+/*
+ User Default
+ */
+
+#define kUserName       @"Name"
+#define kFirst_Name     @"First_Name"
+#define kLast_Name      @"Last_Name"
+#define kBirth_Date     @"Birth_Date"
 
 #endif
