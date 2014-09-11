@@ -22,32 +22,34 @@
     }
     return self;
 }
-
+#pragma mark - UIViewController Life Cycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+}
+//Facebook Login Method
 - (IBAction)btnLoginTapped:(id)sender {
-    if(FBSessionStateOpen | FBSessionStateOpenTokenExtended){
-        FBSession *session = [FBSession activeSession];
-        [session closeAndClearTokenInformation];
-        [session close];
-        [[AppDelegate appDelegate]openSessionWithAllowLoginUI:YES];
-        [self performSegueWithIdentifier:kPush_To_FlightVC_segue sender:self];
-
-    }else{
-        [[AppDelegate appDelegate]openSessionWithAllowLoginUI:YES];
-        [self performSegueWithIdentifier:kPush_To_FlightVC_segue sender:self];
-
-    }
+    [[AppDelegate appDelegate]openSessionWithAllowLoginUI:YES];
+    [activityIndicator startAnimating];
+    self.view.userInteractionEnabled = NO;
+}
+#pragma mark - Push To Flight View Controller Method
+-(void)pushToFlightViewController{
+    [activityIndicator stopAnimating];
+    self.view.userInteractionEnabled = YES;
+    [self performSegueWithIdentifier:kPush_To_FlightVC_segue sender:self];
 }
 
 /*

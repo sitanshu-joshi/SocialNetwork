@@ -11,9 +11,9 @@
 @interface HomeViewController : UIViewController{
     
 }
-
-//Action Methods
-- (IBAction)btnLoginTapped:(id)sender;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
+//Action Methods
+-(IBAction)btnLoginTapped:(id)sender;
+-(void)pushToFlightViewController;
 @end

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		5616CFA919A4FEAC001FF581 /* FlightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5616CFA819A4FEAC001FF581 /* FlightViewController.m */; };
 		5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5616CFAB19A507A1001FF581 /* HomeViewController.m */; };
-		56A74243199E64C700CAAE1E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A74242199E64C700CAAE1E /* FacebookSDK.framework */; };
+		56A7643019C2122900D840B8 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A7642F19C2122900D840B8 /* FacebookSDK.framework */; };
 		F4BDDF821983A50500C52E97 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF811983A50500C52E97 /* Foundation.framework */; };
 		F4BDDF841983A50500C52E97 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF831983A50500C52E97 /* CoreGraphics.framework */; };
 		F4BDDF861983A50500C52E97 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF851983A50500C52E97 /* UIKit.framework */; };
@@ -40,7 +40,7 @@
 		5616CFA819A4FEAC001FF581 /* FlightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightViewController.m; sourceTree = "<group>"; };
 		5616CFAA19A507A1001FF581 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		5616CFAB19A507A1001FF581 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
-		56A74242199E64C700CAAE1E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		56A7642F19C2122900D840B8 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		F4BDDF7E1983A50500C52E97 /* Social Network.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Social Network.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BDDF811983A50500C52E97 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F4BDDF831983A50500C52E97 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -67,7 +67,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4BDDF841983A50500C52E97 /* CoreGraphics.framework in Frameworks */,
-				56A74243199E64C700CAAE1E /* FacebookSDK.framework in Frameworks */,
+				56A7643019C2122900D840B8 /* FacebookSDK.framework in Frameworks */,
 				F4BDDF861983A50500C52E97 /* UIKit.framework in Frameworks */,
 				F4BDDF821983A50500C52E97 /* Foundation.framework in Frameworks */,
 			);
@@ -86,9 +86,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		56A7642E19C2122900D840B8 /* Authframework */ = {
+			isa = PBXGroup;
+			children = (
+				56A7642F19C2122900D840B8 /* FacebookSDK.framework */,
+			);
+			name = Authframework;
+			path = "Social Network/Authframework";
+			sourceTree = "<group>";
+		};
 		F4BDDF751983A50500C52E97 = {
 			isa = PBXGroup;
 			children = (
+				56A7642E19C2122900D840B8 /* Authframework */,
 				F4BDDF871983A50500C52E97 /* Social Network */,
 				F4BDDFA61983A50500C52E97 /* Social NetworkTests */,
 				F4BDDF801983A50500C52E97 /* Frameworks */,
@@ -108,7 +118,6 @@
 		F4BDDF801983A50500C52E97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				56A74242199E64C700CAAE1E /* FacebookSDK.framework */,
 				F4BDDF811983A50500C52E97 /* Foundation.framework */,
 				F4BDDF831983A50500C52E97 /* CoreGraphics.framework */,
 				F4BDDF851983A50500C52E97 /* UIKit.framework */,
@@ -407,6 +416,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Social",
+					Network/Authframework,
+					"$(PROJECT_DIR)/Social",
+					Network/Authframework,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Social Network/Social Network-Prefix.pch";
@@ -424,6 +437,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Social",
+					Network/Authframework,
+					"$(PROJECT_DIR)/Social",
+					Network/Authframework,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Social Network/Social Network-Prefix.pch";

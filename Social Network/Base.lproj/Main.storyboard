@@ -24,7 +24,7 @@
                                     <action selector="btnLoginTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="DVa-hI-FGu"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="7vc-uq-jpa">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="3my-OS-Erv">
                                 <rect key="frame" x="142" y="265" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="color" red="0.32701427239999997" green="0.22524561000000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -34,7 +34,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Home" id="3Ki-yX-Ee2"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="7vc-uq-jpa" id="S4a-ub-JSd"/>
+                        <outlet property="activityIndicator" destination="3my-OS-Erv" id="0Vf-Q0-z55"/>
                         <segue destination="0lm-7n-ZNf" kind="push" identifier="pushToFlightVC" id="xfV-1k-Nut"/>
                     </connections>
                 </viewController>

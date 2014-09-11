@@ -15,6 +15,7 @@
     BOOL isFBSessionOpen;
     NSUserDefaults *userDefaults;
     FlightViewController *objFlightVC;
+    UINavigationController *navController;
 }
 
 @property (strong, nonatomic) UIWindow *window;
