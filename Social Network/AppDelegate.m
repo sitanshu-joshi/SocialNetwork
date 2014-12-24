@@ -155,7 +155,7 @@ static AppDelegate *appDelegate;
     } else {
         // Open a session showing the user the login UI
         // You must ALWAYS ask for public_profile permissions when opening a session
-        [FBSession openActiveSessionWithReadPermissions:@[@"email",@"user_likes",@"user_friends",@"user_birthday",@"public_profile"]allowLoginUI:YES
+        [FBSession openActiveSessionWithReadPermissions:@[@"email",@"user_likes",@"user_friends",@"user_birthday"]allowLoginUI:YES
                                       completionHandler:
          ^(FBSession *session, FBSessionState state, NSError *error) {
              

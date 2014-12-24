@@ -41,7 +41,7 @@
 }
 //Facebook Login Method
 - (IBAction)btnLoginTapped:(id)sender {
-    [[AppDelegate appDelegate]openSessionWithAllowLoginUI:YES];
+    [[AppDelegate appDelegate] openSessionWithAllowLoginUI:YES];
     [activityIndicator startAnimating];
     self.view.userInteractionEnabled = NO;
 }
