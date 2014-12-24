@@ -11,6 +11,7 @@
 		5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5616CFAB19A507A1001FF581 /* HomeViewController.m */; };
 		568ADAD21A4A64B200DB8C49 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 568ADAD01A4A646F00DB8C49 /* FacebookSDK.framework */; };
 		568ADAD31A4A64D400DB8C49 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 568ADAD01A4A646F00DB8C49 /* FacebookSDK.framework */; };
+		568ADAD61A4A68B400DB8C49 /* QuestionAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 568ADAD51A4A68B400DB8C49 /* QuestionAnswerViewController.m */; };
 		F4BDDF821983A50500C52E97 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF811983A50500C52E97 /* Foundation.framework */; };
 		F4BDDF841983A50500C52E97 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF831983A50500C52E97 /* CoreGraphics.framework */; };
 		F4BDDF861983A50500C52E97 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF851983A50500C52E97 /* UIKit.framework */; };
@@ -42,6 +43,8 @@
 		5616CFAA19A507A1001FF581 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		5616CFAB19A507A1001FF581 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		568ADAD01A4A646F00DB8C49 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		568ADAD41A4A68B400DB8C49 /* QuestionAnswerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionAnswerViewController.h; sourceTree = "<group>"; };
+		568ADAD51A4A68B400DB8C49 /* QuestionAnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionAnswerViewController.m; sourceTree = "<group>"; };
 		F4BDDF7E1983A50500C52E97 /* Social Network.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Social Network.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BDDF811983A50500C52E97 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F4BDDF831983A50500C52E97 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -177,6 +180,8 @@
 				5616CFAB19A507A1001FF581 /* HomeViewController.m */,
 				5616CFA719A4FEAC001FF581 /* FlightViewController.h */,
 				5616CFA819A4FEAC001FF581 /* FlightViewController.m */,
+				568ADAD41A4A68B400DB8C49 /* QuestionAnswerViewController.h */,
+				568ADAD51A4A68B400DB8C49 /* QuestionAnswerViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 			files = (
 				F4BDDF921983A50500C52E97 /* AppDelegate.m in Sources */,
 				5616CFA919A4FEAC001FF581 /* FlightViewController.m in Sources */,
+				568ADAD61A4A68B400DB8C49 /* QuestionAnswerViewController.m in Sources */,
 				5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */,
 				F4BDDF8E1983A50500C52E97 /* main.m in Sources */,
 			);

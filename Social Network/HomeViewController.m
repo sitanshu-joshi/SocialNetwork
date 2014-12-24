@@ -49,7 +49,7 @@
 -(void)pushToFlightViewController{
     [activityIndicator stopAnimating];
     self.view.userInteractionEnabled = YES;
-    [self performSegueWithIdentifier:kPush_To_FlightVC_segue sender:self];
+    [self performSegueWithIdentifier:kPush_To_Interest_Segue sender:self];
 }
 
 /*
