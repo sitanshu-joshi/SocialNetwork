@@ -16,6 +16,7 @@
  */
 #define kPush_To_FlightVC_segue     @"pushToFlightVC"
 #define kPush_To_Interest_Segue     @"pushToInterest"
+#define kPush_To_CityPage           @"PushToCityPage"
 
 
 /*

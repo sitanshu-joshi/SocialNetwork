@@ -12,6 +12,7 @@
 		568ADAD21A4A64B200DB8C49 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 568ADAD01A4A646F00DB8C49 /* FacebookSDK.framework */; };
 		568ADAD31A4A64D400DB8C49 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 568ADAD01A4A646F00DB8C49 /* FacebookSDK.framework */; };
 		568ADAD61A4A68B400DB8C49 /* QuestionAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 568ADAD51A4A68B400DB8C49 /* QuestionAnswerViewController.m */; };
+		568ADAD91A4B1E6200DB8C49 /* CityPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 568ADAD81A4B1E6200DB8C49 /* CityPageViewController.m */; };
 		F4BDDF821983A50500C52E97 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF811983A50500C52E97 /* Foundation.framework */; };
 		F4BDDF841983A50500C52E97 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF831983A50500C52E97 /* CoreGraphics.framework */; };
 		F4BDDF861983A50500C52E97 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF851983A50500C52E97 /* UIKit.framework */; };
@@ -45,6 +46,8 @@
 		568ADAD01A4A646F00DB8C49 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		568ADAD41A4A68B400DB8C49 /* QuestionAnswerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionAnswerViewController.h; sourceTree = "<group>"; };
 		568ADAD51A4A68B400DB8C49 /* QuestionAnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionAnswerViewController.m; sourceTree = "<group>"; };
+		568ADAD71A4B1E6200DB8C49 /* CityPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityPageViewController.h; sourceTree = "<group>"; };
+		568ADAD81A4B1E6200DB8C49 /* CityPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityPageViewController.m; sourceTree = "<group>"; };
 		F4BDDF7E1983A50500C52E97 /* Social Network.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Social Network.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BDDF811983A50500C52E97 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F4BDDF831983A50500C52E97 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -182,6 +185,8 @@
 				5616CFA819A4FEAC001FF581 /* FlightViewController.m */,
 				568ADAD41A4A68B400DB8C49 /* QuestionAnswerViewController.h */,
 				568ADAD51A4A68B400DB8C49 /* QuestionAnswerViewController.m */,
+				568ADAD71A4B1E6200DB8C49 /* CityPageViewController.h */,
+				568ADAD81A4B1E6200DB8C49 /* CityPageViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -295,6 +300,7 @@
 				5616CFA919A4FEAC001FF581 /* FlightViewController.m in Sources */,
 				568ADAD61A4A68B400DB8C49 /* QuestionAnswerViewController.m in Sources */,
 				5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */,
+				568ADAD91A4B1E6200DB8C49 /* CityPageViewController.m in Sources */,
 				F4BDDF8E1983A50500C52E97 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
