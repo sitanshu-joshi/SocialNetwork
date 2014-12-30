@@ -13,6 +13,11 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *btnContinue;
+@property (weak, nonatomic) IBOutlet UITextView *txtViewForQuestion;
+
+@property (weak, nonatomic) IBOutlet UITextView *txtViewForAnswer;
+@property (nonatomic, retain) UIPageControl * pageControl;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewContainer;
 
 -(IBAction)btnContinueAction:(id)sender;
 
