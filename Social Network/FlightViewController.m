@@ -38,10 +38,10 @@
 -(IBAction)btnLogoutTapped:(id)sender{
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    [userDefault removeObjectForKey:kUserName];
-    [userDefault removeObjectForKey:kFirst_Name];
-    [userDefault removeObjectForKey:kLast_Name];
-    [userDefault removeObjectForKey:kBirth_Date];
+    [userDefault removeObjectForKey:kUSER_NAME];
+    [userDefault removeObjectForKey:kUSER_FIRST_NAME];
+    [userDefault removeObjectForKey:kUSER_LAST_NAME];
+    [userDefault removeObjectForKey:kUSER_BDAY];
     FBSession *session = [FBSession activeSession];
     [session closeAndClearTokenInformation];
     [session close];

@@ -7,12 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0093A0558F137BFE885BE0A5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D56C01C0EE12F015CC28D226 /* libPods.a */; };
 		5616CFA919A4FEAC001FF581 /* FlightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5616CFA819A4FEAC001FF581 /* FlightViewController.m */; };
 		5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5616CFAB19A507A1001FF581 /* HomeViewController.m */; };
 		568ADAD21A4A64B200DB8C49 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 568ADAD01A4A646F00DB8C49 /* FacebookSDK.framework */; };
 		568ADAD31A4A64D400DB8C49 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 568ADAD01A4A646F00DB8C49 /* FacebookSDK.framework */; };
 		568ADAD61A4A68B400DB8C49 /* QuestionAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 568ADAD51A4A68B400DB8C49 /* QuestionAnswerViewController.m */; };
 		568ADAD91A4B1E6200DB8C49 /* CityPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 568ADAD81A4B1E6200DB8C49 /* CityPageViewController.m */; };
+		F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F4224F6A1A594061003A353E /* troyage.xcdatamodeld */; };
+		F4224F701A594332003A353E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = F4224F6F1A594332003A353E /* User.m */; };
+		F4224F731A594333003A353E /* DataForResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = F4224F721A594333003A353E /* DataForResponse.m */; };
 		F4BDDF821983A50500C52E97 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF811983A50500C52E97 /* Foundation.framework */; };
 		F4BDDF841983A50500C52E97 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF831983A50500C52E97 /* CoreGraphics.framework */; };
 		F4BDDF861983A50500C52E97 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF851983A50500C52E97 /* UIKit.framework */; };
@@ -39,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		451149F762A744E3EE1BD01F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		5616CFA719A4FEAC001FF581 /* FlightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightViewController.h; sourceTree = "<group>"; };
 		5616CFA819A4FEAC001FF581 /* FlightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightViewController.m; sourceTree = "<group>"; };
 		5616CFAA19A507A1001FF581 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
@@ -48,6 +53,14 @@
 		568ADAD51A4A68B400DB8C49 /* QuestionAnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionAnswerViewController.m; sourceTree = "<group>"; };
 		568ADAD71A4B1E6200DB8C49 /* CityPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityPageViewController.h; sourceTree = "<group>"; };
 		568ADAD81A4B1E6200DB8C49 /* CityPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityPageViewController.m; sourceTree = "<group>"; };
+		6832CEA470AEFBFD25D37C1A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		D56C01C0EE12F015CC28D226 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4224F691A59401A003A353E /* Enum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enum.h; sourceTree = "<group>"; };
+		F4224F6B1A594061003A353E /* troyage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = troyage.xcdatamodel; sourceTree = "<group>"; };
+		F4224F6E1A594332003A353E /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		F4224F6F1A594332003A353E /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		F4224F711A594333003A353E /* DataForResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataForResponse.h; sourceTree = "<group>"; };
+		F4224F721A594333003A353E /* DataForResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataForResponse.m; sourceTree = "<group>"; };
 		F4BDDF7E1983A50500C52E97 /* Social Network.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Social Network.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BDDF811983A50500C52E97 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F4BDDF831983A50500C52E97 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -77,6 +90,7 @@
 				F4BDDF841983A50500C52E97 /* CoreGraphics.framework in Frameworks */,
 				F4BDDF861983A50500C52E97 /* UIKit.framework in Frameworks */,
 				F4BDDF821983A50500C52E97 /* Foundation.framework in Frameworks */,
+				0093A0558F137BFE885BE0A5 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,14 +116,36 @@
 			path = Authframework;
 			sourceTree = "<group>";
 		};
+		75A1B463C7BF88C80D89EBAD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6832CEA470AEFBFD25D37C1A /* Pods.debug.xcconfig */,
+				451149F762A744E3EE1BD01F /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		F4224F6D1A594306003A353E /* MappingObjects */ = {
+			isa = PBXGroup;
+			children = (
+				F4224F711A594333003A353E /* DataForResponse.h */,
+				F4224F721A594333003A353E /* DataForResponse.m */,
+				F4224F6E1A594332003A353E /* User.h */,
+				F4224F6F1A594332003A353E /* User.m */,
+			);
+			name = MappingObjects;
+			sourceTree = "<group>";
+		};
 		F4BDDF751983A50500C52E97 = {
 			isa = PBXGroup;
 			children = (
+				F4224F6A1A594061003A353E /* troyage.xcdatamodeld */,
 				568ADACF1A4A646F00DB8C49 /* Authframework */,
 				F4BDDF871983A50500C52E97 /* Social Network */,
 				F4BDDFA61983A50500C52E97 /* Social NetworkTests */,
 				F4BDDF801983A50500C52E97 /* Frameworks */,
 				F4BDDF7F1983A50500C52E97 /* Products */,
+				75A1B463C7BF88C80D89EBAD /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -129,6 +165,7 @@
 				F4BDDF831983A50500C52E97 /* CoreGraphics.framework */,
 				F4BDDF851983A50500C52E97 /* UIKit.framework */,
 				F4BDDFA01983A50500C52E97 /* XCTest.framework */,
+				D56C01C0EE12F015CC28D226 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -136,6 +173,7 @@
 		F4BDDF871983A50500C52E97 /* Social Network */ = {
 			isa = PBXGroup;
 			children = (
+				F4224F6D1A594306003A353E /* MappingObjects */,
 				F4BDDFB71983A8DC00C52E97 /* Utility */,
 				F4BDDFB61983A71000C52E97 /* ViewControllers */,
 				F4BDDF901983A50500C52E97 /* AppDelegate.h */,
@@ -195,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				F4BDDFB91983A9B100C52E97 /* Constant.h */,
+				F4224F691A59401A003A353E /* Enum.h */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -206,9 +245,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4BDDFB01983A50500C52E97 /* Build configuration list for PBXNativeTarget "Social Network" */;
 			buildPhases = (
+				4557044B554660FD80688714 /* Check Pods Manifest.lock */,
 				F4BDDF7A1983A50500C52E97 /* Sources */,
 				F4BDDF7B1983A50500C52E97 /* Frameworks */,
 				F4BDDF7C1983A50500C52E97 /* Resources */,
+				8235903679771531531D295F /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -291,16 +332,52 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4557044B554660FD80688714 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8235903679771531531D295F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F4BDDF7A1983A50500C52E97 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4224F701A594332003A353E /* User.m in Sources */,
 				F4BDDF921983A50500C52E97 /* AppDelegate.m in Sources */,
 				5616CFA919A4FEAC001FF581 /* FlightViewController.m in Sources */,
+				F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */,
 				568ADAD61A4A68B400DB8C49 /* QuestionAnswerViewController.m in Sources */,
 				5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */,
 				568ADAD91A4B1E6200DB8C49 /* CityPageViewController.m in Sources */,
+				F4224F731A594333003A353E /* DataForResponse.m in Sources */,
 				F4BDDF8E1983A50500C52E97 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -423,6 +500,7 @@
 		};
 		F4BDDFB11983A50500C52E97 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6832CEA470AEFBFD25D37C1A /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -446,6 +524,7 @@
 		};
 		F4BDDFB21983A50500C52E97 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 451149F762A744E3EE1BD01F /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -540,6 +619,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F4224F6A1A594061003A353E /* troyage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F4224F6B1A594061003A353E /* troyage.xcdatamodel */,
+			);
+			currentVersion = F4224F6B1A594061003A353E /* troyage.xcdatamodel */;
+			path = troyage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = F4BDDF761983A50500C52E97 /* Project object */;
 }

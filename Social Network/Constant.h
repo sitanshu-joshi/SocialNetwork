@@ -9,7 +9,8 @@
 #ifndef Social_Network_Constant_h
 #define Social_Network_Constant_h
 
-#define kBase_URL       @""
+#define kBase_URL               @"http://localhost:8080/Troyage/ws/"
+#define kDB_Store               @"troyage.sqlite"
 
 /*
  Segue Identifier
@@ -18,14 +19,16 @@
 #define kPush_To_Interest_Segue     @"pushToInterest"
 #define kPush_To_CityPage           @"PushToCityPage"
 
-
 /*
- User Default
+ Auth Login
  */
-
-#define kUserName       @"Name"
-#define kFirst_Name     @"First_Name"
-#define kLast_Name      @"Last_Name"
-#define kBirth_Date     @"Birth_Date"
+#define kUSER_FIRST_NAME    @"USER_FIRST_NAME"
+#define kUSER_LAST_NAME     @"USER_LAST_NAME"
+#define kUSER_EMAIL         @"USER_EMAIL"
+#define kUSER_NAME          @"USER_NAME"
+#define kUSER_AUTH_TOKEN    @"USER_AUTH_TOKEN"
+#define kUSER_TYPE          @"USER_TYPE"
+#define kUSER_TIMEZONE      @"USER_TIMEZONE"
+#define kUSER_BDAY          @"USER_BDAY"
 
 #endif
