@@ -234,7 +234,7 @@ static AppDelegate *appDelegate;
         if (managedObjectModel != nil) {
             return managedObjectModel;
         }
-        NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Restkit_Demo" withExtension:@"momd"];
+        NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"troyage" withExtension:@"momd"];
         managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
         return managedObjectModel;
     }
