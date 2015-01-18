@@ -41,9 +41,10 @@
 }
 //Facebook Login Method
 - (IBAction)btnLoginTapped:(id)sender {
-    [[AppDelegate appDelegate] openSessionWithAllowLoginUI:YES];
     [activityIndicator startAnimating];
-    self.view.userInteractionEnabled = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFBData:) name:kNotification_FB object:nil];
+    [[AppDelegate appDelegate] openSessionWithAllowLoginUI:YES];
 }
 #pragma mark - Push To Flight View Controller Method
 -(void)pushToFlightViewController{
@@ -64,29 +65,31 @@
     // Pass the selected object to the new view controller.
 }
 
--(void)makeLoginUsingAuthCredential {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    [dict setValue:[[NSUserDefaults standardUserDefaults] valueForKey:kUSER_NAME] forKey:kUSER_NAME];
-    [dict setValue:[[NSUserDefaults standardUserDefaults] valueForKey:kUSER_FIRST_NAME] forKey:kUSER_FIRST_NAME];
-    [dict setValue:[[NSUserDefaults standardUserDefaults] valueForKey:kUSER_LAST_NAME] forKey:kUSER_LAST_NAME];
-    [dict setValue:[[NSUserDefaults standardUserDefaults] valueForKey:kUSER_EMAIL] forKey:kUSER_EMAIL];
-    [dict setValue:[[NSUserDefaults standardUserDefaults] valueForKey:kUSER_AUTH_TOKEN] forKey:kUSER_AUTH_TOKEN];
-    [dict setValue:[[NSTimeZone localTimeZone] name] forKey:kUSER_TIMEZONE];
+#pragma mark Request Method
+-(void)getFBData:(NSNotification *)notificationObjForCustomers {
+    // Remove Notification
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotification_FB object:nil];
+    NSMutableDictionary *dictionary = (NSMutableDictionary *)[notificationObjForCustomers object];
+    if(dictionary){
+        [self makeLoginUsingAuthCredential:dictionary];
+    }
+}
+
+-(void)makeLoginUsingAuthCredential:(NSMutableDictionary *)dict {
     
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:LOGIN] method:RKRequestMethodPOST pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-    [[AppDelegate appDelegate].rkomForLogin addResponseDescriptor:responseDescriptor];
-    
-    
-    [[AppDelegate appDelegate].rkomForLogin postObject:nil path:@"login" parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kResource_SignUp_Auth parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         // Handled with articleDescriptor
+        [activityIndicator stopAnimating];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *data  = [mappingResult.array objectAtIndex:0];
         User *user  = [[data.user allObjects] firstObject];
         //        User *user = [data valueForKey:@"user"];
         NSLog(@"%@",[user email]);
         NSLog(@"%ld",operation.HTTPRequestOperation.response.statusCode);
+        [self performSelector:@selector(pushToFlightViewController) withObject:nil afterDelay:0.5];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
+        [activityIndicator stopAnimating];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         RKLogError(@"Operation failed with error: %@", error);
     }];

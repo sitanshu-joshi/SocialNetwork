@@ -73,25 +73,36 @@ static AppDelegate *appDelegate;
         [[FBRequest requestForMe] startWithCompletionHandler:^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
             if (!error) {
                 
-                NSLog(@"User Data:%@",user);
+                NSLog(@"User Data:%@", user);
                 userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setObject:user.name forKey:kUSER_NAME];
                 [userDefaults setObject:user.first_name forKey:kUSER_FIRST_NAME];
                 [userDefaults setObject:user.last_name forKey:kUSER_LAST_NAME];
                 [userDefaults setObject:user.birthday forKey:kUSER_BDAY];
-                // Pending
-//                [userDefaults setObject:user.birthday forKey:kUSER_EMAIL];
-//                [userDefaults setObject:user.birthday forKey:kUSER_AUTH_TOKEN];
-//                [userDefaults setObject:user.birthday forKey:kUSER_TYPE];
                 [userDefaults synchronize];
+                
+                NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+                [dict setValue:user.username forKey:kUSER_NAME];
+                [dict setValue:user.first_name forKey:kUSER_FIRST_NAME];
+                [dict setValue:user.last_name forKey:kUSER_LAST_NAME];
+                [dict setValue:[user objectForKey:@"email"] forKey:kUSER_EMAIL];
+                [dict setValue:session.accessTokenData.accessToken forKey:kUSER_AUTH_TOKEN];
+                [dict setValue:kAuth_FB forKey:kUSER_TYPE];
+                [dict setValue:[[NSTimeZone localTimeZone] name] forKey:kUSER_TIMEZONE];
+                [dict setValue:user.birthday forKey:kUSER_BDAY];
+//                NSString *str = [FBSession activeSession].accessTokenData.accessToken;
+//                str  = [str substringToIndex:8] ;
+//                NSLog(@"%@",str);
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_FB object:dict];
             }
         }];
-        isFBSessionOpen = true;
-        UIViewController *viewController = (UIViewController *)[navController visibleViewController];
-        if([viewController isKindOfClass:[HomeViewController class]]){
-            HomeViewController *homeViewController = (HomeViewController *)viewController;
-            [homeViewController pushToFlightViewController];
-        }
+//        isFBSessionOpen = true;
+//        UIViewController *viewController = (UIViewController *)[navController visibleViewController];
+//        if([viewController isKindOfClass:[HomeViewController class]]){
+//            HomeViewController *homeViewController = (HomeViewController *)viewController;
+//            [homeViewController pushToFlightViewController];
+//        }
         return;
     }
     if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed){
@@ -321,6 +332,9 @@ static AppDelegate *appDelegate;
     rkomForLogin = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kBase_URL]];
     [rkomForLogin setManagedObjectStore:rkMOS];
     [rkomForLogin addRequestDescriptor:[RKRequestDescriptor requestDescriptorWithMapping:[[DataForResponse objectMappingForDataResponse:LOGIN] inverseMapping] objectClass:[DataForResponse class] rootKeyPath:@"data" method:RKRequestMethodPOST]];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:LOGIN] method:RKRequestMethodPOST pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    [rkomForLogin addResponseDescriptor:responseDescriptor];
     
 }
 

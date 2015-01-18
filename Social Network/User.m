@@ -58,8 +58,6 @@
                                                       @"updateTime" : @"updateTime",
                                                       @"useGeoLocation" : @"useGeoLocation",
                                                       }];
-        
-//        [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"card" toKeyPath:@"userInfoCards" withMapping:[UserInfoCards objectMappingForInfoCard:INFO_CARDS]]];
     }
     return mapping;
 }
