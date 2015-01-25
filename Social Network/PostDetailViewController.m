@@ -1,21 +1,22 @@
 //
-//  CityPageViewController.m
+//  PostDetailViewController.m
 //  Social Network
 //
-//  Created by Sagar Gondaliya on 24/12/14.
-//  Copyright (c) 2014 Sitanshu Joshi. All rights reserved.
+//  Created by Sagar Gondaliya on 25/01/15.
+//  Copyright (c) 2015 Sitanshu Joshi. All rights reserved.
 //
 
-#import "CityPageViewController.h"
+#import "PostDetailViewController.h"
 
-@interface CityPageViewController ()
+@interface PostDetailViewController ()
 
 @end
 
-@implementation CityPageViewController
+@implementation PostDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning {
@@ -29,24 +30,18 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *identifier = @"cell";
+    static NSString *identifier = @"commentCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if(cell == nil){
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    
     return cell;
 }
-#pragma mark - UITableView Delegate Methods
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self performSegueWithIdentifier:kPush_To_Comment sender:self];
-}
-#pragma mark - UITableView Delegate Methods
+
 - (IBAction)backButtonTapped:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
-- (IBAction)btnAddTapped:(id)sender {
+- (IBAction)btnPostTapped:(id)sender {
 }
 @end

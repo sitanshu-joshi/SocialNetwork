@@ -14,20 +14,9 @@
 
 @implementation QuestionAnswerViewController
 
-@synthesize scrollViewContainer,pageControl,txtViewForAnswer,txtViewForQuestion;
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    txtViewForQuestion.layer.cornerRadius = 7.0;
-    txtViewForAnswer.layer.cornerRadius = 7.0;
-    txtViewForAnswer.layer.masksToBounds = YES;
-    txtViewForQuestion.layer.masksToBounds = YES;
-//    CGSize scrollViewContentSize = CGSizeMake(640, 404);
-//    [self.scrollView setContentSize:scrollViewContentSize];
-      scrollViewContainer.showsHorizontalScrollIndicator = NO;
- 
-    // Do any additional setup after loading the view.
+    [self setUpUserInterface];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -39,8 +28,33 @@
 }
 
 
--(IBAction)btnContinueAction:(id)sender {
-    [self performSegueWithIdentifier:kPush_To_CityPage sender:nil];
+-(void)setUpUserInterface{
+    self.txtViewForAnswer1.layer.cornerRadius = 7.0;
+    self.txtViewForAnswer1.layer.masksToBounds = YES;
+    
+    self.txtViewForAnswer2.layer.cornerRadius = 7.0;
+    self.txtViewForAnswer2.layer.masksToBounds = YES;
+    
+    self.txtViewForQuestion1.layer.cornerRadius = 7.0;
+    self.txtViewForQuestion1.layer.masksToBounds = YES;
+    
+    self.txtViewForQuestion2.layer.cornerRadius = 7.0;
+    self.txtViewForQuestion2.layer.masksToBounds = YES;
+    
+    self.btnSubmit.layer.cornerRadius = 5.0;
+    self.btnSubmit.layer.masksToBounds = YES;
+}
+
+- (IBAction)btnSkipTapped:(id)sender {
+    [self pushToNewsFeedViewController];
+}
+
+- (IBAction)btnSubmitTapped:(id)sender {
+    [self pushToNewsFeedViewController];
+}
+
+-(void)pushToNewsFeedViewController{
+    [self performSegueWithIdentifier:kPush_To_NewsFeed sender:nil];
 }
 
 #pragma mark - UITextField Delegate Methods
@@ -48,35 +62,5 @@
     [textField resignFirstResponder];
     return YES;
 }
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat pageWidth = scrollViewContainer.frame.size.width;
-    float fractionalPage = scrollViewContainer.contentOffset.x / pageWidth;
-    NSInteger page = lround(fractionalPage);
-    self.pageControl.currentPage = page;
-}
-
-
 
 @end

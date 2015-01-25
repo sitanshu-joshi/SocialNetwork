@@ -1,28 +1,23 @@
 //
-//  CityPageViewController.m
+//  NewsFeedViewController.m
 //  Social Network
 //
-//  Created by Sagar Gondaliya on 24/12/14.
-//  Copyright (c) 2014 Sitanshu Joshi. All rights reserved.
+//  Created by Sagar Gondaliya on 25/01/15.
+//  Copyright (c) 2015 Sitanshu Joshi. All rights reserved.
 //
 
-#import "CityPageViewController.h"
+#import "NewsFeedViewController.h"
 
-@interface CityPageViewController ()
+@interface NewsFeedViewController ()
 
 @end
 
-@implementation CityPageViewController
+@implementation NewsFeedViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // Do any additional setup after loading the view.
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - UITableView DataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 10;
@@ -30,23 +25,23 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *identifier = @"cell";
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if(cell == nil){
+    
+    if (cell == nil)
+    {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    
     return cell;
 }
+
 #pragma mark - UITableView Delegate Methods
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self performSegueWithIdentifier:kPush_To_Comment sender:self];
+    [self performSegueWithIdentifier:kPush_To_City sender:self];
 }
-#pragma mark - UITableView Delegate Methods
-- (IBAction)backButtonTapped:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)btnAddTapped:(id)sender {
-}
+
 @end

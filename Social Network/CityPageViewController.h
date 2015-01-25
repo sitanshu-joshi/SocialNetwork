@@ -8,12 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CityPageViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,UITextViewDelegate>{
+@interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>{
     
 }
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UITextView *txtViewForDetail;
-
-- (IBAction)btnBackEvent:(id)sender;
-
+@property (weak, nonatomic) IBOutlet UITableView *tblView;
+- (IBAction)backButtonTapped:(id)sender;
+- (IBAction)btnAddTapped:(id)sender;
 @end

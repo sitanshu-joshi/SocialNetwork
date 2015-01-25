@@ -90,19 +90,10 @@ static AppDelegate *appDelegate;
                 [dict setValue:kAuth_FB forKey:kUSER_TYPE];
                 [dict setValue:[[NSTimeZone localTimeZone] name] forKey:kUSER_TIMEZONE];
                 [dict setValue:user.birthday forKey:kUSER_BDAY];
-//                NSString *str = [FBSession activeSession].accessTokenData.accessToken;
-//                str  = [str substringToIndex:8] ;
-//                NSLog(@"%@",str);
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_FB object:dict];
+                //[[NSNotificationCenter defaultCenter] postNotificationName:kNotification_FB object:dict];
             }
         }];
-//        isFBSessionOpen = true;
-//        UIViewController *viewController = (UIViewController *)[navController visibleViewController];
-//        if([viewController isKindOfClass:[HomeViewController class]]){
-//            HomeViewController *homeViewController = (HomeViewController *)viewController;
-//            [homeViewController pushToFlightViewController];
-//        }
         return;
     }
     if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed){

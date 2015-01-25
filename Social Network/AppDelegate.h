@@ -9,13 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import "HomeViewController.h"
-#import "FlightViewController.h"
 #import "User.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>{
     BOOL isFBSessionOpen;
     NSUserDefaults *userDefaults;
-    FlightViewController *objFlightVC;
     UINavigationController *navController;
 }
 

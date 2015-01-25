@@ -27,6 +27,12 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    FBLoginView *loginView = [[FBLoginView alloc] init];
+    loginView.frame = CGRectOffset(loginView.frame, (self.view.center.x - (loginView.frame.size.width / 2)),self.view.center.y);
+    loginView.readPermissions = @[@"public_profile", @"email", @"user_friends",@"user_birthday"];
+    loginView.delegate = self;
+    [self.view addSubview:loginView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFBData:) name:kNotification_FB object:nil];
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -46,23 +52,44 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getFBData:) name:kNotification_FB object:nil];
     [[AppDelegate appDelegate] openSessionWithAllowLoginUI:YES];
 }
-#pragma mark - Push To Flight View Controller Method
--(void)pushToFlightViewController{
-    [activityIndicator stopAnimating];
-    self.view.userInteractionEnabled = YES;
-    // Statis
-    [self performSegueWithIdentifier:kPush_To_Interest_Segue sender:self];
-    //Dynamic
-//    [self makeLoginUsingAuthCredential];
+
+#pragma mark - FBLoginView Delegate Methods
+- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
+                            user:(id<FBGraphUser>)user{
+    if([FBSession activeSession]){
+        
+        [[NSUserDefaults standardUserDefaults] setObject:user.name forKey:kUSER_NAME];
+        [[NSUserDefaults standardUserDefaults] setObject:user.first_name forKey:kUSER_FIRST_NAME];
+        [[NSUserDefaults standardUserDefaults] setObject:user.last_name forKey:kUSER_LAST_NAME];
+        [[NSUserDefaults standardUserDefaults] setObject:user.birthday forKey:kUSER_BDAY];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        [dict setValue:user.username forKey:kUSER_NAME];
+        [dict setValue:user.first_name forKey:kUSER_FIRST_NAME];
+        [dict setValue:user.last_name forKey:kUSER_LAST_NAME];
+        [dict setValue:[user objectForKey:@"email"] forKey:kUSER_EMAIL];
+        [dict setValue:[FBSession activeSession].accessTokenData.accessToken forKey:kUSER_AUTH_TOKEN];
+        [dict setValue:kAuth_FB forKey:kUSER_TYPE];
+        [dict setValue:[[NSTimeZone localTimeZone] name] forKey:kUSER_TIMEZONE];
+        [dict setValue:user.birthday forKey:kUSER_BDAY];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_FB object:dict];
+    }
+    NSLog(@"user : %@",user);
 }
 
+- (void)loginView:(FBLoginView *)loginView
+      handleError:(NSError *)error{
+    NSLog(@"%@",error.description);
+}
 
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - Push To Flight View Controller Method
+-(void)pushToFlightViewController{
+    self.view.userInteractionEnabled = YES;
+    // Statis
+    [self performSegueWithIdentifier:kPush_To_Interest sender:nil];
+    //Dynamic
+//    [self makeLoginUsingAuthCredential];
 }
 
 #pragma mark Request Method
@@ -85,8 +112,8 @@
         User *user  = [[data.user allObjects] firstObject];
         //        User *user = [data valueForKey:@"user"];
         NSLog(@"%@",[user email]);
-        NSLog(@"%ld",operation.HTTPRequestOperation.response.statusCode);
-        [self performSelector:@selector(pushToFlightViewController) withObject:nil afterDelay:0.5];
+        NSLog(@"%ld",(long)operation.HTTPRequestOperation.response.statusCode);
+        [self performSelector:@selector(pushToFlightViewController) withObject:nil afterDelay:0.0];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [activityIndicator stopAnimating];

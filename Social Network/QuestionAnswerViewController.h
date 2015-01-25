@@ -8,18 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface QuestionAnswerViewController : UIViewController<UITextFieldDelegate>{
+@interface QuestionAnswerViewController : UIViewController<UITextViewDelegate>{
     
 }
 
-@property (weak, nonatomic) IBOutlet UIButton *btnContinue;
-@property (weak, nonatomic) IBOutlet UITextView *txtViewForQuestion;
+@property (weak, nonatomic) IBOutlet UITextView *txtViewForQuestion1;
+@property (weak, nonatomic) IBOutlet UITextView *txtViewForAnswer1;
+@property (weak, nonatomic) IBOutlet UITextView *txtViewForQuestion2;
+@property (weak, nonatomic) IBOutlet UITextView *txtViewForAnswer2;
+@property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 
-@property (weak, nonatomic) IBOutlet UITextView *txtViewForAnswer;
-@property (nonatomic, retain) UIPageControl * pageControl;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewContainer;
-
--(IBAction)btnContinueAction:(id)sender;
-
-
+- (IBAction)btnSkipTapped:(id)sender;
+- (IBAction)btnSubmitTapped:(id)sender;
 @end

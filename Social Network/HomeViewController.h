@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HomeViewController : UIViewController{
+@interface HomeViewController : UIViewController<FBLoginViewDelegate>{
     
 }
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
