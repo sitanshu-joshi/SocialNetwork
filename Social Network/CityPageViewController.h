@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>{
+@interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>{
     
 }
 @property (weak, nonatomic) IBOutlet UITableView *tblView;

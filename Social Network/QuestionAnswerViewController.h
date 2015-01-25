@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface QuestionAnswerViewController : UIViewController<UITextViewDelegate>{
-    
+    UIEdgeInsets contentInsets;
 }
 
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForQuestion1;
@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForQuestion2;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForAnswer2;
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 - (IBAction)btnSkipTapped:(id)sender;
 - (IBAction)btnSubmitTapped:(id)sender;

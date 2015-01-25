@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PostDetailViewController : UIViewController
+@interface PostDetailViewController : UIViewController<UITextViewDelegate>{
+    
+}
 - (IBAction)backButtonTapped:(id)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
-@property (weak, nonatomic) IBOutlet UILabel *lblName;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForComment;
 @property (weak, nonatomic) IBOutlet UILabel *lblDateTime;
 @property (weak, nonatomic) IBOutlet UIButton *btnPost;

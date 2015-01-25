@@ -16,6 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    contentInsets = self.scrollView.contentInset;
     [self setUpUserInterface];
 }
 
@@ -58,9 +59,27 @@
 }
 
 #pragma mark - UITextField Delegate Methods
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    
+    if([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
     return YES;
+}
+
+-(void)textViewDidBeginEditing:(UITextView *)textView
+{
+    
+    self.scrollView.contentOffset = CGPointMake(0, textView.frame.origin.y - textView.frame.size.height/2);
+}
+
+-(void)textViewDidEndEditing:(UITextView *)textView
+{
+    contentInsets = UIEdgeInsetsZero;
+    self.scrollView.contentOffset = CGPointZero;
+
 }
 
 @end

@@ -9,6 +9,8 @@
 #ifndef Social_Network_Constant_h
 #define Social_Network_Constant_h
 
+#define KEYBOARD_HEIGHT 260
+
 #define kBase_URL               @"http://54.148.97.236:8080/Troyage/ws/"
 #define kDB_Store               @"troyage.sqlite"
 
@@ -46,6 +48,12 @@
  Auth Type
  */
 #define kAuth_FB            0
+
+/*
+ Auth Param
+ */
+#define kLogin_User_Email       @"Login_Email"
+#define kLogin_User_Password    @"Login_Password"
 
 /*
  Auth Login/SignUp

@@ -62,6 +62,12 @@
         [[NSUserDefaults standardUserDefaults] setObject:user.first_name forKey:kUSER_FIRST_NAME];
         [[NSUserDefaults standardUserDefaults] setObject:user.last_name forKey:kUSER_LAST_NAME];
         [[NSUserDefaults standardUserDefaults] setObject:user.birthday forKey:kUSER_BDAY];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:[user objectForKey:@"email"] forKey:kLogin_User_Email];
+        NSString *strToken  = [NSString stringWithFormat:@"%@",[FBSession activeSession].accessTokenData.accessToken];
+        NSString *strPassword = [strToken substringFromIndex:[strToken length] - 8];
+        [[NSUserDefaults standardUserDefaults]setObject:strPassword forKey:kLogin_User_Password];
+        
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
