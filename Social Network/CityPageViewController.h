@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SWRevealViewController.h"
 
 @interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>{
     
 }
+
 @property (weak, nonatomic) IBOutlet UITableView *tblView;
+
 - (IBAction)backButtonTapped:(id)sender;
 - (IBAction)btnAddTapped:(id)sender;
+
 @end

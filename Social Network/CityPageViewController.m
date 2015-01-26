@@ -9,13 +9,25 @@
 #import "CityPageViewController.h"
 
 @interface CityPageViewController ()
-
+@property (nonatomic) IBOutlet UIBarButtonItem* revealButtonItem;
 @end
 
 @implementation CityPageViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self customSetup];
+}
+
+- (void)customSetup
+{
+    SWRevealViewController *revealViewController = self.revealViewController;
+    if ( revealViewController )
+    {
+        [self.revealButtonItem setTarget: revealViewController];
+        [self.revealButtonItem setAction: @selector( revealToggle: )];
+        [self.navigationController.navigationBar addGestureRecognizer:revealViewController.panGestureRecognizer];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

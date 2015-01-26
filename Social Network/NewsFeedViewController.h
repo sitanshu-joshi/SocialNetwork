@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-@interface NewsFeedViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>{
-    
-}
+#import "SWRevealViewController.h"
+
+@interface NewsFeedViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITableView *newsTableView;
 
 @end

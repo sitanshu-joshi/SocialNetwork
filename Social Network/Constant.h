@@ -54,7 +54,7 @@
  */
 #define kLogin_User_Email       @"Login_Email"
 #define kLogin_User_Password    @"Login_Password"
-
+#define kIs_User_Logged_In      @"isUserLoggedIn"
 /*
  Auth Login/SignUp
  */
@@ -96,7 +96,8 @@
 /*
  NS Defauts
  */
-#define kNotification_FB   @"notification_fb"
-
+#define kNotification_FB                      @"notification_fb"
+#define kNotification_LoginSuccess            @"notification_LoginSuccess"
+#define kNotification_QueAnsSuccess           @"notification_QueAnsSuccess"
 
 #endif

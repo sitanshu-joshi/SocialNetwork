@@ -26,9 +26,8 @@ static AppDelegate *appDelegate;
 {
     // Override point for customization after application launch.
     isFBSessionOpen = false;
-    navController = (UINavigationController *)self.window.rootViewController;
+    //navController = (UINavigationController *)self.window.rootViewController;
     [self setupRestKitForInitializeUserMapping];
-    
     return YES;
 }
 							
@@ -52,18 +51,20 @@ static AppDelegate *appDelegate;
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    [FBAppEvents activateApp];
-    [FBAppCall handleDidBecomeActive];
+        [FBAppEvents activateApp];
+        [FBAppCall handleDidBecomeActive];
 
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:
-    [[FBSession activeSession]accessTokenData];
-    [FBSession.activeSession close];
+        [[FBSession activeSession]accessTokenData];
+        [FBSession.activeSession close];
 
 }
+
+
 
 // This method will handle ALL the session state changes in the app
 - (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error{
@@ -73,25 +74,6 @@ static AppDelegate *appDelegate;
         [[FBRequest requestForMe] startWithCompletionHandler:^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
             if (!error) {
                 
-                NSLog(@"User Data:%@", user);
-                userDefaults = [NSUserDefaults standardUserDefaults];
-                [userDefaults setObject:user.name forKey:kUSER_NAME];
-                [userDefaults setObject:user.first_name forKey:kUSER_FIRST_NAME];
-                [userDefaults setObject:user.last_name forKey:kUSER_LAST_NAME];
-                [userDefaults setObject:user.birthday forKey:kUSER_BDAY];
-                [userDefaults synchronize];
-                
-                NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-                [dict setValue:user.username forKey:kUSER_NAME];
-                [dict setValue:user.first_name forKey:kUSER_FIRST_NAME];
-                [dict setValue:user.last_name forKey:kUSER_LAST_NAME];
-                [dict setValue:[user objectForKey:@"email"] forKey:kUSER_EMAIL];
-                [dict setValue:session.accessTokenData.accessToken forKey:kUSER_AUTH_TOKEN];
-                [dict setValue:kAuth_FB forKey:kUSER_TYPE];
-                [dict setValue:[[NSTimeZone localTimeZone] name] forKey:kUSER_TIMEZONE];
-                [dict setValue:user.birthday forKey:kUSER_BDAY];
-                
-                //[[NSNotificationCenter defaultCenter] postNotificationName:kNotification_FB object:dict];
             }
         }];
         return;
@@ -115,12 +97,12 @@ static AppDelegate *appDelegate;
             // If the user cancelled login, do nothing
             if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled){
                 NSLog(@"User cancelled login");
-                UIViewController *viewController = (UIViewController *)[navController visibleViewController];
-                if([viewController isKindOfClass:[HomeViewController class]]){
-                    HomeViewController *homeViewController = (HomeViewController *)viewController;
-                    [homeViewController.activityIndicator stopAnimating];
-                    homeViewController.view.userInteractionEnabled = YES;
-                }
+//                UIViewController *viewController = (UIViewController *)[navController visibleViewController];
+//                if([viewController isKindOfClass:[HomeViewController class]]){
+//                    HomeViewController *homeViewController = (HomeViewController *)viewController;
+//                    [homeViewController.activityIndicator stopAnimating];
+//                    homeViewController.view.userInteractionEnabled = YES;
+//                }
             }
             else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession){
                 alertTitle = @"Session Error";

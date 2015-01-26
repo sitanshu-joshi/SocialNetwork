@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     contentInsets = self.scrollView.contentInset;
+    
     [self setUpUserInterface];
 }
 
@@ -43,20 +44,22 @@
     self.txtViewForQuestion2.layer.masksToBounds = YES;
     
     self.btnSubmit.layer.cornerRadius = 5.0;
-    self.btnSubmit.layer.masksToBounds = YES;
+    self.btnSkip.layer.cornerRadius = 5.0;
+    
 }
 
+#pragma mark - IBAction Methods
+
 - (IBAction)btnSkipTapped:(id)sender {
-    [self pushToNewsFeedViewController];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_QueAnsSuccess object:nil];
 }
 
 - (IBAction)btnSubmitTapped:(id)sender {
-    [self pushToNewsFeedViewController];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_QueAnsSuccess object:nil];
 }
 
--(void)pushToNewsFeedViewController{
-    [self performSegueWithIdentifier:kPush_To_NewsFeed sender:nil];
-}
 
 #pragma mark - UITextField Delegate Methods
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {

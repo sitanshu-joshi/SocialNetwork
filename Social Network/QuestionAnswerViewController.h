@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForAnswer2;
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIButton *btnSkip;
 
 - (IBAction)btnSkipTapped:(id)sender;
 - (IBAction)btnSubmitTapped:(id)sender;

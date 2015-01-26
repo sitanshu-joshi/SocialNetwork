@@ -7,13 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SWRevealViewController.h"
 
 @interface HomeViewController : UIViewController<FBLoginViewDelegate>{
     
 }
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-//Action Methods
--(IBAction)btnLoginTapped:(id)sender;
--(void)pushToFlightViewController;
 @end
