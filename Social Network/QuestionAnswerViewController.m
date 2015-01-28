@@ -52,12 +52,12 @@
 
 - (IBAction)btnSkipTapped:(id)sender {
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_QueAnsSuccess object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kPush_To_SlideBar1 object:nil];
 }
 
 - (IBAction)btnSubmitTapped:(id)sender {
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_QueAnsSuccess object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kPush_To_SlideBar1 object:nil];
 }
 
 

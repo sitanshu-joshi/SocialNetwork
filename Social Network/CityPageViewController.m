@@ -9,27 +9,24 @@
 #import "CityPageViewController.h"
 
 @interface CityPageViewController ()
-@property (nonatomic) IBOutlet UIBarButtonItem* revealButtonItem;
+
 @end
 
 @implementation CityPageViewController
 
+@synthesize btnMainMenu;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self customSetup];
+    [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+    self.revealViewController.delegate = self;
+    
+    NSLog(@"hi come");
+    
 }
-
-- (void)customSetup
-{
-    SWRevealViewController *revealViewController = self.revealViewController;
-    if ( revealViewController )
-    {
-        [self.revealButtonItem setTarget: revealViewController];
-        [self.revealButtonItem setAction: @selector( revealToggle: )];
-        [self.navigationController.navigationBar addGestureRecognizer:revealViewController.panGestureRecognizer];
-    }
+-(void)mainMenuBtnClicked {
+    [self.revealViewController revealToggle:btnMainMenu];
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

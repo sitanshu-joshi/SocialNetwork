@@ -30,6 +30,11 @@
     #import "RSActivityIndicator.h"
     #import <RestKit/RestKit/RestKit.h>
 
+    // Slide View
+    #import "CustomSlideViewController.h"
+    #import "MenuOptionsViewController.h"
     // Data Objects
     #import "DataForResponse.h"
+    #import "User.h"
+    #import "Post.h"
 #endif

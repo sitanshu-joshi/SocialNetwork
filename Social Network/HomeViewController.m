@@ -54,7 +54,7 @@
                             user:(id<FBGraphUser>)user{
     if([FBSession activeSession].isOpen){
         
-        loginView.hidden = YES;
+//        loginView.hidden = YES;
         //set AppUserInfo
     
         [[AppUserInfo sharedAppUserInfo] setUserName:user.name];
@@ -80,13 +80,32 @@
         [dict setValue:[[NSTimeZone localTimeZone] name] forKey:kUSER_TIMEZONE];
         [dict setValue:user.birthday forKey:kUSER_BDAY];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_LoginSuccess object:nil userInfo:dict];
+        [self makeLoginUsingAuthCredential:dict];
     }
 }
 
 - (void)loginView:(FBLoginView *)loginView
       handleError:(NSError *)error{
         NSLog(@"%@",error.description);
+}
+
+-(void)makeLoginUsingAuthCredential:(NSMutableDictionary *)dict {
+    
+    [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kResource_SignUp_Auth parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        
+        [RSActivityIndicator hideIndicator];
+        
+        [self performSegueWithIdentifier:kPush_To_SlideBar sender:nil];
+    
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *data  = [mappingResult.array objectAtIndex:0];
+        User *user  = [[data.user allObjects] firstObject];
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
 }
 
 @end

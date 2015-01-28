@@ -12,7 +12,8 @@
 
 typedef enum {
     LOGIN,
-    INFO_CARDS
+    INFO_CARDS,
+    POST
 } OPPCodeType;
 
 

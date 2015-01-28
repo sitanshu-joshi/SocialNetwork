@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14B25" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="DataForResponse" representedClassName="DataForResponse" syncable="YES">
+        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Post" inverseName="data" inverseEntity="Post" syncable="YES"/>
         <relationship name="user" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="data" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="Post" representedClassName="Post" syncable="YES">
+        <attribute name="commentCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="createdDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="ids" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isMyLike" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updatedDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="data" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataForResponse" inverseName="post" inverseEntity="DataForResponse" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="birthDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -25,7 +36,8 @@
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataForResponse" inverseName="user" inverseEntity="DataForResponse" syncable="YES"/>
     </entity>
     <elements>
-        <element name="DataForResponse" positionX="-63" positionY="-18" width="128" height="58"/>
+        <element name="DataForResponse" positionX="-63" positionY="-18" width="128" height="73"/>
         <element name="User" positionX="-54" positionY="-9" width="128" height="328"/>
+        <element name="Post" positionX="-63" positionY="135" width="128" height="163"/>
     </elements>
 </model>

@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
-#import "SWRevealViewController.h"
 #import "HomeViewController.h"
 #import "User.h"
 

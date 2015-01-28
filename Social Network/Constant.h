@@ -18,10 +18,13 @@
  Segue Identifier
  */
 
-#define kPush_To_Interest           @"pushToInterest"
+#define kPush_To_Question           @"pushToQuestion"
 #define kPush_To_NewsFeed           @"pushToNewsFeed"
 #define kPush_To_City               @"pushToCity"
 #define kPush_To_Comment            @"pushToComment"
+#define kPush_To_SlideBar           @"pushToSlideBar"
+#define kPush_To_SlideBar1          @"pushToSlideBar1"
+
 
 /*
  Resource Path

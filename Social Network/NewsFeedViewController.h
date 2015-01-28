@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SWRevealViewController.h"
 
-@interface NewsFeedViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface NewsFeedViewController : UIViewController<UITableViewDelegate,UITableViewDataSource, CustomSlideViewControllerDelegate> {
+    
+}
+
 @property (weak, nonatomic) IBOutlet UITableView *newsTableView;
+
+@property (weak, nonatomic) IBOutlet UIButton *btnMainMenu;
 
 @end
