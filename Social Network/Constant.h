@@ -35,7 +35,7 @@
 #define kLogout                     @"logout"
 #define kAddCity                    @"city"                                     //POST
 #define kWallPostOnUserCity         @"city/post/{cityId}"                       //POST
-#define kGetPost                    @"city/post?page=%@"                        //GET
+#define kGetPost                    @"city/post?page=%d"                        //GET
 #define kUpdateWallPost             @"usercity/wall/post/{postId}"              //PUT
 #define kDeleteWallPost             @"city/post/{postId}"                       //DELETE
 #define kLikePost                   @"city/post/{postId}/like"                  //POST
@@ -44,7 +44,7 @@
 #define kAddComment                 @"city/post/{postId}/comment"               //POST
 #define kUpdateComment              @"city/post/{postId}/comment/{commentId}"   //PUT
 #define kDeleteComment              @"city/post/{postId}/comment/{commentId}"   //DELETE
-#define kGetCommentsByPostId        @"city/post/{postId}/comment"               //GET
+#define kGetCommentsByPostId        @"city/post/%d/comment"                     //GET
 
 
 /*

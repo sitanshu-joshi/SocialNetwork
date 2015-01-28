@@ -39,6 +39,9 @@
  *  RKObjectManager - Mapping Object Declaration
  */
 @property (nonatomic, strong) RKObjectManager *rkomForLogin;
+@property (nonatomic, strong) RKObjectManager *rkomForPost;
+@property (nonatomic, strong) RKObjectManager *rkomForComment;
+
 
 // Local instance
 @property (nonatomic, strong) User *loggedUser;

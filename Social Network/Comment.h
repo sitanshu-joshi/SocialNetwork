@@ -1,5 +1,5 @@
 //
-//  Post.h
+//  Comment.h
 //  Social Network
 //
 //  Created by Sagar Gondaliya on 1/28/15.
@@ -11,17 +11,17 @@
 
 @class DataForResponse;
 
-@interface Post : NSManagedObject
+@interface Comment : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * commentCount;
-@property (nonatomic, retain) NSDate * createdDate;
 @property (nonatomic, retain) NSString * ids;
-@property (nonatomic, retain) NSNumber * isMyLike;
-@property (nonatomic, retain) NSNumber * likeCount;
+@property (nonatomic, retain) NSString * userId;
+@property (nonatomic, retain) NSString * postId;
 @property (nonatomic, retain) NSString * text;
+@property (nonatomic, retain) NSDate * createdDate;
 @property (nonatomic, retain) NSDate * updatedDate;
 @property (nonatomic, retain) DataForResponse *data;
 
-+(RKEntityMapping *)objectMappingForPost:(OPPCodeType)OppCodeType;
+
++(RKEntityMapping *)objectMappingForComment:(OPPCodeType)OppCodeType;
 
 @end

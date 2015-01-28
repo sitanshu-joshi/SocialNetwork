@@ -20,8 +20,7 @@
     [super viewDidLoad];
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
-    
-    NSLog(@"hi come");
+    [self getPostDetails];
     
 }
 -(void)mainMenuBtnClicked {
@@ -58,4 +57,23 @@
 
 - (IBAction)btnAddTapped:(id)sender {
 }
+
+#pragma mark - To get Post Data
+-(void)getPostDetails{
+    NSString *strPath = [NSString stringWithFormat:@"%@ %d",kGetPost,1];
+    
+    [[AppDelegate appDelegate].rkomForPost postObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *data  = [mappingResult.array objectAtIndex:0];
+        User *user  = [[data.user allObjects] firstObject];
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
+
 @end

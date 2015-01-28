@@ -11,7 +11,7 @@ static AppDelegate *appDelegate;
 
 @implementation AppDelegate
 @synthesize nsManegedObjectContext,managedObjectModel,persistentStoreCoordinator;
-@synthesize rkMOS,rkObjectManager,rkomForLogin;
+@synthesize rkMOS,rkObjectManager,rkomForLogin,rkomForComment,rkomForPost;
 @synthesize loggedUser;
 
 +(AppDelegate *)appDelegate{
@@ -306,8 +306,30 @@ static AppDelegate *appDelegate;
     [rkomForLogin setManagedObjectStore:rkMOS];
     [rkomForLogin addRequestDescriptor:[RKRequestDescriptor requestDescriptorWithMapping:[[DataForResponse objectMappingForDataResponse:LOGIN] inverseMapping] objectClass:[DataForResponse class] rootKeyPath:@"data" method:RKRequestMethodPOST]];
     
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:LOGIN] method:RKRequestMethodPOST pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-    [rkomForLogin addResponseDescriptor:responseDescriptor];
+    RKResponseDescriptor *responseDescriptorForLogin = [RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:LOGIN] method:RKRequestMethodPOST pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    [rkomForLogin addResponseDescriptor:responseDescriptorForLogin];
+    
+    /*
+     Post Mapping
+     */
+    rkomForPost = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kBase_URL]];
+    [rkomForPost setManagedObjectStore:rkMOS];
+    [rkomForPost addRequestDescriptor:[RKRequestDescriptor requestDescriptorWithMapping:[[DataForResponse objectMappingForDataResponse:POST] inverseMapping] objectClass:[DataForResponse class] rootKeyPath:@"data" method:RKRequestMethodGET]];
+    
+    RKResponseDescriptor *responseDescriptorForPost = [RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:POST] method:RKRequestMethodGET pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    [rkomForPost addResponseDescriptor:responseDescriptorForPost];
+    
+    /*
+     Comment Mapping
+     */
+    rkomForComment = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kBase_URL]];
+    [rkomForComment setManagedObjectStore:rkMOS];
+    [rkomForComment addRequestDescriptor:[RKRequestDescriptor requestDescriptorWithMapping:[[DataForResponse objectMappingForDataResponse:COMMENT] inverseMapping] objectClass:[DataForResponse class] rootKeyPath:@"data" method:RKRequestMethodGET]];
+    
+    RKResponseDescriptor *responseDescriptorForComment = [RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:COMMENT] method:RKRequestMethodGET pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    [rkomForComment addResponseDescriptor:responseDescriptorForComment];
+    
+    
     
 }
 

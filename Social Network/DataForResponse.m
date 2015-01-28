@@ -2,18 +2,22 @@
 //  DataForResponse.m
 //  Social Network
 //
-//  Created by Sitanshu Joshi on 1/28/15.
+//  Created by Sagar Gondaliya on 1/28/15.
 //  Copyright (c) 2015 Sitanshu Joshi. All rights reserved.
 //
 
 #import "DataForResponse.h"
+#import "Comment.h"
+#import "Post.h"
 #import "User.h"
 
 
 @implementation DataForResponse
 
-@dynamic user;
 @dynamic post;
+@dynamic user;
+@dynamic comment;
+
 
 +(RKEntityMapping *)objectMappingForDataResponse:(OPPCodeType)OppCodeType {
     
@@ -24,6 +28,8 @@
         [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"user" toKeyPath:@"user" withMapping:[User objectMappingForLogin:LOGIN]]];
     } else if(OppCodeType == POST) {
         [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"posts" toKeyPath:@"post" withMapping:[Post objectMappingForPost:POST]]];
+    } else if (OppCodeType == COMMENT) {
+        [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"comments" toKeyPath:@"comment" withMapping:[Comment objectMappingForComment:COMMENT]]];
     }
     
     return mapping;

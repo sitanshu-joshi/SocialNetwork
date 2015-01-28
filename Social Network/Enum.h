@@ -12,8 +12,10 @@
 
 typedef enum {
     LOGIN,
-    INFO_CARDS,
-    POST
+    ADD_CITY,
+    POST,
+    LIKE_COUNT,
+    COMMENT
 } OPPCodeType;
 
 
