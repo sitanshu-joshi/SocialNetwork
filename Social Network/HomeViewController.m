@@ -37,7 +37,7 @@
 -(void)setFBLoginView{
     FBLoginView *loginView = [[FBLoginView alloc] init];
     loginView.frame = CGRectOffset(loginView.frame, (self.view.center.x - (loginView.frame.size.width / 2)),self.view.center.y);
-    loginView.readPermissions = @[@"public_profile", @"email", @"user_friends",@"user_birthday"];
+    loginView.readPermissions = @[@"public_profile", @"email", @"user_friends",@"user_birthday",@"user_location",@"user_hometown"];
     loginView.delegate = self;
     [self.view addSubview:loginView];
 }
@@ -53,10 +53,8 @@
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
                             user:(id<FBGraphUser>)user{
     if([FBSession activeSession].isOpen){
-        
-//        loginView.hidden = YES;
         //set AppUserInfo
-    
+        
         [[AppUserInfo sharedAppUserInfo] setUserName:user.name];
         [[AppUserInfo sharedAppUserInfo] setFirstName:user.first_name];
         [[AppUserInfo sharedAppUserInfo] setLastName:user.last_name];
@@ -90,11 +88,9 @@
 }
 
 -(void)makeLoginUsingAuthCredential:(NSMutableDictionary *)dict {
-    
+    [RSActivityIndicator showIndicatorWithTitle:@"Please wait"];
     [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kResource_SignUp_Auth parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
         [RSActivityIndicator hideIndicator];
-        
         [self performSegueWithIdentifier:kPush_To_SlideBar sender:nil];
     
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -103,7 +99,12 @@
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        //NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSLog(@"%@",error.localizedDescription);
+        [RSActivityIndicator hideIndicator];
+        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+        [alert show];
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }

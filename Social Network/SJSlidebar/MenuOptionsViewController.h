@@ -12,6 +12,14 @@
     
 }
 
+@property (weak, nonatomic) IBOutlet UIImageView *imgViewForProfile;
+@property (weak, nonatomic) IBOutlet UILabel *lblName;
+@property (weak, nonatomic) IBOutlet UIView *viewForCityButton;
+@property (weak, nonatomic) IBOutlet UIView *viewForNewsButton;
+@property (weak, nonatomic) IBOutlet UIView *viewForProfileButton;
+@property (weak, nonatomic) IBOutlet UIView *viewForLogoutButton;
+
+- (IBAction)logoutBtnPressed:(id)sender;
 
 
 @end

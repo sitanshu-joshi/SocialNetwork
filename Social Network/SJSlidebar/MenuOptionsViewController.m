@@ -26,6 +26,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.lblName.layer.cornerRadius = 5.0;
+    self.imgViewForProfile.layer.cornerRadius = (self.imgViewForProfile.frame.size.width/2);
+    self.viewForCityButton.layer.cornerRadius = (self.viewForCityButton.frame.size.width/2);
+    self.viewForLogoutButton.layer.cornerRadius = (self.viewForLogoutButton.frame.size.width/2);
+    self.viewForNewsButton.layer.cornerRadius = (self.viewForNewsButton.frame.size.width/2);
+    self.viewForProfileButton.layer.cornerRadius = (self.viewForProfileButton.frame.size.width/2);
 }
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
@@ -54,4 +60,6 @@
 }
 
 
+- (IBAction)logoutBtnPressed:(id)sender {
+}
 @end

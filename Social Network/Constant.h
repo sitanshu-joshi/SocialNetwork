@@ -11,8 +11,11 @@
 
 #define KEYBOARD_HEIGHT 260
 
+#define kAppTitle               @"Troyage"
 #define kBase_URL               @"http://54.148.97.236:8080/Troyage/ws/"
 #define kDB_Store               @"troyage.sqlite"
+
+#define kFBProfilePicURL        @"http://graph.facebook.com/%@/picture?type=large"
 
 /*
  Segue Identifier
@@ -102,5 +105,11 @@
 #define kNotification_FB                      @"notification_fb"
 #define kNotification_LoginSuccess            @"notification_LoginSuccess"
 #define kNotification_QueAnsSuccess           @"notification_QueAnsSuccess"
+
+/*
+ UIAlertView Button Title
+ */
+#define kOkButton       @"Ok"
+#define kCancelButton   @"Cancel"
 
 #endif

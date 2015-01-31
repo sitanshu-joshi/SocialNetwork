@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "HomeViewController.h"
+
 static AppDelegate *appDelegate;
 
 @implementation AppDelegate
@@ -61,7 +63,6 @@ static AppDelegate *appDelegate;
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:
         [[FBSession activeSession]accessTokenData];
         [FBSession.activeSession close];
-
 }
 
 
@@ -97,12 +98,6 @@ static AppDelegate *appDelegate;
             // If the user cancelled login, do nothing
             if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled){
                 NSLog(@"User cancelled login");
-//                UIViewController *viewController = (UIViewController *)[navController visibleViewController];
-//                if([viewController isKindOfClass:[HomeViewController class]]){
-//                    HomeViewController *homeViewController = (HomeViewController *)viewController;
-//                    [homeViewController.activityIndicator stopAnimating];
-//                    homeViewController.view.userInteractionEnabled = YES;
-//                }
             }
             else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession){
                 alertTitle = @"Session Error";
