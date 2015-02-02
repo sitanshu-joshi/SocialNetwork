@@ -33,7 +33,6 @@ static AppDelegate *appDelegate;
     self.window.opaque = NO;
     [self setupRestKitForInitializeUserMapping];
     
-    [self getPlaceTest];
     return YES;
 }
 							
@@ -338,19 +337,7 @@ static AppDelegate *appDelegate;
     [rkomForPlaces addResponseDescriptor:responseDescriptorForPlace];
 }
 
--(void)getPlaceTest {
-    NSString *str = [NSString stringWithFormat:kResource_Place,@"rajkot",kPlace_API_Key];
-    [[AppDelegate appDelegate].rkomForPlaces getObject:nil path:str parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        DataFromGoogle *dataFromG = [mappingResult firstObject];
-        NSLog(@"%@",dataFromG.status);
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        // Transport error or server error handled by errorDescriptor
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSLog(@"%@",error.localizedDescription);
-    }];
-}
+
 
 
 @end

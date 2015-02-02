@@ -87,7 +87,7 @@
     [RSActivityIndicator showIndicatorWithTitle:@"Please wait"];
     [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kResource_SignUp_Auth parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
-        [self performSegueWithIdentifier:kPush_To_SlideBar sender:nil];
+        [self performSegueWithIdentifier:kPush_To_Question sender:nil];
     
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *data  = [mappingResult.array objectAtIndex:0];
