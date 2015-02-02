@@ -37,4 +37,7 @@
     #import "DataForResponse.h"
     #import "User.h"
     #import "Post.h"
+    #import "Result.h"
+    #import "DataFromGoogle.h"
+
 #endif

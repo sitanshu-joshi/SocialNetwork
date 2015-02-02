@@ -52,6 +52,8 @@
 		F4BDDFA31983A50500C52E97 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF851983A50500C52E97 /* UIKit.framework */; };
 		F4BDDFAB1983A50500C52E97 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F4BDDFA91983A50500C52E97 /* InfoPlist.strings */; };
 		F4BDDFAD1983A50500C52E97 /* Social_NetworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BDDFAC1983A50500C52E97 /* Social_NetworkTests.m */; };
+		F4DE16031A7F90E700BA3C57 /* DataFromGoogle.m in Sources */ = {isa = PBXBuildFile; fileRef = F4DE16021A7F90E700BA3C57 /* DataFromGoogle.m */; };
+		F4DE16061A7F90E800BA3C57 /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = F4DE16051A7F90E800BA3C57 /* Result.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +136,10 @@
 		F4BDDFAA1983A50500C52E97 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F4BDDFAC1983A50500C52E97 /* Social_NetworkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Social_NetworkTests.m; sourceTree = "<group>"; };
 		F4BDDFB91983A9B100C52E97 /* Constant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
+		F4DE16011A7F90E700BA3C57 /* DataFromGoogle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataFromGoogle.h; sourceTree = "<group>"; };
+		F4DE16021A7F90E700BA3C57 /* DataFromGoogle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataFromGoogle.m; sourceTree = "<group>"; };
+		F4DE16041A7F90E800BA3C57 /* Result.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Result.h; sourceTree = "<group>"; };
+		F4DE16051A7F90E800BA3C57 /* Result.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Result.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +253,10 @@
 		F4224F6D1A594306003A353E /* MappingObjects */ = {
 			isa = PBXGroup;
 			children = (
+				F4DE16041A7F90E800BA3C57 /* Result.h */,
+				F4DE16051A7F90E800BA3C57 /* Result.m */,
+				F4DE16011A7F90E700BA3C57 /* DataFromGoogle.h */,
+				F4DE16021A7F90E700BA3C57 /* DataFromGoogle.m */,
 				A43EDAD01A79157700A1A75B /* DataForResponse.h */,
 				A43EDAD11A79157700A1A75B /* DataForResponse.m */,
 				A43EDACD1A79157600A1A75B /* Comment.h */,
@@ -522,6 +532,7 @@
 				56BFACF81A76A0A500CADEDF /* UIView+Additions.m in Sources */,
 				F4224F701A594332003A353E /* User.m in Sources */,
 				F4BDDF921983A50500C52E97 /* AppDelegate.m in Sources */,
+				F4DE16061A7F90E800BA3C57 /* Result.m in Sources */,
 				F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */,
 				A43EDAD21A79157700A1A75B /* DataForResponse.m in Sources */,
 				56FCEF611A74340A006B7374 /* NewsFeedViewController.m in Sources */,
@@ -533,6 +544,7 @@
 				5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */,
 				A43EDACC1A79157600A1A75B /* Post.m in Sources */,
 				56FCEF641A7434F6006B7374 /* PostDetailViewController.m in Sources */,
+				F4DE16031A7F90E700BA3C57 /* DataFromGoogle.m in Sources */,
 				56BFACF61A76A0A500CADEDF /* RSActivityIndicator.m in Sources */,
 				F4A173631A78BF5000E44730 /* CustomSlideViewController.m in Sources */,
 				568ADAD91A4B1E6200DB8C49 /* CityPageViewController.m in Sources */,

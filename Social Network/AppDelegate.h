@@ -42,6 +42,8 @@
 @property (nonatomic, strong) RKObjectManager *rkomForPost;
 @property (nonatomic, strong) RKObjectManager *rkomForComment;
 
+@property (nonatomic, strong) RKObjectManager *rkomForPlaces;
+
 
 // Local instance
 @property (nonatomic, strong) User *loggedUser;

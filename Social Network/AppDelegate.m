@@ -13,7 +13,7 @@ static AppDelegate *appDelegate;
 
 @implementation AppDelegate
 @synthesize nsManegedObjectContext,managedObjectModel,persistentStoreCoordinator;
-@synthesize rkMOS,rkObjectManager,rkomForLogin,rkomForComment,rkomForPost;
+@synthesize rkMOS,rkObjectManager,rkomForLogin,rkomForComment,rkomForPost,rkomForPlaces;
 @synthesize loggedUser;
 
 +(AppDelegate *)appDelegate{
@@ -29,7 +29,11 @@ static AppDelegate *appDelegate;
     // Override point for customization after application launch.
     isFBSessionOpen = false;
     //navController = (UINavigationController *)self.window.rootViewController;
+    self.window.backgroundColor = [UIColor clearColor];
+    self.window.opaque = NO;
     [self setupRestKitForInitializeUserMapping];
+    
+    [self getPlaceTest];
     return YES;
 }
 							
@@ -324,8 +328,28 @@ static AppDelegate *appDelegate;
     RKResponseDescriptor *responseDescriptorForComment = [RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:COMMENT] method:RKRequestMethodGET pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     [rkomForComment addResponseDescriptor:responseDescriptorForComment];
     
-    
-    
+    /*
+     Places Mapping
+     */
+    rkomForPlaces = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kBase_Place_URL]];
+    [rkomForPlaces setManagedObjectStore:rkMOS];
+    [rkomForPlaces addRequestDescriptor:[RKRequestDescriptor requestDescriptorWithMapping:[[DataFromGoogle objectMappingForDataFromGoogle:PLACES] inverseMapping] objectClass:[DataFromGoogle class] rootKeyPath:@"" method:RKRequestMethodGET]];
+    RKResponseDescriptor *responseDescriptorForPlace = [RKResponseDescriptor responseDescriptorWithMapping:[DataFromGoogle objectMappingForDataFromGoogle:PLACES] method:RKRequestMethodGET pathPattern:nil keyPath:@"" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    [rkomForPlaces addResponseDescriptor:responseDescriptorForPlace];
+}
+
+-(void)getPlaceTest {
+    NSString *str = [NSString stringWithFormat:kResource_Place,@"rajkot",kPlace_API_Key];
+    [[AppDelegate appDelegate].rkomForPlaces getObject:nil path:str parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataFromGoogle *dataFromG = [mappingResult firstObject];
+        NSLog(@"%@",dataFromG.status);
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSLog(@"%@",error.localizedDescription);
+    }];
 }
 
 
