@@ -88,6 +88,8 @@
 #define kSTATE              @"STATE"
 #define kCOUNTRY            @"COUNTRY"
 #define kDESCRIPTION        @"DESCRIPTION"
+#define kIS_VISITED         @"IS_VISITED"
+#define kWANTS_TO_VISIT     @"WANTS_TO_VISIT"
 
 /*
  Get Post

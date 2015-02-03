@@ -35,6 +35,7 @@
 		A43EDACC1A79157600A1A75B /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = A43EDACB1A79157600A1A75B /* Post.m */; };
 		A43EDACF1A79157600A1A75B /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = A43EDACE1A79157600A1A75B /* Comment.m */; };
 		A43EDAD21A79157700A1A75B /* DataForResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A43EDAD11A79157700A1A75B /* DataForResponse.m */; };
+		D86DDADE1A81583000E7FA24 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86DDADD1A81583000E7FA24 /* ProfileViewController.m */; };
 		F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F4224F6A1A594061003A353E /* troyage.xcdatamodeld */; };
 		F4224F701A594332003A353E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = F4224F6F1A594332003A353E /* User.m */; };
 		F4A173631A78BF5000E44730 /* CustomSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A173601A78BF5000E44730 /* CustomSlideViewController.m */; };
@@ -110,6 +111,8 @@
 		A43EDAD01A79157700A1A75B /* DataForResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataForResponse.h; sourceTree = "<group>"; };
 		A43EDAD11A79157700A1A75B /* DataForResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataForResponse.m; sourceTree = "<group>"; };
 		D56C01C0EE12F015CC28D226 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D86DDADC1A81583000E7FA24 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		D86DDADD1A81583000E7FA24 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		F4224F691A59401A003A353E /* Enum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enum.h; sourceTree = "<group>"; };
 		F4224F6B1A594061003A353E /* troyage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = troyage.xcdatamodel; sourceTree = "<group>"; };
 		F4224F6E1A594332003A353E /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -250,6 +253,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		D86DDADB1A81581E00E7FA24 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				D86DDADC1A81583000E7FA24 /* ProfileViewController.h */,
+				D86DDADD1A81583000E7FA24 /* ProfileViewController.m */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		F4224F6D1A594306003A353E /* MappingObjects */ = {
 			isa = PBXGroup;
 			children = (
@@ -368,6 +380,7 @@
 		F4BDDFB61983A71000C52E97 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				D86DDADB1A81581E00E7FA24 /* Profile */,
 				56BFACDE1A7633F600CADEDF /* Login */,
 				56BFACDF1A76340100CADEDF /* News */,
 				56BFACE01A76340B00CADEDF /* City */,
@@ -537,6 +550,7 @@
 				A43EDAD21A79157700A1A75B /* DataForResponse.m in Sources */,
 				56FCEF611A74340A006B7374 /* NewsFeedViewController.m in Sources */,
 				56BFACEA1A7670F000CADEDF /* AppUserInfo.m in Sources */,
+				D86DDADE1A81583000E7FA24 /* ProfileViewController.m in Sources */,
 				F4A173641A78BF5000E44730 /* MenuOptionsViewController.m in Sources */,
 				A43EDACF1A79157600A1A75B /* Comment.m in Sources */,
 				568ADAD61A4A68B400DB8C49 /* QuestionAnswerViewController.m in Sources */,

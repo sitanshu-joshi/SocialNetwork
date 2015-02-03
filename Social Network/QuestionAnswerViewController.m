@@ -35,6 +35,9 @@
     self.txtViewForQuestion1.layer.cornerRadius = 7.0;
     self.txtViewForQuestion1.layer.masksToBounds = YES;
     
+    self.txtViewForAnswer.layer.cornerRadius = 7.0;
+    self.txtViewForAnswer.layer.masksToBounds = YES;
+    
     self.tblViewForResult.layer.cornerRadius = 7.0;
     self.tblViewForResult.layer.masksToBounds  =YES;
     self.btnSubmit.layer.cornerRadius = 5.0;
@@ -44,14 +47,36 @@
 #pragma mark - IBAction Methods
 
 - (IBAction)btnSkipTapped:(id)sender {
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kPush_To_SlideBar1 object:nil];
+    [self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
 }
 
 - (IBAction)btnSubmitTapped:(id)sender {
+    NSString *strResult;
+    if(![self.txtViewForAnswer.text isEqualToString:@""]){
+        strResult = [NSString stringWithFormat:@"%@",self.txtViewForAnswer.text];
+        NSArray *arrOfAddress = [strResult componentsSeparatedByString:@","];
+        NSString *strCity, *strCountry, *strState;
+        strCountry = [NSString stringWithFormat:@"%@",[arrOfAddress lastObject]];
+        strState = [NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-2]];
+        if (arrOfAddress.count >= 3) {
+            strCity = [NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-3]];
+        }else{
+            strCountry = @"";
+        }
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        [dict setValue:strCity forKey:kCITY_NAME];
+        [dict setValue:strState forKey:kSTATE];
+        [dict setValue:strCountry forKey:kCOUNTRY];
+        [dict setValue:@"Description" forKey:kDESCRIPTION];
+        [dict setObject:@"true" forKey:kIS_VISITED];
+        [dict setObject:@"false" forKey:kWANTS_TO_VISIT];
+        [self submitAnswer:dict];
+    }else{
+        [[[UIAlertView alloc]initWithTitle:kAppTitle message:@"Please enter answer" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
+    }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kPush_To_SlideBar1 object:nil];
 }
+
 #pragma mark - Table View delegate methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -63,31 +88,19 @@
     
     Result *result = [resultArray objectAtIndex:indexPath.row];
     cell.textLabel.text = result.formatted_address;
-    
-//    cell.textLabel.text = [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] valueForKey:@"formatted_address"]];
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    /* set dynamic height for cell */
-//    FAQModel *modelObject = [tableDataArray objectAtIndex:indexPath.row];
-//    
-//    CGSize constraint = CGSizeMake(FAQ_CELL_LABEL_WIDTH, FAQ_CELL_MAX_ROW_HEIGHT);
-//    
-//    CGSize size = [modelObject.faqTitle sizeWithFont:FAQ_QUESTION_TITLE_FONT constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-//    
-//    CGFloat height = MAX(size.height+FAQ_CELL_ROW_TOP_BOTTOM_PADDING, FAQ_CELL_SINGLE_LINE_ROW_HEIGHT);
-//    
-//    if(height > FAQ_CELL_MAX_ROW_HEIGHT) return FAQ_CELL_MAX_ROW_HEIGHT;
-    
-    return 40;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPat
+{
+     return 40;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     Result *result = [resultArray objectAtIndex:indexPath.row];
-    self.searchBar.text = result.formatted_address;
+    self.txtViewForAnswer.text = result.formatted_address;
 }
 
 
@@ -144,4 +157,25 @@
         NSLog(@"%@",error.localizedDescription);
     }];
 }
+
+
+-(void)submitAnswer:(NSMutableDictionary *)dict {
+    [RSActivityIndicator showIndicatorWithTitle:@"Please wait"];
+    [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kAddCity parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
+        [self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        //NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSLog(@"%@",error.localizedDescription);
+        [RSActivityIndicator hideIndicator];
+        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+        [alert show];
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
+
 @end
