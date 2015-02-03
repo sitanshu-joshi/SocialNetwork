@@ -54,22 +54,21 @@
 }
 #pragma mark - Table View delegate methods
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [resultArray count]; /* return size of result array */
-    
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"resultCell"];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row]valueForKey:@"formatted_address"]];
+    
+    Result *result = [resultArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = result.formatted_address;
+    
+//    cell.textLabel.text = [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row] valueForKey:@"formatted_address"]];
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     /* set dynamic height for cell */
 //    FAQModel *modelObject = [tableDataArray objectAtIndex:indexPath.row];
 //    
@@ -82,31 +81,28 @@
 //    if(height > FAQ_CELL_MAX_ROW_HEIGHT) return FAQ_CELL_MAX_ROW_HEIGHT;
     
     return 40;
-    
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    self.searchBar.text = [NSString stringWithFormat:@"%@",[[resultArray objectAtIndex:indexPath.row]valueForKey:@"formatted_address"]];
+    Result *result = [resultArray objectAtIndex:indexPath.row];
+    self.searchBar.text = result.formatted_address;
 }
 
 
 #pragma mark - UISearchBar Delegate Methods
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText;
-{
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    NSLog(@"============== %@",searchText);
     [self getPlaceTest:searchText];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchbar
-{
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchbar {
     [searchbar resignFirstResponder];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *) searchbar
-{
+- (void)searchBarCancelButtonClicked:(UISearchBar *) searchbar {
     [searchbar resignFirstResponder];
     [self getPlaceTest:searchbar.text];
     [self.tblViewForResult reloadData];
@@ -115,7 +111,6 @@
 
 #pragma mark - UITextField Delegate Methods
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-    
     if([text isEqualToString:@"\n"]) {
         [textView resignFirstResponder];
         return NO;
@@ -124,14 +119,11 @@
     return YES;
 }
 
--(void)textViewDidBeginEditing:(UITextView *)textView
-{
-    
+-(void)textViewDidBeginEditing:(UITextView *)textView {
     self.scrollView.contentOffset = CGPointMake(0, textView.frame.origin.y - textView.frame.size.height/2);
 }
 
--(void)textViewDidEndEditing:(UITextView *)textView
-{
+-(void)textViewDidEndEditing:(UITextView *)textView {
     contentInsets = UIEdgeInsetsZero;
     self.scrollView.contentOffset = CGPointZero;
 
@@ -143,11 +135,8 @@
     [[AppDelegate appDelegate].rkomForPlaces getObject:nil path:str parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataFromGoogle *dataFromGoogle = [mappingResult firstObject];
-        //NSLog(@"%@",dataFromG.results);
-        NSString *strResponse = operation.HTTPRequestOperation.responseString;
-        id dictionary = [NSJSONSerialization JSONObjectWithData:[strResponse dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:nil];
-        resultArray = [dictionary objectForKey:@"results"];
-        //resultArray = [NSMutableArray arrayWithArray:[dataFromGoogle.results allObjects]];
+        NSLog(@"%@",dataFromGoogle.results);
+        resultArray = [NSMutableArray arrayWithArray:[dataFromGoogle.results allObjects]];
         [self.tblViewForResult reloadData];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor

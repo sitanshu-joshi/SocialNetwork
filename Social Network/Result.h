@@ -13,6 +13,7 @@
 @interface Result : NSManagedObject
 
 @property (nonatomic, retain) NSString * ids;
+@property (nonatomic, retain) NSString * formatted_address;
 @property (nonatomic, retain) id geometry;
 @property (nonatomic, retain) NSString * icon;
 @property (nonatomic, retain) NSString * name;

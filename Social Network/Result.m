@@ -16,6 +16,7 @@
 @dynamic icon;
 @dynamic name;
 @dynamic place_id;
+@dynamic formatted_address;
 @dynamic reference;
 @dynamic types;
 
@@ -33,6 +34,7 @@
                                                       @"place_id" : @"place_id",
                                                       @"reference" : @"reference",
                                                       @"types" : @"types",
+                                                      @"formatted_address" : @"formatted_address",
                                                       }];
     }
     return mapping;
