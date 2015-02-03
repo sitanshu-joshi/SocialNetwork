@@ -19,6 +19,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+    self.revealViewController.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -27,7 +28,7 @@
 }
 
 -(void)mainMenuBtnClicked {
-    [self.revealViewController revealToggle:btnMainMenu];
+    [self.revealViewController revealToggle:self.btnMainMenu];
 }
 
 @end

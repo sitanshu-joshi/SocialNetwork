@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ProfileViewController : UIViewController{
+@interface ProfileViewController : UIViewController<CustomSlideViewControllerDelegate>{
     
 }
 
