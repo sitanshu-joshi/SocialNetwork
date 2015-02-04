@@ -40,7 +40,7 @@
 #define kPush_To_Comment            @"pushToComment"
 #define kPush_To_SlideBar           @"pushToSlideBar"
 #define kPush_To_SlideBar1          @"pushToSlideBar1"
-
+#define kPush_To_Setting            @"pushToSetting"
 
 /*
  Resource Path

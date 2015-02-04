@@ -85,4 +85,17 @@
     }];
 }
 
+- (IBAction)cityBtnTapped:(id)sender {
+    [UIView animateWithDuration:0.5 animations:^{
+        self.containerViewForCityInput.frame = CGRectMake(5, 72, self.containerViewForCityInput.frame.size.width, self.containerViewForCityInput.frame.size.height);
+    }];
+}
+
+- (IBAction)doneBtnTapped:(id)sender {
+    [UIView animateWithDuration:0.5 animations:^{
+        self.containerViewForCityInput.frame = CGRectMake(5, 1000, self.containerViewForCityInput.frame.size.width, self.containerViewForCityInput.frame.size.height);
+    }];
+    [self performSegueWithIdentifier:@"pushToNewsFromCity" sender:self];
+}
+
 @end

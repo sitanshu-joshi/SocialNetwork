@@ -13,6 +13,9 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tblView;
+@property (weak, nonatomic) IBOutlet UIButton *btnCity;
+- (IBAction)cityBtnTapped:(id)sender;
+- (IBAction)doneBtnTapped:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnMainMenu;
 @property (weak, nonatomic) IBOutlet UIView *containerViewForSharing;
@@ -20,5 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnShare;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForPost;
 @property (weak, nonatomic) IBOutlet UIButton *btnVideoSharing;
+@property (weak, nonatomic) IBOutlet UIView *containerViewForCityInput;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet UITableView *tableViewForCityResult;
 
 @end
