@@ -13,15 +13,18 @@
 @end
 
 @implementation CityPageViewController
-
-@synthesize btnMainMenu;
+@synthesize btnVideoSharing,btnPhotoSharing,btnShare,btnMainMenu;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
     [self getPostDetails];
-    
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self setUpUserInterface];
 }
 -(void)mainMenuBtnClicked {
     [self.revealViewController revealToggle:btnMainMenu];
@@ -31,6 +34,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)setUpUserInterface{
+    btnShare.layer.cornerRadius = 7.0;
+}
 #pragma mark - UITableView DataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 10;
@@ -38,7 +44,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *identifier = @"cell";
-    
+    [self.txtViewForPost resignFirstResponder];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if(cell == nil){
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -49,13 +55,16 @@
 #pragma mark - UITableView Delegate Methods
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self performSegueWithIdentifier:kPush_To_Comment sender:self];
-}
-#pragma mark - UITableView Delegate Methods
-- (IBAction)backButtonTapped:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.txtViewForPost resignFirstResponder];
 }
 
-- (IBAction)btnAddTapped:(id)sender {
+#pragma mark - UITextField Delegate Methods
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark - To get Post Data

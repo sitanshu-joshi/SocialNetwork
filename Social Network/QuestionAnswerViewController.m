@@ -18,14 +18,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setUpUserInterface];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
-    cityArray = [NSMutableArray array];
     [tableViewForResult setHidden:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    isVIsited = @"Yes";
+    wantsToVisit = @"No";
+    [self setUpUserInterface];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -36,7 +37,6 @@
     [tagListView.tags removeAllObjects];
     tagListView = nil;
     scrollViewMain = nil;
-    cityArray = nil;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -48,21 +48,31 @@
 
     self.txtViewForQuestion1.layer.cornerRadius = 7.0;
     self.txtViewForQuestion1.layer.masksToBounds = YES;
-    
+    self.txtViewForQuestion1.text = Question1;
     self.btnSubmit.layer.cornerRadius = 5.0;
-    self.btnSkip.layer.cornerRadius = 5.0;
+    self.btnNext.layer.cornerRadius = 5.0;
 }
 
 #pragma mark - IBAction Methods
 
 - (IBAction)btnSkipTapped:(id)sender {
-    [self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
-    [self hidekeyBoard];
-    [self scrollableOff];
+    [self pushToNewsContoller];
 }
 
-- (IBAction)btnSubmitTapped:(id)sender {
-
+- (IBAction)nextButtonTapped:(id)sender {
+    if([self.btnNext.titleLabel.text isEqualToString:@"Done"]){
+        [self pushToNewsContoller];
+    }else{
+        [self.btnNext setTitle:@"Done" forState:UIControlStateNormal];
+        self.txtViewForQuestion1.text = Question2;
+        isVIsited = @"No";
+        wantsToVisit = @"Yes";
+        [self hidekeyBoard];
+        self.searchBar.text = @"";
+        [tagListView.tags removeAllObjects];
+        tagListView = nil;
+        [tableViewForResult setHidden:YES];
+    }
 }
 
 #pragma mark - Table View delegate methods
@@ -83,44 +93,44 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     Result *result = [resultArray objectAtIndex:indexPath.row];
-    if(!cityArray){
-        cityArray = [NSMutableArray array];
-    }
-    [cityArray addObject:result.formatted_address];
     [self updateSelectedCityToServerWithAddress:result.formatted_address];
     [self addCityTagWithAddress:result.formatted_address];
 }
 -(void)updateSelectedCityToServerWithAddress:(NSString *)address{
-    
-    if(![address isEqualToString:@""]){
-        [RSActivityIndicator showIndicatorWithTitle:@"Please wait"];
-        NSArray *arrOfAddress = [address componentsSeparatedByString:@","];
-        NSString *strCity, *strCountry, *strState;
-        strCountry = [NSString stringWithFormat:@"%@",[arrOfAddress lastObject]];
-        strState = [NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-2]];
-        if (arrOfAddress.count >= 3) {
-            strCity = [NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-3]];
+    if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
+        if(![address isEqualToString:@""]){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please wait"];
+            NSArray *arrOfAddress = [address componentsSeparatedByString:@","];
+            NSString *strCity, *strCountry, *strState;
+            strCountry = [NSString stringWithFormat:@"%@",[arrOfAddress lastObject]];
+            strState = [NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-2]];
+            if (arrOfAddress.count >= 3) {
+                strCity = [NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-3]];
+            }else{
+                strCity = @"";
+            }
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+            [dict setValue:strCity forKey:kCITY_NAME];
+            [dict setValue:strState forKey:kSTATE];
+            [dict setValue:strCountry forKey:kCOUNTRY];
+            [dict setValue:address forKey:kDESCRIPTION];
+            [dict setObject:isVIsited forKey:kIS_VISITED];
+            [dict setObject:wantsToVisit forKey:kWANTS_TO_VISIT];
+            [self submitAnswer:dict];
         }else{
-            strCity = @"";
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:@"Please Select City" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
         }
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-        [dict setValue:strCity forKey:kCITY_NAME];
-        [dict setValue:strState forKey:kSTATE];
-        [dict setValue:strCountry forKey:kCOUNTRY];
-        [dict setValue:@"Description" forKey:kDESCRIPTION];
-        [dict setObject:@"true" forKey:kIS_VISITED];
-        [dict setObject:@"false" forKey:kWANTS_TO_VISIT];
-        [self submitAnswer:dict];
     }else{
-        [[[UIAlertView alloc]initWithTitle:kAppTitle message:@"Please Select City" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
+        [[[UIAlertView alloc] initWithTitle:kAppTitle message:kAlert_NoInternet delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil] show];
     }
+    
 }
 
 #pragma mark - UISearchBar Delegate Methods
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     NSLog(@"============== %@",searchText);
-    [self getPlaceTest:searchText];
+    [self getPlaceForAddress:searchText];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchbar {
@@ -129,7 +139,7 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchbar {
     [searchbar resignFirstResponder];
-    [self getPlaceTest:searchbar.text];
+    [self getPlaceForAddress:searchbar.text];
     self.searchBar.text = @"";
     [self hidekeyBoard];
 }
@@ -146,18 +156,28 @@
 }
 
 //To search place
--(void)getPlaceTest:(NSString *)searchString {
+-(void)getPlaceForAddress:(NSString *)searchString {
     NSString *str = [NSString stringWithFormat:kResource_Place,searchString,kPlace_API_Key];
     [[AppDelegate appDelegate].rkomForPlaces getObject:nil path:str parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataFromGoogle *dataFromGoogle = [mappingResult firstObject];
         NSLog(@"%@",dataFromGoogle.results);
         resultArray = [NSMutableArray arrayWithArray:[dataFromGoogle.results allObjects]];
+        if (resultArray.count >= 7) {
+            [tableViewForResult setFrame:CGRectMake(tableViewForResult.frame.origin.x, tableViewForResult.frame.origin.y, tableViewForResult.frame.size.width, self.view.frame.size.height-170)];
+            [tableViewForResult setHidden:NO];
+        } else {
+            [tableViewForResult setFrame:CGRectMake(tableViewForResult.frame.origin.x, tableViewForResult.frame.origin.y, tableViewForResult.frame.size.width, resultArray.count*40)];
+            [tableViewForResult setHidden:NO];
+        }
         [self.tableViewForResult reloadData];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         NSLog(@"%@",error.localizedDescription);
+        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+        [alert show];
     }];
 }
 
@@ -166,7 +186,7 @@
     [RSActivityIndicator showIndicatorWithTitle:@"Please wait"];
     [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kAddCity parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
-        [self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
+        //[self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
 
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -199,6 +219,13 @@
     [self scrollableOff];
 }
 
+
+//To push To News Controller
+-(void)pushToNewsContoller{
+    [self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
+    [self hidekeyBoard];
+    [self scrollableOff];
+}
 #pragma mark Autoresizing
 -(void)scrollableOn {
     if (self.view.frame.size.height == 568) {

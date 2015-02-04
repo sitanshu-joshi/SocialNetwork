@@ -23,6 +23,13 @@
 
 // Place API Key
 #define kPlace_API_Key          @"AIzaSyCBSMStqX_2Rd0aSUCqHleFr-8arl0GTUY"
+
+//Questions
+
+#define Question1       @"Which cities did you visit ?"
+#define Question2       @"Which cities will you want to visit ?"
+
+
 /*
  Segue Identifier
  */
@@ -119,6 +126,10 @@
  */
 #define kOkButton       @"Ok"
 #define kCancelButton   @"Cancel"
+
+//Alert
+#define kAlert_NoInternet                   @"Internet connection is not found, please check your connection setting."
+
 
 // City
 #define  tagColorForCity        [UIColor colorWithRed:96.0/255.0 green:92.0/255.0 blue:168.0/255.0 alpha:1.0]

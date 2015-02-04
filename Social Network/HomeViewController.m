@@ -73,8 +73,11 @@
         [dict setValue:kAuth_FB forKey:kUSER_TYPE];
         [dict setValue:[[NSTimeZone localTimeZone] name] forKey:kUSER_TIMEZONE];
         [dict setValue:user.birthday forKey:kUSER_BDAY];
-        
-        [self makeLoginUsingAuthCredential:dict];
+        if ([[AppDelegate appDelegate] isNetworkReachableToInternet]) {
+            [self makeLoginUsingAuthCredential:dict];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:kAppTitle message:kAlert_NoInternet delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil] show];
+        }
     }
 }
 

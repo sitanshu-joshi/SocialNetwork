@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "AppLogin.h"
+#import "AppUserInfo.h"
+K
 @interface HomeViewController : UIViewController<FBLoginViewDelegate>{
     
 }

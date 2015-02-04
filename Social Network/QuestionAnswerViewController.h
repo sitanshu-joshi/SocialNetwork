@@ -13,6 +13,7 @@
     UIEdgeInsets contentInsets;
     NSMutableArray *resultArray;
     NSMutableArray *cityArray;
+    NSString *isVIsited , *wantsToVisit;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewMain;
@@ -24,7 +25,9 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 @property (weak, nonatomic) IBOutlet UIButton *btnSkip;
+@property (weak, nonatomic) IBOutlet UIButton *btnNext;
 
 - (IBAction)btnSkipTapped:(id)sender;
 - (IBAction)btnSubmitTapped:(id)sender;
+- (IBAction)nextButtonTapped:(id)sender;
 @end
