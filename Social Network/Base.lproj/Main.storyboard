@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Login-->
@@ -109,7 +109,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="XYT-Hx-Ilo" kind="push" identifier="pushToProfile" id="eiy-uw-nB9"/>
+                                            <segue destination="XYT-Hx-Ilo" kind="custom" identifier="pushToProfile" customClass="CustomSlideViewControllerSegue" id="eiy-uw-nB9"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CwB-Ls-WOb">
@@ -245,7 +245,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="0eY-YJ-tjB"/>
                     <connections>
-                        <outlet property="btnMainMenu" destination="8lY-bW-eUh" id="kMa-hv-DO5"/>
+                        <outlet property="btnMainMenu" destination="8lY-bW-eUh" id="a9p-GL-bLu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HRH-H5-PiU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -260,6 +260,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="3G0-Da-ca6">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.55294120309999995" green="0.90588241820000004" blue="0.91764712329999998" alpha="0.58999999999999997" colorSpace="deviceRGB"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3eB-FJ-0ZE">
                                 <rect key="frame" x="16" y="22" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -306,11 +311,6 @@
                                     <outlet property="delegate" destination="0lm-7n-ZNf" id="cLl-kO-PNV"/>
                                 </connections>
                             </tableView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="3G0-Da-ca6">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.55294120309999995" green="0.90588241820000004" blue="0.91764712329999998" alpha="0.58999999999999997" colorSpace="deviceRGB"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -324,7 +324,22 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qb2-Ur-1Rx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-305" y="-926"/>
+            <point key="canvasLocation" x="-743" y="-229"/>
+        </scene>
+        <!--Comments View Controller-->
+        <scene sceneID="UVk-jY-MH1">
+            <objects>
+                <viewController id="odT-Am-5eH" customClass="CommentsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="OrE-dD-rhu">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="3ym-2Q-a0l"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XdX-9G-eey" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="111" y="-414"/>
         </scene>
         <!--Question Answer View Controller-->
         <scene sceneID="bDm-pw-Uju">
@@ -460,7 +475,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="x6q-TR-cMR" kind="relationship" relationship="rootViewController" id="FeQ-gq-iDk"/>
+                        <segue destination="0lm-7n-ZNf" kind="relationship" relationship="rootViewController" id="132-FC-bLt"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gg0-T0-V3P" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -493,7 +508,6 @@
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.67823262120000005" blue="0.67823262120000005" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
-                                <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="170" id="oxs-XQ-nZL">
@@ -580,154 +594,12 @@
                     <connections>
                         <outlet property="btnMainMenu" destination="Nbd-u9-C9H" id="awn-4J-agd"/>
                         <outlet property="tblView" destination="ZoN-gc-VCm" id="GSl-cJ-Km0"/>
-                        <segue destination="zoh-hF-4tr" kind="push" identifier="pushToComment" id="xjO-Lv-R1e"/>
+                        <segue destination="odT-Am-5eH" kind="push" identifier="pushToComment" id="b4g-Ca-UKH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sVa-cB-18y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-737" y="-240"/>
-        </scene>
-        <!--Post Detail View Controller-->
-        <scene sceneID="uTk-5F-Tlc">
-            <objects>
-                <viewController id="zoh-hF-4tr" customClass="PostDetailViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="FcD-oy-j7k">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="1jI-vp-spZ">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.55294120309999995" green="0.90588241820000004" blue="0.91764712329999998" alpha="0.58999999999999997" colorSpace="deviceRGB"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="l4k-Gb-idW">
-                                <rect key="frame" x="97" y="35" width="131" height="24"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gVH-yq-DLO">
-                                <rect key="frame" x="16" y="24" width="32" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="back.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="backButtonTapped:" destination="zoh-hF-4tr" eventType="touchUpInside" id="ByL-0F-KjO"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" id="Tjb-ab-WC9">
-                                <rect key="frame" x="0.0" y="64" width="321" height="187"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_pic.png" id="3Sw-BV-HSJ">
-                                        <rect key="frame" x="17" y="121" width="30" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Post your comment here ......" id="VLJ-6d-PVx">
-                                        <rect key="frame" x="60" y="104" width="194" height="64"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="26th January, 2015" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ere-ZE-5As">
-                                        <rect key="frame" x="60" y="167" width="129" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="12"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="like.png" id="AUy-zz-qa6">
-                                        <rect key="frame" x="262" y="156" width="32" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="35" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KFq-0o-pMU">
-                                        <rect key="frame" x="295" y="161" width="24" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="15"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="CYc-ma-KYG">
-                                        <rect key="frame" x="8" y="6" width="305" height="90"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
-                                        <string key="text">Post This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad </string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="OF9-pG-TYQ">
-                                        <rect key="frame" x="262" y="121" width="51" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.0" green="0.67823262120000005" blue="0.67823262120000005" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                        <state key="normal" title="Post">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="btnPostTapped:" destination="zoh-hF-4tr" eventType="touchUpInside" id="2Lp-pz-XeT"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" red="0.94117647058823528" green="0.96470588235294119" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="80" sectionHeaderHeight="22" sectionFooterHeight="22" id="PBD-1n-yjD">
-                                <rect key="frame" x="0.0" y="250" width="320" height="324"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.0" green="0.67823262120000005" blue="0.67823262120000005" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="commentCell" rowHeight="80" id="SDY-BH-s4L">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SDY-BH-s4L" id="Z1g-Xz-EoT">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="301" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_pic.png" id="UWX-rt-sgm">
-                                                    <rect key="frame" x="8" y="8" width="40" height="40"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="303" contentMode="scaleToFill" text="This one is awsome....!!!" id="LAe-h9-lEH">
-                                                    <rect key="frame" x="61" y="5" width="251" height="66"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                </textView>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="302" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sitanshu" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oPT-0s-UCQ">
-                                                    <rect key="frame" x="1" y="53" width="60" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="zoh-hF-4tr" id="VgC-YL-PY4"/>
-                                    <outlet property="delegate" destination="zoh-hF-4tr" id="yBP-1j-pRZ"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="hFo-1B-VMm"/>
-                    <connections>
-                        <outlet property="btnPost" destination="OF9-pG-TYQ" id="FqS-Yb-W7R"/>
-                        <outlet property="containerView" destination="Tjb-ab-WC9" id="TvT-SI-LuQ"/>
-                        <outlet property="lblDateTime" destination="Ere-ZE-5As" id="u68-Ya-Hd0"/>
-                        <outlet property="profileImageView" destination="3Sw-BV-HSJ" id="mbf-sv-cd9"/>
-                        <outlet property="tblViewForComments" destination="PBD-1n-yjD" id="rYI-KV-LRj"/>
-                        <outlet property="txtViewForComment" destination="VLJ-6d-PVx" id="y3v-L7-OIs"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pIG-bB-QbZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-275" y="-240"/>
+            <point key="canvasLocation" x="-342" y="-670"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="plD-wA-q03">
@@ -749,7 +621,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="back.png" width="128" height="128"/>
         <image name="city.png" width="50" height="50"/>
         <image name="comment_1.png" width="128" height="128"/>
         <image name="like.png" width="128" height="128"/>
@@ -766,6 +637,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="tTA-7t-R4o"/>
-        <segue reference="XHn-Qt-HWG"/>
+        <segue reference="132-FC-bLt"/>
     </inferredMetricsTieBreakers>
 </document>

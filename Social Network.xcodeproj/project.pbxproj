@@ -31,7 +31,6 @@
 		56FCEF581A7431E2006B7374 /* comments.png in Resources */ = {isa = PBXBuildFile; fileRef = 56FCEF571A7431E2006B7374 /* comments.png */; };
 		56FCEF5A1A743223006B7374 /* comment_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 56FCEF591A743223006B7374 /* comment_1.png */; };
 		56FCEF611A74340A006B7374 /* NewsFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FCEF601A74340A006B7374 /* NewsFeedViewController.m */; };
-		56FCEF641A7434F6006B7374 /* PostDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FCEF631A7434F6006B7374 /* PostDetailViewController.m */; };
 		A43EDACC1A79157600A1A75B /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = A43EDACB1A79157600A1A75B /* Post.m */; };
 		A43EDACF1A79157600A1A75B /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = A43EDACE1A79157600A1A75B /* Comment.m */; };
 		A43EDAD21A79157700A1A75B /* DataForResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A43EDAD11A79157700A1A75B /* DataForResponse.m */; };
@@ -55,6 +54,7 @@
 		F4BDDFAD1983A50500C52E97 /* Social_NetworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BDDFAC1983A50500C52E97 /* Social_NetworkTests.m */; };
 		F4DE16031A7F90E700BA3C57 /* DataFromGoogle.m in Sources */ = {isa = PBXBuildFile; fileRef = F4DE16021A7F90E700BA3C57 /* DataFromGoogle.m */; };
 		F4DE16061A7F90E800BA3C57 /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = F4DE16051A7F90E800BA3C57 /* Result.m */; };
+		F4EC946C1A81ED350063F0E4 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EC946B1A81ED350063F0E4 /* CommentsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,8 +101,6 @@
 		56FCEF591A743223006B7374 /* comment_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment_1.png; sourceTree = "<group>"; };
 		56FCEF5F1A74340A006B7374 /* NewsFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsFeedViewController.h; sourceTree = "<group>"; };
 		56FCEF601A74340A006B7374 /* NewsFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsFeedViewController.m; sourceTree = "<group>"; };
-		56FCEF621A7434F6006B7374 /* PostDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostDetailViewController.h; sourceTree = "<group>"; };
-		56FCEF631A7434F6006B7374 /* PostDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostDetailViewController.m; sourceTree = "<group>"; };
 		6832CEA470AEFBFD25D37C1A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A43EDACA1A79157600A1A75B /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
 		A43EDACB1A79157600A1A75B /* Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Post.m; sourceTree = "<group>"; };
@@ -143,6 +141,8 @@
 		F4DE16021A7F90E700BA3C57 /* DataFromGoogle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataFromGoogle.m; sourceTree = "<group>"; };
 		F4DE16041A7F90E800BA3C57 /* Result.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Result.h; sourceTree = "<group>"; };
 		F4DE16051A7F90E800BA3C57 /* Result.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Result.m; sourceTree = "<group>"; };
+		F4EC946A1A81ED350063F0E4 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
+		F4EC946B1A81ED350063F0E4 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,8 +204,8 @@
 			children = (
 				568ADAD71A4B1E6200DB8C49 /* CityPageViewController.h */,
 				568ADAD81A4B1E6200DB8C49 /* CityPageViewController.m */,
-				56FCEF621A7434F6006B7374 /* PostDetailViewController.h */,
-				56FCEF631A7434F6006B7374 /* PostDetailViewController.m */,
+				F4EC946A1A81ED350063F0E4 /* CommentsViewController.h */,
+				F4EC946B1A81ED350063F0E4 /* CommentsViewController.m */,
 			);
 			name = City;
 			sourceTree = "<group>";
@@ -544,6 +544,7 @@
 			files = (
 				56BFACF81A76A0A500CADEDF /* UIView+Additions.m in Sources */,
 				F4224F701A594332003A353E /* User.m in Sources */,
+				F4EC946C1A81ED350063F0E4 /* CommentsViewController.m in Sources */,
 				F4BDDF921983A50500C52E97 /* AppDelegate.m in Sources */,
 				F4DE16061A7F90E800BA3C57 /* Result.m in Sources */,
 				F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */,
@@ -557,7 +558,6 @@
 				56BFACF71A76A0A500CADEDF /* UILabel+Additions.m in Sources */,
 				5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */,
 				A43EDACC1A79157600A1A75B /* Post.m in Sources */,
-				56FCEF641A7434F6006B7374 /* PostDetailViewController.m in Sources */,
 				F4DE16031A7F90E700BA3C57 /* DataFromGoogle.m in Sources */,
 				56BFACF61A76A0A500CADEDF /* RSActivityIndicator.m in Sources */,
 				F4A173631A78BF5000E44730 /* CustomSlideViewController.m in Sources */,

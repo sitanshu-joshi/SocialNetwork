@@ -1,18 +1,18 @@
 //
-//  PostDetailViewController.m
+//  CommentsViewController.m
 //  Social Network
 //
-//  Created by Sagar Gondaliya on 25/01/15.
+//  Created by Sitanshu Joshi on 2/4/15.
 //  Copyright (c) 2015 Sitanshu Joshi. All rights reserved.
 //
 
-#import "PostDetailViewController.h"
+#import "CommentsViewController.h"
 
-@interface PostDetailViewController ()
+@interface CommentsViewController ()
 
 @end
 
-@implementation PostDetailViewController
+@implementation CommentsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -70,4 +70,15 @@
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
+
+
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+
+
 @end

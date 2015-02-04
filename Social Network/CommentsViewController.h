@@ -1,16 +1,15 @@
 //
-//  PostDetailViewController.h
+//  CommentsViewController.h
 //  Social Network
 //
-//  Created by Sagar Gondaliya on 25/01/15.
+//  Created by Sitanshu Joshi on 2/4/15.
 //  Copyright (c) 2015 Sitanshu Joshi. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface PostDetailViewController : UIViewController<UITextViewDelegate>{
-    
-}
+@interface CommentsViewController : UIViewController
+
 - (IBAction)backButtonTapped:(id)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
@@ -21,4 +20,5 @@
 @property (weak, nonatomic) IBOutlet UITableView *tblViewForComments;
 
 - (IBAction)btnPostTapped:(id)sender;
+
 @end

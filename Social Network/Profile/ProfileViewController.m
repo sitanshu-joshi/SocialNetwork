@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+    [btnMainMenu addTarget:self action: @selector(mainMenuBtnClickAtProfile) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
 }
 
@@ -27,7 +27,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)mainMenuBtnClicked {
+-(void)mainMenuBtnClickAtProfile {
     [self.revealViewController revealToggle:self.btnMainMenu];
 }
 
