@@ -16,4 +16,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *btnMainMenu;
 
+@property (weak, nonatomic) IBOutlet UIView *containerViewForCityInput;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet UITableView *tableViewForCityResult;
+
 @end

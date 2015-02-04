@@ -71,5 +71,18 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)cityBtnTapped:(id)sender {
+    [UIView animateWithDuration:0.5 animations:^{
+        self.containerViewForCityInput.frame = CGRectMake(5, 72, self.containerViewForCityInput.frame.size.width, self.containerViewForCityInput.frame.size.height);
+    }];
+}
+
+- (IBAction)doneBtnTapped:(id)sender {
+    [UIView animateWithDuration:0.5 animations:^{
+        self.containerViewForCityInput.frame = CGRectMake(5, 1000, self.containerViewForCityInput.frame.size.width, self.containerViewForCityInput.frame.size.height);
+    }];
+    [self performSegueWithIdentifier:@"pushToCityFromNews" sender:self];
+}
+
 
 @end

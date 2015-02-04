@@ -23,8 +23,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnShare;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForPost;
 @property (weak, nonatomic) IBOutlet UIButton *btnVideoSharing;
-@property (weak, nonatomic) IBOutlet UIView *containerViewForCityInput;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-@property (weak, nonatomic) IBOutlet UITableView *tableViewForCityResult;
+
 
 @end
