@@ -41,7 +41,7 @@
 #define kPush_To_SlideBar           @"pushToSlideBar"
 #define kPush_To_SlideBar1          @"pushToSlideBar1"
 #define kPush_To_Setting            @"pushToSetting"
-
+#define kPushToCityFromNews         @"pushToCityFromNews"
 /*
  Resource Path
  */
@@ -75,9 +75,10 @@
 #define kLogin_User_Email       @"Login_Email"
 #define kLogin_User_Password    @"Login_Password"
 #define kIs_User_Logged_In      @"isUserLoggedIn"
-/*
+/*ßß
  Auth Login/SignUp
  */
+#define kUSER_ID            @"USER_ID"
 #define kUSER_FIRST_NAME    @"USER_FIRST_NAME"
 #define kUSER_LAST_NAME     @"USER_LAST_NAME"
 #define kUSER_EMAIL         @"USER_EMAIL"

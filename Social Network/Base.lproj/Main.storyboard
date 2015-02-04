@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
         <!--Login-->
@@ -133,7 +133,6 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="logoutBtnPressed:" destination="vEE-gh-wKB" eventType="touchUpInside" id="u3V-dA-XYO"/>
                                             <segue destination="ReK-zZ-OFC" kind="custom" identifier="pushToSetting" customClass="CustomSlideViewControllerSegue" id="RBc-x5-jd9"/>
                                         </connections>
                                     </button>
@@ -247,6 +246,11 @@
                     <navigationItem key="navigationItem" id="0eY-YJ-tjB"/>
                     <connections>
                         <outlet property="btnMainMenu" destination="8lY-bW-eUh" id="a9p-GL-bLu"/>
+                        <outlet property="imgViewForProPic" destination="0vH-4f-pZc" id="Sej-UW-Ml1"/>
+                        <outlet property="lblBirthday" destination="Ixe-Xw-FgT" id="VUw-zk-Buj"/>
+                        <outlet property="lblCity" destination="KzL-nW-ixa" id="bvy-fS-E05"/>
+                        <outlet property="lblEmail" destination="t30-T1-dgh" id="YjZ-Wy-er1"/>
+                        <outlet property="lblName" destination="MPo-RI-N8i" id="qMF-Vy-po6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HRH-H5-PiU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -285,7 +289,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.67823262120000005" blue="0.67823262120000005" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="75" id="BPk-vp-92t">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="newsCell" rowHeight="75" id="BPk-vp-92t">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BPk-vp-92t" id="ahg-DO-vIt">
@@ -316,6 +320,14 @@
                                 <rect key="frame" x="5" y="1000" width="310" height="284"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
+                                    <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Enter City" showsCancelButton="YES" id="MLM-D8-xjL">
+                                        <rect key="frame" x="0.0" y="0.0" width="310" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="0lm-7n-ZNf" id="wJl-SJ-kYQ"/>
+                                        </connections>
+                                    </searchBar>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Scd-vj-t2P">
                                         <rect key="frame" x="0.0" y="42" width="310" height="242"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -326,6 +338,15 @@
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Av7-wk-RfV" id="1m6-lq-6AN">
                                                     <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" tag="999" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="k1t-T4-tpf">
+                                                            <rect key="frame" x="8" y="8" width="294" height="27"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
                                         </prototypes>
@@ -334,23 +355,6 @@
                                             <outlet property="delegate" destination="x6q-TR-cMR" id="0QJ-ct-4ge"/>
                                         </connections>
                                     </tableView>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter City" minimumFontSize="17" id="1OC-Bp-loM">
-                                        <rect key="frame" x="8" y="4" width="220" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="q1f-dB-XBC">
-                                        <rect key="frame" x="256" y="4" width="37" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Done">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="doneBtnTapped:" destination="0lm-7n-ZNf" eventType="touchUpInside" id="ONG-fZ-2rK"/>
-                                            <action selector="doneBtnTapped:" destination="x6q-TR-cMR" eventType="touchUpInside" id="izg-O3-caY"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -376,12 +380,14 @@
                         <outlet property="btnMainMenu" destination="3eB-FJ-0ZE" id="uwo-Vc-voE"/>
                         <outlet property="containerViewForCityInput" destination="fIn-jz-Z1q" id="fgj-QI-ser"/>
                         <outlet property="newsTableView" destination="eID-Cj-9tD" id="Pls-iV-hmp"/>
+                        <outlet property="searchBar" destination="MLM-D8-xjL" id="fMk-su-Iy6"/>
+                        <outlet property="tableViewForCityResult" destination="Scd-vj-t2P" id="OvN-WY-NzY"/>
                         <segue destination="x6q-TR-cMR" kind="push" identifier="pushToCityFromNews" id="Upl-ib-L76"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qb2-Ur-1Rx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-622" y="-74"/>
+            <point key="canvasLocation" x="-818" y="-229"/>
         </scene>
         <!--Comments View Controller-->
         <scene sceneID="UVk-jY-MH1">
@@ -836,10 +842,10 @@
             </objects>
             <point key="canvasLocation" x="-295" y="-937"/>
         </scene>
-        <!--View Controller-->
+        <!--Setting View Controller-->
         <scene sceneID="Z9E-G9-o6n">
             <objects>
-                <viewController id="ReK-zZ-OFC" sceneMemberID="viewController">
+                <viewController id="ReK-zZ-OFC" customClass="SettingViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="26o-dl-3mZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -863,14 +869,30 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="PjI-gg-WhE">
+                                <rect key="frame" x="66" y="176" width="189" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.55294120309999995" green="0.90588241820000004" blue="0.91764712329999998" alpha="0.58999999999999997" colorSpace="deviceRGB"/>
+                                <state key="normal" title="Logout">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="logoutBtnTapped:" destination="ReK-zZ-OFC" eventType="touchUpInside" id="ly1-Rz-e1r"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="v7B-f6-a4L"/>
+                    <connections>
+                        <outlet property="btnLogout" destination="PjI-gg-WhE" id="Jia-kG-1fa"/>
+                        <outlet property="btnMainMenu" destination="6gw-yu-mzT" id="Pqc-Nf-M2k"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z83-nv-F2E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="82" y="-102"/>
+            <point key="canvasLocation" x="-295" y="-248"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="plD-wA-q03">
@@ -911,7 +933,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="yGZ-1n-fiw"/>
+        <segue reference="tTA-7t-R4o"/>
         <segue reference="s1d-TF-zWK"/>
         <segue reference="Upl-ib-L76"/>
     </inferredMetricsTieBreakers>

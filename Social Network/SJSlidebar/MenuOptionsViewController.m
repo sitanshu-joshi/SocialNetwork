@@ -35,6 +35,7 @@
 }
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
+    [self setUpUserInterface];
   
 }
 - (void) viewWillDisappear:(BOOL)animated {
@@ -59,7 +60,8 @@
     }
 }
 
-
-- (IBAction)logoutBtnPressed:(id)sender {
+-(void)setUpUserInterface{
+    self.lblName.text = [AppUserInfo sharedAppUserInfo].userName;
+    self.imgViewForProfile.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:kFBProfilePicURL,[AppUserInfo sharedAppUserInfo].userId]]]];
 }
 @end

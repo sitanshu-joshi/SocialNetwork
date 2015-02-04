@@ -1,20 +1,19 @@
 //
-//  ProfileViewController.m
+//  SettingViewController.m
 //  Social Network
 //
-//  Created by Rushi on 04/02/15.
+//  Created by Rushi on 05/02/15.
 //  Copyright (c) 2015 Sitanshu Joshi. All rights reserved.
 //
 
-#import "ProfileViewController.h"
+#import "SettingViewController.h"
 
-@interface ProfileViewController ()
+@interface SettingViewController ()
 
 @end
 
-@implementation ProfileViewController
+@implementation SettingViewController
 @synthesize btnMainMenu;
-@synthesize lblName,lblBirthday,lblCity,lblEmail,imgViewForProPic;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -23,11 +22,6 @@
     self.revealViewController.delegate = self;
 }
 
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self setUpUserInterface];
-}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -37,8 +31,10 @@
     [self.revealViewController revealToggle:self.btnMainMenu];
 }
 
--(void)setUpUserInterface{
-    self.lblName.text = [AppUserInfo sharedAppUserInfo].userName;
-    self.imgViewForProPic.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:kFBProfilePicURL,[AppUserInfo sharedAppUserInfo].userId]]]];
+- (IBAction)logoutBtnTapped:(id)sender {
+    [[FBSession activeSession]closeAndClearTokenInformation];
+    [[FBSession activeSession]close];
+    [[AppUserInfo sharedAppUserInfo]clearUserDefaults];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 @end

@@ -12,6 +12,11 @@
     
 }
 
-@property (weak, nonatomic) IBOutlet UIButton *btnMainMenu;
 
+@property (weak, nonatomic) IBOutlet UIButton *btnMainMenu;
+@property (weak, nonatomic) IBOutlet UIImageView *imgViewForProPic;
+@property (weak, nonatomic) IBOutlet UILabel *lblName;
+@property (weak, nonatomic) IBOutlet UILabel *lblEmail;
+@property (weak, nonatomic) IBOutlet UILabel *lblBirthday;
+@property (weak, nonatomic) IBOutlet UILabel *lblCity;
 @end

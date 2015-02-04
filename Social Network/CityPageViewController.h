@@ -11,12 +11,8 @@
 @interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, CustomSlideViewControllerDelegate>{
     
 }
-
+@property (strong,nonatomic) NSString *strAddress;
 @property (weak, nonatomic) IBOutlet UITableView *tblView;
-@property (weak, nonatomic) IBOutlet UIButton *btnCity;
-- (IBAction)cityBtnTapped:(id)sender;
-- (IBAction)doneBtnTapped:(id)sender;
-
 @property (weak, nonatomic) IBOutlet UIButton *btnMainMenu;
 @property (weak, nonatomic) IBOutlet UIView *containerViewForSharing;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhotoSharing;

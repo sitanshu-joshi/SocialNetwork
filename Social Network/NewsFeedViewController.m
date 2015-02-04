@@ -13,13 +13,15 @@
 @end
 
 @implementation NewsFeedViewController
-@synthesize btnMainMenu;
+@synthesize btnMainMenu,containerViewForCityInput;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
+    containerViewForCityInput.layer.cornerRadius = 5.0;
+    containerViewForCityInput.layer.masksToBounds = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -46,24 +48,46 @@
 
 #pragma mark - UITableView DataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    return 10;
+    if(tableView == self.tableViewForCityResult){
+        return [resultArray count];
+    }else{
+        return 10;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *identifier = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    UITableViewCell *cell;
+    static NSString *identifier = nil;
+    if(tableView == self.tableViewForCityResult){
+        identifier = @"resultCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        Result *result = [resultArray objectAtIndex:indexPath.row];
+        UILabel *lblAddress =(UILabel *)[cell.contentView viewWithTag:999];
+        lblAddress.text = result.formatted_address;
+    }else{
+       identifier = @"newsCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (cell == nil)
+        {
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
     }
     return cell;
 }
 
 #pragma mark - UITableView Delegate Methods
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    //[self performSegueWithIdentifier:kPush_To_City sender:self];
+    if(tableView == self.tableViewForCityResult){
+        [self hideCityInputView];
+        Result *result = [resultArray objectAtIndex:indexPath.row];
+        strAddress = result.formatted_address;
+        [self.tableViewForCityResult setHidden:YES];
+        [self performSegueWithIdentifier:kPushToCityFromNews sender:self];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -72,17 +96,87 @@
 }
 
 - (IBAction)cityBtnTapped:(id)sender {
-    [UIView animateWithDuration:0.5 animations:^{
-        self.containerViewForCityInput.frame = CGRectMake(5, 72, self.containerViewForCityInput.frame.size.width, self.containerViewForCityInput.frame.size.height);
+    if(!isInputViewVisible){
+        [self showCityInputView];
+    }else{
+        [self hideCityInputView];
+    }
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if([segue.identifier isEqualToString:kPushToCityFromNews]){
+        CityPageViewController *cityViewController = (CityPageViewController *)[segue destinationViewController];
+        cityViewController.strAddress = strAddress;
+    }
+}
+
+#pragma mark - UISearchBar Delegate Methods
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    NSLog(@"============== %@",searchText);
+    [self getPlaceForAddress:searchText];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchbar {
+    [searchbar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *) searchbar {
+    [searchbar resignFirstResponder];
+    self.searchBar.text = @"";
+    [self hidekeyBoard];
+    [self hideCityInputView];
+}
+
+//To search place
+-(void)getPlaceForAddress:(NSString *)searchString {
+    NSString *str = [NSString stringWithFormat:kResource_Place,searchString,kPlace_API_Key];
+    [[AppDelegate appDelegate].rkomForPlaces getObject:nil path:str parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataFromGoogle *dataFromGoogle = [mappingResult firstObject];
+        NSLog(@"%@",dataFromGoogle.results);
+        resultArray = [NSMutableArray arrayWithArray:[dataFromGoogle.results allObjects]];
+        if (resultArray.count >= 7) {
+            [self.tableViewForCityResult setFrame:CGRectMake(self.tableViewForCityResult.frame.origin.x, self.tableViewForCityResult.frame.origin.y, self.tableViewForCityResult.frame.size.width, self.view.frame.size.height-170)];
+            [self.tableViewForCityResult setHidden:NO];
+        } else {
+            [self.tableViewForCityResult setFrame:CGRectMake(self.tableViewForCityResult.frame.origin.x, self.tableViewForCityResult.frame.origin.y, self.tableViewForCityResult.frame.size.width, resultArray.count*40)];
+            [self.tableViewForCityResult setHidden:NO];
+        }
+        [self.self.tableViewForCityResult reloadData];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSLog(@"%@",error.localizedDescription);
+        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+        [alert show];
     }];
 }
 
-- (IBAction)doneBtnTapped:(id)sender {
+//Hide City Input View
+-(void)hideCityInputView{
     [UIView animateWithDuration:0.5 animations:^{
         self.containerViewForCityInput.frame = CGRectMake(5, 1000, self.containerViewForCityInput.frame.size.width, self.containerViewForCityInput.frame.size.height);
     }];
-    [self performSegueWithIdentifier:@"pushToCityFromNews" sender:self];
+    isInputViewVisible = NO;
+    [self hidekeyBoard];
 }
 
+-(void)showCityInputView{
+    [UIView animateWithDuration:0.5 animations:^{
+        self.containerViewForCityInput.frame = CGRectMake(5, 72, self.containerViewForCityInput.frame.size.width, self.containerViewForCityInput.frame.size.height);
+    }];
+    isInputViewVisible = YES;
+    [self.tableViewForCityResult setHidden:YES];
+}
+
+//To hide Keyboard
+-(void)hidekeyBoard {
+    
+    [self.searchBar resignFirstResponder];
+    [self.tableViewForCityResult setHidden:YES];
+}
 
 @end

@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CityPageViewController.h"
 
-@interface NewsFeedViewController : UIViewController<UITableViewDelegate,UITableViewDataSource, CustomSlideViewControllerDelegate> {
-    
+@interface NewsFeedViewController : UIViewController<UITableViewDelegate,UITableViewDataSource, CustomSlideViewControllerDelegate,UISearchBarDelegate> {
+    BOOL isInputViewVisible;
+    NSString *strAddress;
+    NSMutableArray *resultArray;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *newsTableView;

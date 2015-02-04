@@ -16,6 +16,7 @@
 @property (nonatomic) NSString *firstName;
 @property (nonatomic) NSString *lastName;
 @property (nonatomic) NSString *birthday;
+@property (nonatomic) NSString *userId;
 
 -(void)clearUserDefaults;
 

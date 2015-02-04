@@ -19,7 +19,4 @@
 @property (weak, nonatomic) IBOutlet UIView *viewForProfileButton;
 @property (weak, nonatomic) IBOutlet UIView *viewForLogoutButton;
 
-- (IBAction)logoutBtnPressed:(id)sender;
-
-
 @end
