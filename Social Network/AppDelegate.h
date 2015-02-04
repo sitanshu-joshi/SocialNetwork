@@ -10,6 +10,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "HomeViewController.h"
 #import "User.h"
+#import "Reachability/Reachability.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>{
     BOOL isFBSessionOpen;
@@ -54,5 +55,7 @@
 - (void)sessionStateChanged :(FBSession *)session state:(FBSessionState) state error:(NSError *)error;
 - (BOOL)openSessionWithAllowLoginUI:(BOOL)allowLoginUI;
 
+//To check Network Rechability
+-(BOOL)isNetworkReachableToInternet;
 
 @end

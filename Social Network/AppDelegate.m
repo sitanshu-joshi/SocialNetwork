@@ -338,6 +338,15 @@ static AppDelegate *appDelegate;
 }
 
 
-
+#pragma mark Network Reachability
+-(BOOL)isNetworkReachableToInternet {
+    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
+    if (networkStatus == NotReachable) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
 
 @end

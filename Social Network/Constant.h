@@ -107,7 +107,6 @@
 #define kCOMMENT_TEXT      @"COMMENT_TEXT"
 
 
-
 /*
  NS Defauts
  */
@@ -120,5 +119,73 @@
  */
 #define kOkButton       @"Ok"
 #define kCancelButton   @"Cancel"
+
+// City
+#define  tagColorForCity        [UIColor colorWithRed:96.0/255.0 green:92.0/255.0 blue:168.0/255.0 alpha:1.0]
+
+
+// Fonts
+#define Font_Roboto_Header_Title  [UIFont fontWithName:@"Roboto-Bold" size:18.0]
+
+#define Font_Roboto_Section_Title  [UIFont fontWithName:@"Roboto-Bold" size:16.0]
+
+#define Font_Roboto_Light_13  [UIFont fontWithName:@"RobotoCondensed-Light" size:13.0]
+#define Font_Roboto_Light_14  [UIFont fontWithName:@"RobotoCondensed-Light" size:14.0]
+#define Font_Roboto_Light_15  [UIFont fontWithName:@"RobotoCondensed-Light" size:15.0]
+#define Font_Roboto_Light_16  [UIFont fontWithName:@"RobotoCondensed-Light" size:16.0]
+#define Font_Roboto_Light_17  [UIFont fontWithName:@"RobotoCondensed-Light" size:17.0]
+#define Font_Roboto_Light_18  [UIFont fontWithName:@"RobotoCondensed-Light" size:18.0]
+#define Font_Roboto_Light_19  [UIFont fontWithName:@"RobotoCondensed-Light" size:19.0]
+#define Font_Roboto_Light_20  [UIFont fontWithName:@"RobotoCondensed-Light" size:20.0]
+#define Font_Roboto_Light_21  [UIFont fontWithName:@"RobotoCondensed-Light" size:21.0]
+#define Font_Roboto_Light_22  [UIFont fontWithName:@"RobotoCondensed-Light" size:22.0]
+
+#define Font_Roboto_Condensed_11  [UIFont fontWithName:@"RobotoCondensed-Regular" size:11.0]
+#define Font_Roboto_Condensed_13  [UIFont fontWithName:@"RobotoCondensed-Regular" size:13.0]
+#define Font_Roboto_Condensed_14  [UIFont fontWithName:@"RobotoCondensed-Regular" size:14.0]
+#define Font_Roboto_Condensed_15  [UIFont fontWithName:@"RobotoCondensed-Regular" size:15.0]
+#define Font_Roboto_Condensed_16  [UIFont fontWithName:@"RobotoCondensed-Regular" size:16.0]
+#define Font_Roboto_Condensed_17  [UIFont fontWithName:@"RobotoCondensed-Regular" size:17.0]
+#define Font_Roboto_Condensed_18  [UIFont fontWithName:@"RobotoCondensed-Regular" size:18.0]
+#define Font_Roboto_Condensed_19  [UIFont fontWithName:@"RobotoCondensed-Regular" size:19.0]
+#define Font_Roboto_Condensed_20  [UIFont fontWithName:@"RobotoCondensed-Regular" size:20.0]
+#define Font_Roboto_Condensed_21  [UIFont fontWithName:@"RobotoCondensed-Regular" size:21.0]
+#define Font_Roboto_Condensed_22  [UIFont fontWithName:@"RobotoCondensed-Regular" size:22.0]
+
+#define Font_Roboto_Regular_8  [UIFont fontWithName:@"Roboto-Regular" size:8.0]
+#define Font_Roboto_Regular_10  [UIFont fontWithName:@"Roboto-Regular" size:8.0]
+#define Font_Roboto_Regular_11  [UIFont fontWithName:@"Roboto-Regular" size:11.0]
+#define Font_Roboto_Regular_12  [UIFont fontWithName:@"Roboto-Regular" size:12.0]
+#define Font_Roboto_Regular_13  [UIFont fontWithName:@"Roboto-Regular" size:13.0]
+#define Font_Roboto_Regular_14  [UIFont fontWithName:@"Roboto-Regular" size:14.0]
+#define Font_Roboto_Regular_15  [UIFont fontWithName:@"Roboto-Regular" size:15.0]
+#define Font_Roboto_Regular_16  [UIFont fontWithName:@"Roboto-Regular" size:16.0]
+#define Font_Roboto_Regular_17  [UIFont fontWithName:@"Roboto-Regular" size:17.0]
+#define Font_Roboto_Regular_18  [UIFont fontWithName:@"Roboto-Regular" size:18.0]
+#define Font_Roboto_Regular_19  [UIFont fontWithName:@"Roboto-Regular" size:19.0]
+#define Font_Roboto_Regular_20  [UIFont fontWithName:@"Roboto-Regular" size:20.0]
+#define Font_Roboto_Regular_21  [UIFont fontWithName:@"Roboto-Regular" size:21.0]
+#define Font_Roboto_Regular_22  [UIFont fontWithName:@"Roboto-Regular" size:22.0]
+
+#define Font_Roboto_Bold_13  [UIFont fontWithName:@"Roboto-Bold" size:13.0]
+#define Font_Roboto_Bold_14  [UIFont fontWithName:@"Roboto-Bold" size:14.0]
+#define Font_Roboto_Bold_15  [UIFont fontWithName:@"Roboto-Bold" size:15.0]
+#define Font_Roboto_Bold_16  [UIFont fontWithName:@"Roboto-Bold" size:16.0]
+#define Font_Roboto_Bold_17  [UIFont fontWithName:@"Roboto-Bold" size:17.0]
+#define Font_Roboto_Bold_18  [UIFont fontWithName:@"Roboto-Bold" size:18.0]
+#define Font_Roboto_Bold_19  [UIFont fontWithName:@"Roboto-Bold" size:19.0]
+#define Font_Roboto_Bold_20  [UIFont fontWithName:@"Roboto-Bold" size:20.0]
+
+#define Font_Roboto_Condensed_Bold_11  [UIFont fontWithName:@"RobotoCondensed-Bold" size:11.0]
+#define Font_Roboto_Condensed_Bold_13  [UIFont fontWithName:@"RobotoCondensed-Bold" size:13.0]
+#define Font_Roboto_Condensed_Bold_14  [UIFont fontWithName:@"RobotoCondensed-Bold" size:14.0]
+#define Font_Roboto_Condensed_Bold_15  [UIFont fontWithName:@"RobotoCondensed-Bold" size:15.0]
+#define Font_Roboto_Condensed_Bold_16  [UIFont fontWithName:@"RobotoCondensed-Bold" size:16.0]
+#define Font_Roboto_Condensed_Bold_17  [UIFont fontWithName:@"RobotoCondensed-Bold" size:17.0]
+#define Font_Roboto_Condensed_Bold_18  [UIFont fontWithName:@"RobotoCondensed-Bold" size:18.0]
+#define Font_Roboto_Condensed_Bold_19  [UIFont fontWithName:@"RobotoCondensed-Bold" size:19.0]
+#define Font_Roboto_Condensed_Bold_20  [UIFont fontWithName:@"RobotoCondensed-Bold" size:20.0]
+#define Font_Roboto_Condensed_Bold_22  [UIFont fontWithName:@"RobotoCondensed-Bold" size:22.0]
+#define Font_Roboto_Condensed_Bold_30  [UIFont fontWithName:@"RobotoCondensed-Bold" size:30.0]
 
 #endif

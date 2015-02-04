@@ -7,22 +7,36 @@
 //
 
 #import "QuestionAnswerViewController.h"
+#import <RestKit/RestKit.h>
 
 @interface QuestionAnswerViewController ()
 
 @end
 
 @implementation QuestionAnswerViewController
+@synthesize tableViewForResult,tagListView,scrollViewMain;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    contentInsets = self.scrollView.contentInset;
     [self setUpUserInterface];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor whiteColor]];
+    cityArray = [NSMutableArray array];
+    [tableViewForResult setHidden:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [RSActivityIndicator hideIndicator];
+    [self performSelector:@selector(hidekeyBoard) withObject:nil afterDelay:0.3];
+    tableViewForResult = nil;
+    [tagListView.tags removeAllObjects];
+    tagListView = nil;
+    scrollViewMain = nil;
+    cityArray = nil;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -35,11 +49,6 @@
     self.txtViewForQuestion1.layer.cornerRadius = 7.0;
     self.txtViewForQuestion1.layer.masksToBounds = YES;
     
-    self.txtViewForAnswer.layer.cornerRadius = 7.0;
-    self.txtViewForAnswer.layer.masksToBounds = YES;
-    
-    self.tblViewForResult.layer.cornerRadius = 7.0;
-    self.tblViewForResult.layer.masksToBounds  =YES;
     self.btnSubmit.layer.cornerRadius = 5.0;
     self.btnSkip.layer.cornerRadius = 5.0;
 }
@@ -48,33 +57,12 @@
 
 - (IBAction)btnSkipTapped:(id)sender {
     [self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
+    [self hidekeyBoard];
+    [self scrollableOff];
 }
 
 - (IBAction)btnSubmitTapped:(id)sender {
-    NSString *strResult;
-    if(![self.txtViewForAnswer.text isEqualToString:@""]){
-        strResult = [NSString stringWithFormat:@"%@",self.txtViewForAnswer.text];
-        NSArray *arrOfAddress = [strResult componentsSeparatedByString:@","];
-        NSString *strCity, *strCountry, *strState;
-        strCountry = [NSString stringWithFormat:@"%@",[arrOfAddress lastObject]];
-        strState = [NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-2]];
-        if (arrOfAddress.count >= 3) {
-            strCity = [NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-3]];
-        }else{
-            strCountry = @"";
-        }
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-        [dict setValue:strCity forKey:kCITY_NAME];
-        [dict setValue:strState forKey:kSTATE];
-        [dict setValue:strCountry forKey:kCOUNTRY];
-        [dict setValue:@"Description" forKey:kDESCRIPTION];
-        [dict setObject:@"true" forKey:kIS_VISITED];
-        [dict setObject:@"false" forKey:kWANTS_TO_VISIT];
-        [self submitAnswer:dict];
-    }else{
-        [[[UIAlertView alloc]initWithTitle:kAppTitle message:@"Please enter answer" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
-    }
-    
+
 }
 
 #pragma mark - Table View delegate methods
@@ -85,24 +73,48 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"resultCell"];
-    
     Result *result = [resultArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = result.formatted_address;
+    UILabel *lblAddress =(UILabel *)[cell.contentView viewWithTag:999];
+    lblAddress.text = result.formatted_address;
     return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPat
-{
-     return 40;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     Result *result = [resultArray objectAtIndex:indexPath.row];
-    self.txtViewForAnswer.text = result.formatted_address;
+    if(!cityArray){
+        cityArray = [NSMutableArray array];
+    }
+    [cityArray addObject:result.formatted_address];
+    [self updateSelectedCityToServerWithAddress:result.formatted_address];
+    [self addCityTagWithAddress:result.formatted_address];
 }
-
+-(void)updateSelectedCityToServerWithAddress:(NSString *)address{
+    
+    if(![address isEqualToString:@""]){
+        [RSActivityIndicator showIndicatorWithTitle:@"Please wait"];
+        NSArray *arrOfAddress = [address componentsSeparatedByString:@","];
+        NSString *strCity, *strCountry, *strState;
+        strCountry = [NSString stringWithFormat:@"%@",[arrOfAddress lastObject]];
+        strState = [NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-2]];
+        if (arrOfAddress.count >= 3) {
+            strCity = [NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-3]];
+        }else{
+            strCity = @"";
+        }
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        [dict setValue:strCity forKey:kCITY_NAME];
+        [dict setValue:strState forKey:kSTATE];
+        [dict setValue:strCountry forKey:kCOUNTRY];
+        [dict setValue:@"Description" forKey:kDESCRIPTION];
+        [dict setObject:@"true" forKey:kIS_VISITED];
+        [dict setObject:@"false" forKey:kWANTS_TO_VISIT];
+        [self submitAnswer:dict];
+    }else{
+        [[[UIAlertView alloc]initWithTitle:kAppTitle message:@"Please Select City" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
+    }
+}
 
 #pragma mark - UISearchBar Delegate Methods
 
@@ -118,7 +130,8 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchbar {
     [searchbar resignFirstResponder];
     [self getPlaceTest:searchbar.text];
-    [self.tblViewForResult reloadData];
+    self.searchBar.text = @"";
+    [self hidekeyBoard];
 }
 
 
@@ -132,16 +145,6 @@
     return YES;
 }
 
--(void)textViewDidBeginEditing:(UITextView *)textView {
-    self.scrollView.contentOffset = CGPointMake(0, textView.frame.origin.y - textView.frame.size.height/2);
-}
-
--(void)textViewDidEndEditing:(UITextView *)textView {
-    contentInsets = UIEdgeInsetsZero;
-    self.scrollView.contentOffset = CGPointZero;
-
-}
-
 //To search place
 -(void)getPlaceTest:(NSString *)searchString {
     NSString *str = [NSString stringWithFormat:kResource_Place,searchString,kPlace_API_Key];
@@ -150,7 +153,7 @@
         DataFromGoogle *dataFromGoogle = [mappingResult firstObject];
         NSLog(@"%@",dataFromGoogle.results);
         resultArray = [NSMutableArray arrayWithArray:[dataFromGoogle.results allObjects]];
-        [self.tblViewForResult reloadData];
+        [self.tableViewForResult reloadData];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -178,4 +181,40 @@
     }];
 }
 
+//To add City Tags
+-(void)addCityTagWithAddress:(NSString *)strAddress {
+    if (strAddress.length > 0) {
+        NSArray *arrayOfCurrentAddress =[NSArray arrayWithObject:strAddress];
+        [tagListView addTags:arrayOfCurrentAddress withClose:YES color:tagColorForCity];
+        [self.searchBar resignFirstResponder];
+        [self hidekeyBoard];
+    }
+}
+
+
+//To hide Keyboard
+-(void)hidekeyBoard {
+    [self.searchBar resignFirstResponder];
+    [tableViewForResult setHidden:YES];
+    [self scrollableOff];
+}
+
+#pragma mark Autoresizing
+-(void)scrollableOn {
+    if (self.view.frame.size.height == 568) {
+        scrollViewMain.contentSize = (CGSize){1.0, self.view.frame.size.height-216-64};
+        scrollViewMain.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-216-64);
+    } else {
+        scrollViewMain.contentSize = (CGSize){1.0, self.view.frame.size.height-216-64};
+        scrollViewMain.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-216-64);
+    }
+}
+-(void)scrollableOff {
+    @autoreleasepool {
+        scrollViewMain.contentSize = (CGSize){1.0, self.view.frame.size.height-64};
+        scrollViewMain.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64);
+        [tableViewForResult setHidden:YES];
+        [self.searchBar resignFirstResponder];
+    }
+}
 @end

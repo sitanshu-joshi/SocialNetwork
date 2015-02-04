@@ -31,6 +31,16 @@
 		56FCEF581A7431E2006B7374 /* comments.png in Resources */ = {isa = PBXBuildFile; fileRef = 56FCEF571A7431E2006B7374 /* comments.png */; };
 		56FCEF5A1A743223006B7374 /* comment_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 56FCEF591A743223006B7374 /* comment_1.png */; };
 		56FCEF611A74340A006B7374 /* NewsFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FCEF601A74340A006B7374 /* NewsFeedViewController.m */; };
+		A40328D11A8201310040D282 /* AMTagListView.m in Sources */ = {isa = PBXBuildFile; fileRef = A40328CE1A8201310040D282 /* AMTagListView.m */; };
+		A40328D21A8201310040D282 /* AMTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = A40328D01A8201310040D282 /* AMTagView.m */; };
+		A40328DA1A8202720040D282 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A40328D51A8202720040D282 /* Roboto-Bold.ttf */; };
+		A40328DB1A8202720040D282 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A40328D61A8202720040D282 /* Roboto-Regular.ttf */; };
+		A40328DC1A8202720040D282 /* RobotoCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A40328D71A8202720040D282 /* RobotoCondensed-Bold.ttf */; };
+		A40328DD1A8202720040D282 /* RobotoCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A40328D81A8202720040D282 /* RobotoCondensed-Light.ttf */; };
+		A40328DE1A8202720040D282 /* RobotoCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A40328D91A8202720040D282 /* RobotoCondensed-Regular.ttf */; };
+		A40328E51A8219A20040D282 /* icon_close.png in Resources */ = {isa = PBXBuildFile; fileRef = A40328E41A8219A20040D282 /* icon_close.png */; };
+		A40328E71A821D540040D282 /* search_City.png in Resources */ = {isa = PBXBuildFile; fileRef = A40328E61A821D540040D282 /* search_City.png */; };
+		A40328EB1A8225660040D282 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = A40328EA1A8225660040D282 /* Reachability.m */; };
 		A43EDACC1A79157600A1A75B /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = A43EDACB1A79157600A1A75B /* Post.m */; };
 		A43EDACF1A79157600A1A75B /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = A43EDACE1A79157600A1A75B /* Comment.m */; };
 		A43EDAD21A79157700A1A75B /* DataForResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A43EDAD11A79157700A1A75B /* DataForResponse.m */; };
@@ -102,6 +112,19 @@
 		56FCEF5F1A74340A006B7374 /* NewsFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsFeedViewController.h; sourceTree = "<group>"; };
 		56FCEF601A74340A006B7374 /* NewsFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsFeedViewController.m; sourceTree = "<group>"; };
 		6832CEA470AEFBFD25D37C1A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		A40328CD1A8201310040D282 /* AMTagListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMTagListView.h; sourceTree = "<group>"; };
+		A40328CE1A8201310040D282 /* AMTagListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMTagListView.m; sourceTree = "<group>"; };
+		A40328CF1A8201310040D282 /* AMTagView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMTagView.h; sourceTree = "<group>"; };
+		A40328D01A8201310040D282 /* AMTagView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMTagView.m; sourceTree = "<group>"; };
+		A40328D51A8202720040D282 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		A40328D61A8202720040D282 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		A40328D71A8202720040D282 /* RobotoCondensed-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoCondensed-Bold.ttf"; sourceTree = "<group>"; };
+		A40328D81A8202720040D282 /* RobotoCondensed-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoCondensed-Light.ttf"; sourceTree = "<group>"; };
+		A40328D91A8202720040D282 /* RobotoCondensed-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoCondensed-Regular.ttf"; sourceTree = "<group>"; };
+		A40328E41A8219A20040D282 /* icon_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_close.png; sourceTree = "<group>"; };
+		A40328E61A821D540040D282 /* search_City.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_City.png; sourceTree = "<group>"; };
+		A40328E91A8225660040D282 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		A40328EA1A8225660040D282 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		A43EDACA1A79157600A1A75B /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
 		A43EDACB1A79157600A1A75B /* Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Post.m; sourceTree = "<group>"; };
 		A43EDACD1A79157600A1A75B /* Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Comment.h; sourceTree = "<group>"; };
@@ -226,6 +249,8 @@
 		56FCEF481A7424E3006B7374 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				A40328E61A821D540040D282 /* search_City.png */,
+				A40328E41A8219A20040D282 /* icon_close.png */,
 				56BFACE11A7634D900CADEDF /* reveal-icon.png */,
 				56BFACE21A7634D900CADEDF /* reveal-icon@2x.png */,
 				56BFACD31A762DEF00CADEDF /* city.png */,
@@ -251,6 +276,38 @@
 				451149F762A744E3EE1BD01F /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		A40328CC1A8201310040D282 /* TagListView */ = {
+			isa = PBXGroup;
+			children = (
+				A40328CD1A8201310040D282 /* AMTagListView.h */,
+				A40328CE1A8201310040D282 /* AMTagListView.m */,
+				A40328CF1A8201310040D282 /* AMTagView.h */,
+				A40328D01A8201310040D282 /* AMTagView.m */,
+			);
+			path = TagListView;
+			sourceTree = "<group>";
+		};
+		A40328D41A8202720040D282 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				A40328D51A8202720040D282 /* Roboto-Bold.ttf */,
+				A40328D61A8202720040D282 /* Roboto-Regular.ttf */,
+				A40328D71A8202720040D282 /* RobotoCondensed-Bold.ttf */,
+				A40328D81A8202720040D282 /* RobotoCondensed-Light.ttf */,
+				A40328D91A8202720040D282 /* RobotoCondensed-Regular.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		A40328E81A8225660040D282 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				A40328E91A8225660040D282 /* Reachability.h */,
+				A40328EA1A8225660040D282 /* Reachability.m */,
+			);
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 		D86DDADB1A81581E00E7FA24 /* Profile */ = {
@@ -295,6 +352,7 @@
 		F4BDDF751983A50500C52E97 = {
 			isa = PBXGroup;
 			children = (
+				A40328D41A8202720040D282 /* Font */,
 				56BFACEF1A76A0A500CADEDF /* ActivityIndicator */,
 				56BFACE81A7670F000CADEDF /* AppUserInfo.h */,
 				56BFACE91A7670F000CADEDF /* AppUserInfo.m */,
@@ -335,6 +393,8 @@
 		F4BDDF871983A50500C52E97 /* Social Network */ = {
 			isa = PBXGroup;
 			children = (
+				A40328E81A8225660040D282 /* Reachability */,
+				A40328CC1A8201310040D282 /* TagListView */,
 				F4A1735E1A78BF4F00E44730 /* SJSlidebar */,
 				F4224F6D1A594306003A353E /* MappingObjects */,
 				F4BDDFB71983A8DC00C52E97 /* Utility */,
@@ -475,17 +535,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A40328DC1A8202720040D282 /* RobotoCondensed-Bold.ttf in Resources */,
 				56FCEF541A742B4C006B7374 /* add.png in Resources */,
 				56FCEF531A742B4C006B7374 /* like.png in Resources */,
+				A40328E71A821D540040D282 /* search_City.png in Resources */,
 				56BFACD81A762DEF00CADEDF /* news1.png in Resources */,
 				56FCEF581A7431E2006B7374 /* comments.png in Resources */,
 				56BFACE41A7634D900CADEDF /* reveal-icon@2x.png in Resources */,
 				56FCEF4A1A7424E3006B7374 /* back.png in Resources */,
+				A40328DB1A8202720040D282 /* Roboto-Regular.ttf in Resources */,
+				A40328DA1A8202720040D282 /* Roboto-Bold.ttf in Resources */,
+				A40328DE1A8202720040D282 /* RobotoCondensed-Regular.ttf in Resources */,
 				56FCEF4D1A7425ED006B7374 /* menu.png in Resources */,
+				A40328E51A8219A20040D282 /* icon_close.png in Resources */,
 				F4BDDF9A1983A50500C52E97 /* Images.xcassets in Resources */,
 				56BFACD71A762DEF00CADEDF /* logout.png in Resources */,
 				56FCEF521A742B4C006B7374 /* profile_pic.png in Resources */,
 				F4BDDF8C1983A50500C52E97 /* InfoPlist.strings in Resources */,
+				A40328DD1A8202720040D282 /* RobotoCondensed-Light.ttf in Resources */,
 				56BFACD61A762DEF00CADEDF /* city.png in Resources */,
 				56FCEF4E1A7425ED006B7374 /* menu_1.png in Resources */,
 				F4BDDF951983A50500C52E97 /* Main.storyboard in Resources */,
@@ -544,7 +611,9 @@
 			files = (
 				56BFACF81A76A0A500CADEDF /* UIView+Additions.m in Sources */,
 				F4224F701A594332003A353E /* User.m in Sources */,
+				A40328D11A8201310040D282 /* AMTagListView.m in Sources */,
 				F4EC946C1A81ED350063F0E4 /* CommentsViewController.m in Sources */,
+				A40328EB1A8225660040D282 /* Reachability.m in Sources */,
 				F4BDDF921983A50500C52E97 /* AppDelegate.m in Sources */,
 				F4DE16061A7F90E800BA3C57 /* Result.m in Sources */,
 				F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */,
@@ -552,6 +621,7 @@
 				56FCEF611A74340A006B7374 /* NewsFeedViewController.m in Sources */,
 				56BFACEA1A7670F000CADEDF /* AppUserInfo.m in Sources */,
 				D86DDADE1A81583000E7FA24 /* ProfileViewController.m in Sources */,
+				A40328D21A8201310040D282 /* AMTagView.m in Sources */,
 				F4A173641A78BF5000E44730 /* MenuOptionsViewController.m in Sources */,
 				A43EDACF1A79157600A1A75B /* Comment.m in Sources */,
 				568ADAD61A4A68B400DB8C49 /* QuestionAnswerViewController.m in Sources */,

@@ -7,20 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AMTagListView.h"
 
 @interface QuestionAnswerViewController : UIViewController<UITextViewDelegate>{
     UIEdgeInsets contentInsets;
     NSMutableArray *resultArray;
+    NSMutableArray *cityArray;
 }
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewMain;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForQuestion1;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-@property (weak, nonatomic) IBOutlet UITableView *tblViewForResult;
-@property (weak, nonatomic) IBOutlet UITextView *txtViewForAnswer;
+@property (weak, nonatomic) IBOutlet AMTagListView *tagListView;
+@property (weak, nonatomic) IBOutlet UITableView *tableViewForResult;
 
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *btnSkip;
 
 - (IBAction)btnSkipTapped:(id)sender;

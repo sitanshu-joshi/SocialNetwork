@@ -13,6 +13,7 @@
 - (IBAction)backButtonTapped:(id)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (weak, nonatomic) IBOutlet UITextView *txtViewForPostDetail;
 
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForComment;
 @property (weak, nonatomic) IBOutlet UILabel *lblDateTime;
