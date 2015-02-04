@@ -49,7 +49,6 @@
     self.txtViewForQuestion1.layer.cornerRadius = 7.0;
     self.txtViewForQuestion1.layer.masksToBounds = YES;
     self.txtViewForQuestion1.text = Question1;
-    self.btnSubmit.layer.cornerRadius = 5.0;
     self.btnNext.layer.cornerRadius = 5.0;
 }
 
@@ -72,6 +71,8 @@
         [tagListView.tags removeAllObjects];
         tagListView = nil;
         [tableViewForResult setHidden:YES];
+        tableViewForResult.layer.cornerRadius = 7.0;
+        tableViewForResult.layer.masksToBounds = YES;
     }
 }
 
@@ -83,6 +84,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"resultCell"];
+    if(!cell){
+        cell = [tableView dequeueReusableCellWithIdentifier:@"resultCell"];
+    }
     Result *result = [resultArray objectAtIndex:indexPath.row];
     UILabel *lblAddress =(UILabel *)[cell.contentView viewWithTag:999];
     lblAddress.text = result.formatted_address;

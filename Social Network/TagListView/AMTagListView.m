@@ -63,7 +63,7 @@
 
 - (void)addTag:(NSString*)text withClose:(BOOL)isClose color:(UIColor *)tagColor withDesc:(NSString *)strDesc {
     @autoreleasepool {
-        UIFont* font = [[AMTagView appearance] textFont] ? [[AMTagView appearance] textFont] : kDefaultFont;
+        UIFont* font = kDefaultFont;
         CGSize size = [text sizeWithAttributes:@{NSFontAttributeName: font}];
         float padding = [[AMTagView appearance] textPadding] ? [[AMTagView appearance] textPadding] : kDefaultTextPadding;
         float tagLength = [[AMTagView appearance] tagLength] ? [[AMTagView appearance] tagLength] : kDefaultTagLength;
@@ -169,7 +169,8 @@
 {
 	for (NSString* text in array) {
         //NSArray *arrayWithNameDesc = [text componentsSeparatedByString:@"::"];
-		[self addTag:text withClose:isClose color:tagColor withDesc:text];
+        NSString *strText = [[text componentsSeparatedByString:@","]lastObject];
+		[self addTag:strText withClose:isClose color:tagColor withDesc:text];
 	}
 }
 

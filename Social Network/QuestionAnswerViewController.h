@@ -22,12 +22,9 @@
 @property (weak, nonatomic) IBOutlet AMTagListView *tagListView;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewForResult;
 
-
-@property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 @property (weak, nonatomic) IBOutlet UIButton *btnSkip;
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 
 - (IBAction)btnSkipTapped:(id)sender;
-- (IBAction)btnSubmitTapped:(id)sender;
 - (IBAction)nextButtonTapped:(id)sender;
 @end
