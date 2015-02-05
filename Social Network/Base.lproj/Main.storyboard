@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
@@ -23,7 +23,6 @@
                     <navigationItem key="navigationItem" title="Home" id="3Ki-yX-Ee2"/>
                     <connections>
                         <segue destination="jhJ-E8-seI" kind="push" identifier="pushToSlideBar" id="yGZ-1n-fiw"/>
-                        <segue destination="BnG-3K-hsK" kind="push" identifier="pushToQuestion" id="N8g-c1-jRh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -577,7 +576,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" alpha="0.5499999999999996" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="40" sectionHeaderHeight="22" sectionFooterHeight="22" id="p2d-rA-37W">
-                                                <rect key="frame" x="8" y="-9" width="304" height="240"/>
+                                                <rect key="frame" x="8" y="9" width="304" height="240"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -905,7 +904,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="cxj-G6-NIP"/>
+                        <segue destination="BnG-3K-hsK" kind="relationship" relationship="rootViewController" id="KTC-IR-x7M"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="se3-5H-uNE" userLabel="First Responder" sceneMemberID="firstResponder"/>

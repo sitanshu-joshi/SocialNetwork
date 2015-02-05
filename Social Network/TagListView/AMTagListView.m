@@ -63,7 +63,7 @@
 
 - (void)addTag:(NSString*)text withClose:(BOOL)isClose color:(UIColor *)tagColor withDesc:(NSString *)strDesc {
     @autoreleasepool {
-        UIFont* font = kDefaultFont;
+        UIFont *font = kDefaultFont;
         CGSize size = [text sizeWithAttributes:@{NSFontAttributeName: font}];
         float padding = [[AMTagView appearance] textPadding] ? [[AMTagView appearance] textPadding] : kDefaultTextPadding;
         float tagLength = [[AMTagView appearance] tagLength] ? [[AMTagView appearance] tagLength] : kDefaultTagLength;
@@ -86,14 +86,14 @@
             
                     tagView.tagColor = tagColor;
                     //tagView.tagType = kFav_League;
-                    imgView.image = [UIImage imageNamed:@"city"];
+                    //imgView.image = [UIImage imageNamed:@"city"];
             
             UIButton *btnClose = [UIButton buttonWithType:UIButtonTypeCustom];
-            [btnClose setFrame:CGRectMake(tagView.frame.size.width-28, tagView.frame.origin.y+2, 28, 28)];
+            [btnClose setFrame:CGRectMake(tagView.frame.size.width-28, tagView.frame.origin.y, 28, 28)];
             [btnClose setImage:[UIImage imageNamed:@"icon_close"] forState:UIControlStateNormal];
             [btnClose addTarget:self action:@selector(closeBtnTapped:) forControlEvents:UIControlEventTouchUpInside];
             [btnClose setContentMode:UIViewContentModeCenter];
-            [btnClose setFrame:CGRectMake(tagView.frame.size.width-28, tagView.frame.origin.y+3, 28, 28)];
+            [btnClose setFrame:CGRectMake(tagView.frame.size.width-28, tagView.frame.origin.y, 28, 28)];
             
             [tagView addSubview:btnClose];
             [tagView setupWithText:text];
@@ -167,10 +167,10 @@
 
 - (void)addTags:(NSArray*)array withClose:(BOOL)isClose color:(UIColor *)tagColor
 {
-	for (NSString* text in array) {
-        //NSArray *arrayWithNameDesc = [text componentsSeparatedByString:@"::"];
-        NSString *strText = [[text componentsSeparatedByString:@","]lastObject];
-		[self addTag:strText withClose:isClose color:tagColor withDesc:text];
+	for (NSString* address in array) {
+        NSArray *addressComponenet = [address componentsSeparatedByString:@"," ];
+        NSString *strText = [addressComponenet objectAtIndex:[addressComponenet count]-2];
+		[self addTag:strText withClose:isClose color:tagColor withDesc:strText];
 	}
 }
 

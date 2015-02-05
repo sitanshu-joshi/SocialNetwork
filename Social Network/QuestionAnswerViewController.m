@@ -50,6 +50,8 @@
     self.txtViewForQuestion1.layer.masksToBounds = YES;
     self.txtViewForQuestion1.text = Question1;
     self.btnNext.layer.cornerRadius = 5.0;
+    tableViewForResult.layer.cornerRadius = 7.0;
+    tableViewForResult.layer.masksToBounds = YES;
 }
 
 #pragma mark - IBAction Methods
@@ -71,8 +73,6 @@
         [tagListView.tags removeAllObjects];
         tagListView = nil;
         [tableViewForResult setHidden:YES];
-        tableViewForResult.layer.cornerRadius = 7.0;
-        tableViewForResult.layer.masksToBounds = YES;
     }
 }
 
