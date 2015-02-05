@@ -19,7 +19,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor blackColor]];
-    [tableViewForResult setHidden:YES];
+    //[tableViewForResult setHidden:YES];
+    [self setTableViewHeightZero];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -33,7 +34,7 @@
     [super viewWillDisappear:animated];
     [RSActivityIndicator hideIndicator];
     [self performSelector:@selector(hidekeyBoard) withObject:nil afterDelay:0.3];
-    tableViewForResult = nil;
+    //tableViewForResult = nil;
     [tagListView.tags removeAllObjects];
     tagListView = nil;
     scrollViewMain = nil;
@@ -72,7 +73,9 @@
         self.searchBar.text = @"";
         [tagListView.tags removeAllObjects];
         tagListView = nil;
-        [tableViewForResult setHidden:YES];
+        //[tableViewForResult setHidden:YES];
+        [self setTableViewHeightZero];
+        
     }
 }
 
@@ -97,7 +100,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     Result *result = [resultArray objectAtIndex:indexPath.row];
-    [self updateSelectedCityToServerWithAddress:result.formatted_address];
+    //[self updateSelectedCityToServerWithAddress:result.formatted_address];
     [self addCityTagWithAddress:result.formatted_address];
 }
 -(void)updateSelectedCityToServerWithAddress:(NSString *)address{
@@ -143,7 +146,7 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchbar {
     [searchbar resignFirstResponder];
-    [self getPlaceForAddress:searchbar.text];
+    //[self getPlaceForAddress:searchbar.text];
     self.searchBar.text = @"";
     [self hidekeyBoard];
 }
@@ -168,7 +171,7 @@
         NSLog(@"%@",dataFromGoogle.results);
         resultArray = [NSMutableArray arrayWithArray:[dataFromGoogle.results allObjects]];
         if (resultArray.count >= 7) {
-            [tableViewForResult setFrame:CGRectMake(tableViewForResult.frame.origin.x, tableViewForResult.frame.origin.y, tableViewForResult.frame.size.width, self.view.frame.size.height-170)];
+            [tableViewForResult setFrame:CGRectMake(tableViewForResult.frame.origin.x, tableViewForResult.frame.origin.y, tableViewForResult.frame.size.width, 240)];
             [tableViewForResult setHidden:NO];
         } else {
             [tableViewForResult setFrame:CGRectMake(tableViewForResult.frame.origin.x, tableViewForResult.frame.origin.y, tableViewForResult.frame.size.width, resultArray.count*40)];
@@ -219,8 +222,8 @@
 //To hide Keyboard
 -(void)hidekeyBoard {
     [self.searchBar resignFirstResponder];
-    [tableViewForResult setHidden:YES];
-    [self scrollableOff];
+    //[tableViewForResult setHidden:YES];
+    [self setTableViewHeightZero];
 }
 
 
@@ -229,6 +232,10 @@
     [self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
     [self hidekeyBoard];
     [self scrollableOff];
+}
+
+-(void)setTableViewHeightZero{
+    tableViewForResult.frame = CGRectMake(tableViewForResult.frame.origin.x, tableViewForResult.frame.origin.y, tableViewForResult.frame.size.width, 0);
 }
 #pragma mark Autoresizing
 -(void)scrollableOn {
@@ -244,7 +251,8 @@
     @autoreleasepool {
         scrollViewMain.contentSize = (CGSize){1.0, self.view.frame.size.height-64};
         scrollViewMain.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64);
-        [tableViewForResult setHidden:YES];
+//        [tableViewForResult setHidden:YES];
+        [self setTableViewHeightZero];
         [self.searchBar resignFirstResponder];
     }
 }
