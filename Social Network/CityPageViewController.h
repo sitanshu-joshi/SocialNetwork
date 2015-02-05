@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnShare;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForPost;
 @property (weak, nonatomic) IBOutlet UIButton *btnVideoSharing;
+- (IBAction)uploadPhotoButtonTapped:(id)sender;
+- (IBAction)uploadVideoButtonTapped:(id)sender;
 
 
 @end

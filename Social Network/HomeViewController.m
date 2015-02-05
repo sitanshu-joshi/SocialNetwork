@@ -51,19 +51,21 @@
     if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
         if([FBSession activeSession].isOpen){
             //set AppUserInfo
-            
-            [[AppUserInfo sharedAppUserInfo] setUserName:user.name];
-            [[AppUserInfo sharedAppUserInfo] setFirstName:user.first_name];
-            [[AppUserInfo sharedAppUserInfo] setLastName:user.last_name];
-            [[AppUserInfo sharedAppUserInfo] setBirthday:user.birthday];
-            [[AppUserInfo sharedAppUserInfo] setUserEmail:[user objectForKey:@"email"]];
+            AppUserInfo *appUserInfo = [AppUserInfo sharedAppUserInfo];
+            appUserInfo.userName = user.name;
+            appUserInfo.firstName = user.first_name;
+            appUserInfo.lastName = user.last_name;
+            appUserInfo.userEmail = [user objectForKey:@"email"];
+            appUserInfo.userId = user.id;
+            appUserInfo.birthday = user.birthday;
+        
             //set AppLogin Details
-            
+            AppLogin *appLoginInfo = [AppLogin sharedAppLogin];
             NSString *strToken  = [NSString stringWithFormat:@"%@",[FBSession activeSession].accessTokenData.accessToken];
             NSString *strPassword = [strToken substringFromIndex:[strToken length] - 8];
-            [[AppLogin sharedAppLogin] setUserEmail:[user objectForKey:@"email"]];
-            [[AppLogin sharedAppLogin] setPassword:strPassword];
-            [[AppLogin sharedAppLogin] setIsUserLoggedIn:TRUE];
+            appLoginInfo.userEmail = [user objectForKey:@"email"];
+            appLoginInfo.password = strPassword;
+            appLoginInfo.isUserLoggedIn = TRUE;
             
             NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
             [dict setValue:user.username forKey:kUSER_NAME];

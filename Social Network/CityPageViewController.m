@@ -21,7 +21,7 @@
     self.revealViewController.delegate = self;
     page = 1;
     strCityId = @"";    //set city id here
-    [self getPostDetailsForCity:strCityId pageNumber:page];
+    //[self getPostDetailsForCity:strCityId pageNumber:page];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -75,16 +75,29 @@
     @autoreleasepool {
         if(button.tag == 0){
            //Photo
-            actionSheetButtonTitle = kPhotoLibrary;
+           
         }else{
         //Video
-            actionSheetButtonTitle = kVideoLibrary;
+           
         }
-        [UIView animateWithDuration:0.5 animations:^{
-            UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakeVideo delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:actionSheetButtonTitle,kCamera,nil];
-            [actionSheet showInView:self.view];
-        }];
+       
     }
+}
+
+- (IBAction)uploadPhotoButtonTapped:(id)sender {
+     actionSheetButtonTitle = kPhotoLibrary;
+    [UIView animateWithDuration:0.5 animations:^{
+        UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakePhoto delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:actionSheetButtonTitle,kCamera,nil];
+        [actionSheet showInView:self.view];
+    }];
+}
+
+- (IBAction)uploadVideoButtonTapped:(id)sender {
+     actionSheetButtonTitle = kVideoLibrary;
+    [UIView animateWithDuration:0.5 animations:^{
+        UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakeVideo delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:actionSheetButtonTitle,kCamera,nil];
+        [actionSheet showInView:self.view];
+    }];
 }
 
 #pragma mark - UIActionSheet Delegate Methods
@@ -123,7 +136,7 @@
                     return NO;
                 }else{
                     imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                    imagePicker.mediaTypes = [[NSArray alloc]initWithObjects:(NSString *)kUTTypeMovie, nil];
+                    imagePicker.mediaTypes = [[NSArray alloc]initWithObjects:(NSString *)kUTTypeImage, nil];
                     // Hides the controls for moving & scaling pictures, or for
                     // trimming movies. To instead show the controls, use YES.
                     imagePicker.allowsEditing = NO;
@@ -311,4 +324,5 @@
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
+
 @end
