@@ -81,7 +81,7 @@
             actionSheetButtonTitle = kVideoLibrary;
         }
         [UIView animateWithDuration:0.5 animations:^{
-            UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakeVideo delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:buttonTitle,kCamera,nil];
+            UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakeVideo delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:actionSheetButtonTitle,kCamera,nil];
             [actionSheet showInView:self.view];
         }];
     }
