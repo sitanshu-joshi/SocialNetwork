@@ -15,6 +15,7 @@
 @synthesize lastName;
 @synthesize birthday;
 @synthesize userId;
+@synthesize userEmail;
 
 +(AppUserInfo *)sharedAppUserInfo{
     
@@ -61,6 +62,14 @@
     [[NSUserDefaults standardUserDefaults] setObject:userId forKey:kUSER_ID];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
+-(void)setUserEmail:(NSString *)userEmail{
+    
+    userEmail = userEmail;
+    [[NSUserDefaults standardUserDefaults] setObject:userEmail forKey:kUSER_EMAIL];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 -(NSString *)userName{
     
     return [[NSUserDefaults standardUserDefaults] objectForKey:kUSER_NAME];
@@ -89,6 +98,13 @@
     
     return [[NSUserDefaults standardUserDefaults]objectForKey:kUSER_ID];
 }
+
+-(NSString *)userEmail{
+    
+    return [[NSUserDefaults standardUserDefaults]objectForKey:kUSER_EMAIL];
+    
+}
+
 -(void)clearUserDefaults{
     
     [self setUserName:@""];
@@ -96,6 +112,7 @@
     [self setLastName:@""];
     [self setBirthday:@""];
     [self setUserId:@""];
+    [self setUserEmail:@""];
 }
 
 @end

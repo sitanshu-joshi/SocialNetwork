@@ -349,4 +349,12 @@ static AppDelegate *appDelegate;
     }
 }
 
+
+-(void)backToRootView {
+    UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+    NSArray *arrViewControllers = nav.viewControllers;
+    if([[arrViewControllers objectAtIndex:0] isKindOfClass:[HomeViewController class]]){
+        [nav popToViewController:[arrViewControllers objectAtIndex:0] animated:YES];
+    }
+}
 @end

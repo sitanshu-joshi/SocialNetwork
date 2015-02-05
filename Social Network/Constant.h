@@ -70,12 +70,32 @@
 #define kAuth_FB            0
 
 /*
+ Facebook Response Parameters
+ */
+#define kUserLocation        @"location"
+#define kLocationName        @"name"
+#define kUserGender          @"gender"
+#define kUserBirthDate       @"birthday"
+
+//Response Code
+#define kCode_Success               200
+#define kInvaliduser                301
+#define kCode_Error                 500
+
+#define kUserNotAuthenticate        1012
+#define kCode_Request_Time_Out          1001
+#define kCode_Could_Not_Connect_Server  1004
+#define kCode_NSURLErrorNotConnectedToInternet 1009
+
+/*
  Auth Param
  */
 #define kLogin_User_Email       @"Login_Email"
 #define kLogin_User_Password    @"Login_Password"
 #define kIs_User_Logged_In      @"isUserLoggedIn"
-/*ßß
+
+
+/*
  Auth Login/SignUp
  */
 #define kUSER_ID            @"USER_ID"
@@ -127,10 +147,17 @@
  */
 #define kOkButton       @"Ok"
 #define kCancelButton   @"Cancel"
+#define kYesButton      @"Yes"
+#define kNoButton       @"No"
+
+//Activity Indicator Message
+#define kActivityIndicatorMessage       @"Please wait"
+
 
 //Alert
 #define kAlert_NoInternet                   @"Internet connection is not found, please check your connection setting."
-
+#define kAlert_Logout                       @"Are you want to logout ?"
+#define kAlert_Enter_City                   @"Please Select City"
 
 // City
 #define  tagColorForCity        [UIColor colorWithRed:96.0/255.0 green:92.0/255.0 blue:168.0/255.0 alpha:1.0]

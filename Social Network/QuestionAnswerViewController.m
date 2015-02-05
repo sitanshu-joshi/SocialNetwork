@@ -103,7 +103,7 @@
 -(void)updateSelectedCityToServerWithAddress:(NSString *)address{
     if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
         if(![address isEqualToString:@""]){
-            [RSActivityIndicator showIndicatorWithTitle:@"Please wait"];
+            [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
             NSArray *arrOfAddress = [address componentsSeparatedByString:@","];
             NSString *strCity, *strCountry, *strState;
             strCountry = [NSString stringWithFormat:@"%@",[arrOfAddress lastObject]];
@@ -122,7 +122,7 @@
             [dict setObject:wantsToVisit forKey:kWANTS_TO_VISIT];
             [self submitAnswer:dict];
         }else{
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:@"Please Select City" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Enter_City delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
         }
     }else{
         [[[UIAlertView alloc] initWithTitle:kAppTitle message:kAlert_NoInternet delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil] show];
@@ -187,7 +187,7 @@
 
 
 -(void)submitAnswer:(NSMutableDictionary *)dict {
-    [RSActivityIndicator showIndicatorWithTitle:@"Please wait"];
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kAddCity parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         //[self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];

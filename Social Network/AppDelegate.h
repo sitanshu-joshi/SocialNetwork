@@ -57,5 +57,6 @@
 
 //To check Network Rechability
 -(BOOL)isNetworkReachableToInternet;
+-(void)backToRootView;
 
 @end
