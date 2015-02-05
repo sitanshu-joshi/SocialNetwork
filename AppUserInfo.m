@@ -30,7 +30,7 @@
 -(void)setUserName:(NSString *)username{
     
     userName = username;
-    [[NSUserDefaults standardUserDefaults] setObject:self.userName forKey:kUSER_NAME];
+    [[NSUserDefaults standardUserDefaults] setObject:userName forKey:kUSER_NAME];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -63,9 +63,9 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
--(void)setUserEmail:(NSString *)userEmail{
+-(void)setUserEmail:(NSString *)email{
     
-    userEmail = userEmail;
+    userEmail = email;
     [[NSUserDefaults standardUserDefaults] setObject:userEmail forKey:kUSER_EMAIL];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
