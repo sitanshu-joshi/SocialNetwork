@@ -16,7 +16,8 @@ typedef enum {
     POST,
     LIKE_COUNT,
     COMMENT,
-    PLACES
+    PLACES,
+    CITY
 } OPPCodeType;
 
 

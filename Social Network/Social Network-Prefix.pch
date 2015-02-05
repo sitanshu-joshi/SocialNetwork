@@ -40,5 +40,7 @@
     #import "Post.h"
     #import "Result.h"
     #import "DataFromGoogle.h"
+    #import "City.h"
+
 
 #endif
