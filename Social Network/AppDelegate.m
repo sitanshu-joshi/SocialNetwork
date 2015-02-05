@@ -13,7 +13,7 @@ static AppDelegate *appDelegate;
 
 @implementation AppDelegate
 @synthesize nsManegedObjectContext,managedObjectModel,persistentStoreCoordinator;
-@synthesize rkMOS,rkObjectManager,rkomForLogin,rkomForComment,rkomForPost,rkomForPlaces;
+@synthesize rkMOS,rkObjectManager,rkomForLogin,rkomForComment,rkomForPost,rkomForPlaces,rkomForCity;
 @synthesize loggedUser;
 
 +(AppDelegate *)appDelegate{
@@ -336,6 +336,16 @@ static AppDelegate *appDelegate;
     [rkomForPlaces addRequestDescriptor:[RKRequestDescriptor requestDescriptorWithMapping:[[DataFromGoogle objectMappingForDataFromGoogle:PLACES] inverseMapping] objectClass:[DataFromGoogle class] rootKeyPath:@"" method:RKRequestMethodGET]];
     RKResponseDescriptor *responseDescriptorForPlace = [RKResponseDescriptor responseDescriptorWithMapping:[DataFromGoogle objectMappingForDataFromGoogle:PLACES] method:RKRequestMethodGET pathPattern:nil keyPath:@"" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     [rkomForPlaces addResponseDescriptor:responseDescriptorForPlace];
+    
+    /*
+     City Mapping
+     */
+    rkomForCity = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kBase_URL]];
+    [rkomForCity setManagedObjectStore:rkMOS];
+    [rkomForCity addRequestDescriptor:[RKRequestDescriptor requestDescriptorWithMapping:[[DataForResponse objectMappingForDataResponse:CITY] inverseMapping] objectClass:[DataForResponse class] rootKeyPath:@"data" method:RKRequestMethodGET]];
+    
+    RKResponseDescriptor *responseDescriptorForCity = [RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:CITY] method:RKRequestMethodGET pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    [rkomForPost addResponseDescriptor:responseDescriptorForCity];
 }
 
 

@@ -48,6 +48,9 @@
 #define kResource_SignUp_Auth       @"signup/oauth"                             //POST
 #define kResource_Login             @"login"                                    //POST
 #define kLogout                     @"logout"
+#define kGetNews                    @"usercity/post?page=%d"                     //GET
+#define kGetListOfCity              @"city?page=%d"                              //GET
+#define kGetCityId                  @"city?CITY_NAME=%@&STATE=%@&COUNTRY=%@"    //GET
 #define kAddCity                    @"city"                                     //POST
 #define kWallPostOnUserCity         @"city/post/%@"                             //POST
 #define kGetPost                    @"city/post/%@?page=%d"                     //GET

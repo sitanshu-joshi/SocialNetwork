@@ -43,6 +43,7 @@
 @property (nonatomic, strong) RKObjectManager *rkomForPost;
 @property (nonatomic, strong) RKObjectManager *rkomForComment;
 @property (nonatomic, strong) RKObjectManager *rkomForPlaces;
+@property (nonatomic, strong) RKObjectManager *rkomForCity;
 
 
 
