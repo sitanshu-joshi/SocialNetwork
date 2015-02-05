@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, CustomSlideViewControllerDelegate>{
+@interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, CustomSlideViewControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>{
     int page;
     NSMutableArray *mutArrOfPost;
     NSString *strCityId;
+    UIImagePickerController *imagePicker;
+    NSString *actionSheetButtonTitle;
 }
 @property (strong,nonatomic) NSString *strAddress;
 @property (weak, nonatomic) IBOutlet UITableView *tblView;

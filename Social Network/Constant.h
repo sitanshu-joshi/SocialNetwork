@@ -146,12 +146,19 @@
 #define kNotification_QueAnsSuccess           @"notification_QueAnsSuccess"
 
 /*
- UIAlertView Button Title
+ UIAlertView/ActionSheet Button Title
  */
 #define kOkButton       @"Ok"
 #define kCancelButton   @"Cancel"
 #define kYesButton      @"Yes"
 #define kNoButton       @"No"
+#define kTakeVideo      @"Take Video"
+#define kTakePhoto      @"Take Photo"
+#define kPhotoLibrary   @"Photo Library"
+#define kVideoLibrary   @"Video Library"
+#define kCamera         @"Camera"
+
+
 
 //Activity Indicator Message
 #define kActivityIndicatorMessage       @"Please wait"
@@ -161,7 +168,7 @@
 #define kAlert_NoInternet                   @"Internet connection is not found, please check your connection setting."
 #define kAlert_Logout                       @"Are you want to logout ?"
 #define kAlert_Enter_City                   @"Please Select City"
-
+#define kCameraAlert                        @"Camera is not available"
 // City
 #define  tagColorForCity        [UIColor colorWithRed:96.0/255.0 green:92.0/255.0 blue:168.0/255.0 alpha:1.0]
 

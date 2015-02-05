@@ -69,6 +69,103 @@
     return YES;
 }
 
+
+- (IBAction)captureVideoBtnTapped:(UIButton *)button{
+    //[self hideKeyboard];
+    @autoreleasepool {
+        if(button.tag == 0){
+           //Photo
+            actionSheetButtonTitle = kPhotoLibrary;
+        }else{
+        //Video
+            actionSheetButtonTitle = kVideoLibrary;
+        }
+        [UIView animateWithDuration:0.5 animations:^{
+            UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakeVideo delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:buttonTitle,kCamera,nil];
+            [actionSheet showInView:self.view];
+        }];
+    }
+}
+
+#pragma mark - UIActionSheet Delegate Methods
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex == 0){
+        @autoreleasepool {
+            //PHOTO ALBUM
+            if([actionSheetButtonTitle isEqualToString:kPhotoLibrary]){
+                [self startCameraControllerFromViewController:self usingDelegate:self sourceType:(int)buttonIndex selectedSource:kPhotoLibrary];
+            }else if([actionSheetButtonTitle isEqualToString:kVideoLibrary]){
+                [self startCameraControllerFromViewController:self usingDelegate:self sourceType:(int)buttonIndex selectedSource:kVideoLibrary];
+            }
+        }
+    }else if(buttonIndex == 1){
+        @autoreleasepool {
+            //CAMERA
+            [self startCameraControllerFromViewController:self usingDelegate:self sourceType:(int)buttonIndex selectedSource:kCamera];
+        }
+    }
+}
+
+//This will call to capture video from camera or import from Library
+-(BOOL)startCameraControllerFromViewController:(UIViewController*)controller usingDelegate:(id )delegate sourceType:(int)source selectedSource:(NSString *)strSourceType
+{
+    @autoreleasepool {
+        // Get image picker
+        imagePicker = [[UIImagePickerController alloc] init];
+        //To Check SourceType
+        if(source == 0){
+            //Photo Album
+            // 1 - Validations
+            if([strSourceType isEqualToString:kPhotoLibrary]){
+                if (([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary] == NO) || (delegate == nil) || (controller == nil)) {
+                    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:kAppTitle message:kCameraAlert delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+                    [alertView show];
+                    return NO;
+                }else{
+                    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                    imagePicker.mediaTypes = [[NSArray alloc]initWithObjects:(NSString *)kUTTypeMovie, nil];
+                    // Hides the controls for moving & scaling pictures, or for
+                    // trimming movies. To instead show the controls, use YES.
+                    imagePicker.allowsEditing = NO;
+                    imagePicker.delegate = delegate;
+                    // 3 - Display image picker
+                    [controller presentViewController: imagePicker animated:YES completion:nil];
+                    return YES;
+                }
+            }else if ([strSourceType isEqualToString:kVideoLibrary]){
+                if (([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary] == NO) || (delegate == nil) || (controller == nil)) {
+                    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:kAppTitle message:kCameraAlert delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+                    [alertView show];
+                    return NO;
+                }else{
+                    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                    imagePicker.mediaTypes = [[NSArray alloc]initWithObjects:(NSString *)kUTTypeMovie, nil];
+                    // Hides the controls for moving & scaling pictures, or for
+                    // trimming movies. To instead show the controls, use YES.
+                    imagePicker.allowsEditing = NO;
+                    imagePicker.delegate = delegate;
+                    // 3 - Display image picker
+                    [controller presentViewController: imagePicker animated:YES completion:nil];
+                    return YES;
+                }
+            }
+        }else if(source == 1){
+            //Camera
+            // 1 - Validations
+            if (([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] == NO) || (delegate == nil) || (controller == nil)) {
+                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:kAppTitle message:kCameraAlert delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+                [alertView show];
+                return NO;
+            }else{
+                //[self performSegueWithIdentifier:kPushToCamera sender:self];
+                return YES;
+            }
+        }
+        return YES;
+    }
+}
+
+
 #pragma mark - To get Post Data
 -(void)getPostDetailsForCity:(NSString *)cityId pageNumber:(int)pageNumber{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
