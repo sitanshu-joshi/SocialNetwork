@@ -72,8 +72,7 @@
         [self hidekeyBoard];
         self.searchBar.text = @"";
         [tagListView.tags removeAllObjects];
-        tagListView = nil;
-        //[tableViewForResult setHidden:YES];
+       // tagListView = nil;
         [self setTableViewHeightZero];
         
     }
@@ -146,7 +145,6 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchbar {
     [searchbar resignFirstResponder];
-    //[self getPlaceForAddress:searchbar.text];
     self.searchBar.text = @"";
     [self hidekeyBoard];
 }
@@ -251,7 +249,6 @@
     @autoreleasepool {
         scrollViewMain.contentSize = (CGSize){1.0, self.view.frame.size.height-64};
         scrollViewMain.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64);
-//        [tableViewForResult setHidden:YES];
         [self setTableViewHeightZero];
         [self.searchBar resignFirstResponder];
     }

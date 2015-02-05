@@ -22,6 +22,8 @@
     self.revealViewController.delegate = self;
     containerViewForCityInput.layer.cornerRadius = 5.0;
     containerViewForCityInput.layer.masksToBounds = YES;
+    self.tableViewForCityResult.layer.cornerRadius = 7.0;
+    self.tableViewForCityResult.layer.masksToBounds = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -138,13 +140,13 @@
         NSLog(@"%@",dataFromGoogle.results);
         resultArray = [NSMutableArray arrayWithArray:[dataFromGoogle.results allObjects]];
         if (resultArray.count >= 7) {
-            [self.tableViewForCityResult setFrame:CGRectMake(self.tableViewForCityResult.frame.origin.x, self.tableViewForCityResult.frame.origin.y, self.tableViewForCityResult.frame.size.width, self.view.frame.size.height-170)];
+            [self.tableViewForCityResult setFrame:CGRectMake(self.tableViewForCityResult.frame.origin.x, self.tableViewForCityResult.frame.origin.y, self.tableViewForCityResult.frame.size.width,240)];
             [self.tableViewForCityResult setHidden:NO];
         } else {
             [self.tableViewForCityResult setFrame:CGRectMake(self.tableViewForCityResult.frame.origin.x, self.tableViewForCityResult.frame.origin.y, self.tableViewForCityResult.frame.size.width, resultArray.count*40)];
             [self.tableViewForCityResult setHidden:NO];
         }
-        [self.self.tableViewForCityResult reloadData];
+        [self.tableViewForCityResult reloadData];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
