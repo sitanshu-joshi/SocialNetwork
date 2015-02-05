@@ -18,7 +18,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self setUpUserInterface];
-    [self getCommentsDetails];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,11 +52,11 @@
 - (IBAction)btnPostTapped:(id)sender {
 }
 
-#pragma mark - To get Post Data
--(void)getCommentsDetails{
-    NSString *strPath = [NSString stringWithFormat:@"%@ %d",kGetCommentsByPostId,1];
-    
-    [[AppDelegate appDelegate].rkomForPost postObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+#pragma mark - To get Comment
+-(void)getCommentsDetailsForPostId:(NSString *)postId{
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    NSString *strPath = [NSString stringWithFormat:kGetCommentsByPostId,postId];
+    [[AppDelegate appDelegate].rkomForComment getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -71,14 +70,66 @@
     }];
 }
 
+#pragma mark - To Add Comment
+-(void)addComment:(NSDictionary *)dict ForPost:(NSString *)postId {
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    NSString *strPath = [NSString stringWithFormat:kAddComment,postId];
+    DataForResponse *data;
+    [[AppDelegate appDelegate].rkomForComment postObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
+        NSLog(@"%@",dataResponse.comment);
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+        [alert show];
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
 
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - To Delete Comment
+-(void)deleteCommentForPost:(NSString *)postId withCommentId:(NSString *)commentId {
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    NSString *strPath = [NSString stringWithFormat:kDeleteComment,postId,commentId];
+    [[AppDelegate appDelegate].rkomForComment deleteObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
+        NSLog(@"%@",dataResponse.comment);
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+        [alert show];
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
 }
 
 
+#pragma mark - To Update Comment
+-(void)updateComment:(NSDictionary *)dict ForPost:(NSString *)postId withCommentId:(NSString *)commentId {
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    NSString *strPath = [NSString stringWithFormat:kUpdateComment,postId,commentId];
+    DataForResponse *data;
+    [[AppDelegate appDelegate].rkomForComment putObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
+        NSLog(@"%@",dataResponse.comment);
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+        [alert show];
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
 @end

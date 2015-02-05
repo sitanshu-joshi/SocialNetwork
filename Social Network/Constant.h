@@ -49,17 +49,17 @@
 #define kResource_Login             @"login"                                    //POST
 #define kLogout                     @"logout"
 #define kAddCity                    @"city"                                     //POST
-#define kWallPostOnUserCity         @"city/post/{cityId}"                       //POST
-#define kGetPost                    @"city/post?page=%d"                        //GET
-#define kUpdateWallPost             @"usercity/wall/post/{postId}"              //PUT
-#define kDeleteWallPost             @"city/post/{postId}"                       //DELETE
-#define kLikePost                   @"city/post/{postId}/like"                  //POST
-#define kUnLikePost                 @"city/post/{postId}/unlike"                //POST
-#define kGetLikeCount               @"city/post/{postId}/like"                  //GET
-#define kAddComment                 @"city/post/{postId}/comment"               //POST
-#define kUpdateComment              @"city/post/{postId}/comment/{commentId}"   //PUT
-#define kDeleteComment              @"city/post/{postId}/comment/{commentId}"   //DELETE
-#define kGetCommentsByPostId        @"city/post/%d/comment"                     //GET
+#define kWallPostOnUserCity         @"city/post/%@"                             //POST
+#define kGetPost                    @"city/post/%@?page=%d"                     //GET
+#define kUpdateWallPost             @"usercity/wall/post/%@"                    //PUT
+#define kDeleteWallPost             @"city/post/%@"                             //DELETE
+#define kLikePost                   @"city/post/%@/like"                        //POST
+#define kUnLikePost                 @"city/post/%@/unlike"                      //POST
+#define kGetLikeCount               @"city/post/%@/like"                        //GET
+#define kAddComment                 @"city/post/%@/comment"                     //POST
+#define kUpdateComment              @"city/post/%@/comment/%@"                  //PUT
+#define kDeleteComment              @"city/post/%@/comment/%@"                  //DELETE
+#define kGetCommentsByPostId        @"city/post/%@/comment"                     //GET
 // Places
 #define kResource_Place             @"json?query=%@&key=%@"
 
@@ -128,6 +128,9 @@
  Wall post on user city / Update wall post
  */
 #define kPost_Text      @"POST_TEXT"
+#define kMedia_Type     @"MEDIA_TYPE"
+#define kFile           @"FILE"
+#define kFileType       @"#Type"
 
 /*
  Add comment / Update comment

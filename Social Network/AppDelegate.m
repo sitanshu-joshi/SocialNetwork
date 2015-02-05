@@ -327,6 +327,7 @@ static AppDelegate *appDelegate;
     RKResponseDescriptor *responseDescriptorForComment = [RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:COMMENT] method:RKRequestMethodGET pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     [rkomForComment addResponseDescriptor:responseDescriptorForComment];
     
+    
     /*
      Places Mapping
      */

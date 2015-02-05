@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, CustomSlideViewControllerDelegate>{
-    
+    int page;
+    NSMutableArray *mutArrOfPost;
+    NSString *strCityId;
 }
 @property (strong,nonatomic) NSString *strAddress;
 @property (weak, nonatomic) IBOutlet UITableView *tblView;

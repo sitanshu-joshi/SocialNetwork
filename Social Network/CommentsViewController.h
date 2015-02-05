@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CommentsViewController : UIViewController
+@interface CommentsViewController : UIViewController{
+    
+}
 
 - (IBAction)backButtonTapped:(id)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
