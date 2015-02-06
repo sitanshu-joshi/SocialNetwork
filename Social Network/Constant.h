@@ -172,6 +172,8 @@
 #define kAlert_Logout                       @"Are you want to logout ?"
 #define kAlert_Enter_City                   @"Please Select City"
 #define kCameraAlert                        @"Camera is not available"
+#define kVideoLengthAlert                   @"Video length should be maximum of 20 Seconds.Please select another Video"
+
 // City
 #define  tagColorForCity        [UIColor colorWithRed:96.0/255.0 green:92.0/255.0 blue:168.0/255.0 alpha:1.0]
 

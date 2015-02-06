@@ -30,6 +30,7 @@
     #import "RSActivityIndicator.h"
     #import <RestKit/RestKit/RestKit.h>
     #import "UIImageView+WebCache.h"
+    #import<AVFoundation/AVFoundation.h>
 
     // Slide View
     #import "CustomSlideViewController.h"

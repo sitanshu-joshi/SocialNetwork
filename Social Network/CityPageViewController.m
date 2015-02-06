@@ -178,6 +178,51 @@
     }
 }
 
+#pragma mark - UIImagePickerController Delegate Methods
+//THis will call when Video Captured.
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    @autoreleasepool {
+        NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+        // Handle a movie capture
+        if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
+            AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[info objectForKey:UIImagePickerControllerMediaURL] options:nil];
+            NSTimeInterval durationInSeconds = 0.0;
+            if (asset)
+                durationInSeconds = CMTimeGetSeconds(asset.duration);
+            NSLog(@"duration: %.2f", durationInSeconds);
+            if(durationInSeconds < 20.0){
+                NSString *moviePath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaURL] path];
+                videoURL = [NSURL fileURLWithPath:moviePath];
+                NSDateFormatter *myDateFormat= [[NSDateFormatter alloc]init];
+                [myDateFormat setDateFormat:@"ddMMYYYYHHmmss"];
+                NSString *date=[myDateFormat stringFromDate:[NSDate date]];
+                strVideoName = [NSString stringWithFormat:@"%@%@",date,[[videoURL path] lastPathComponent]];
+                videoData = nil;
+                videoData = [NSData dataWithContentsOfURL:videoURL];
+                [imagePicker dismissViewControllerAnimated:YES completion:nil];
+            }else if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeImage, 0) == kCFCompareEqualTo){
+                    NSString *imagePath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaURL] path];
+                    imageURL = [NSURL fileURLWithPath:imagePath];
+                    NSDateFormatter *myDateFormat= [[NSDateFormatter alloc]init];
+                    [myDateFormat setDateFormat:@"ddMMYYYYHHmmss"];
+                    NSString *date=[myDateFormat stringFromDate:[NSDate date]];
+                    strImageName = [NSString stringWithFormat:@"%@%@",date,[[imageURL path] lastPathComponent]];
+                    imageData = nil;
+                    imageData = [NSData dataWithContentsOfURL:imageURL];
+                    [imagePicker dismissViewControllerAnimated:YES completion:nil];
+            }else{
+                //Alert
+                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:kAppTitle message:kVideoLengthAlert delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+                [alertView show];
+                alertView.tag = 6;
+            }
+        }
+    }
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
 
 #pragma mark - To get Post Data
 -(void)getPostDetailsForCity:(NSString *)cityId pageNumber:(int)pageNumber{

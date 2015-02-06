@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CustomSlideViewController.h"
 
 @interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, CustomSlideViewControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>{
     int page;
@@ -14,6 +15,9 @@
     NSString *strCityId;
     UIImagePickerController *imagePicker;
     NSString *actionSheetButtonTitle;
+    NSURL *videoURL, *imageURL;
+    NSString *strVideoName, *strImageName;
+    NSData *videoData ,*imageData;
 }
 @property (strong,nonatomic) NSString *strAddress;
 @property (weak, nonatomic) IBOutlet UITableView *tblView;
