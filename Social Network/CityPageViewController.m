@@ -19,6 +19,17 @@
     [super viewDidLoad];
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
+    NSLog(@"Address:%@",self.strAddress);
+    NSArray *arrOfAddress = [self.strAddress componentsSeparatedByString:@","];
+    NSString *strCity, *strCountry, *strState;
+    strCountry = [NSString stringWithFormat:@"%@",[[arrOfAddress lastObject]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+    strState = [[NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-2]]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if (arrOfAddress.count >= 3) {
+        strCity = [NSString stringWithFormat:@"%@",[[arrOfAddress objectAtIndex:[arrOfAddress count]-3]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+    }else{
+        strCity = @"";
+    }
+    [self getCityIdWithCountry:strCountry State:strState City:strCity];
     page = 1;
     strCityId = @"";    //set city id here
     //[self getPostDetailsForCity:strCityId pageNumber:page];
@@ -272,10 +283,13 @@
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kGetCityId,city,state,country];
     [[AppDelegate appDelegate].rkomForCity getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [RSActivityIndicator hideIndicator];
+        //[RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.city);
+        City *city = [[dataResponse.city allObjects]firstObject];
+        NSString *cityId = city.ids;
+        [self getPostDetailsForCity:cityId pageNumber:page];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
