@@ -20,6 +20,12 @@
     [self setUpUserInterface];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if(self.strPostId){
+        [self getCommentsDetailsForPostId:self.strPostId];
+    }
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -50,6 +56,13 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)btnPostTapped:(id)sender {
+    NSString *strCommentText = self.txtViewForComment.text;
+    if(strCommentText){
+        NSDictionary *dict = [NSDictionary dictionaryWithObject:strCommentText forKey:kPost_Text];
+        [self addComment:dict ForPost:self.strPostId];
+    }else{
+        [[[UIAlertView alloc]initWithTitle:kAppTitle message:@"Please add comment for given post" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
+    }
 }
 
 #pragma mark - To get Comment
@@ -57,12 +70,9 @@
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kGetCommentsByPostId,postId];
     [[AppDelegate appDelegate].rkomForComment getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *data  = [mappingResult.array objectAtIndex:0];
-        User *user  = [[data.user allObjects] firstObject];
-        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CustomSlideViewController.h"
+#import "CommentsViewController.h"
 
 @interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, CustomSlideViewControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>{
     int page;
@@ -18,6 +19,8 @@
     NSURL *videoURL, *imageURL;
     NSString *strVideoName, *strImageName;
     NSData *videoData ,*imageData;
+    CommentsViewController *commentsViewController;
+    NSString *strPostIdForSelectedPost;
 }
 @property (strong,nonatomic) NSString *strAddress;
 @property (weak, nonatomic) IBOutlet UITableView *tblView;
@@ -29,6 +32,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnVideoSharing;
 - (IBAction)uploadPhotoButtonTapped:(id)sender;
 - (IBAction)uploadVideoButtonTapped:(id)sender;
+- (IBAction)shareButtonTapped:(id)sender;
+- (IBAction)likeButtonTapped:(id)sender;
 
 /*
  Multipart Req with Restkit

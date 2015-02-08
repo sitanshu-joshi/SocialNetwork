@@ -54,6 +54,7 @@
 #pragma mark - UITableView DataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 10;
+    //return [mutArrOfPost count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -70,6 +71,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self performSegueWithIdentifier:kPush_To_Comment sender:self];
     [self.txtViewForPost resignFirstResponder];
+    //Get Post id of selected Post and pass to comment page to get comments for particular post
+    [self performSegueWithIdentifier:kPush_To_Comment sender:nil];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:kPush_To_Comment]){
+        commentsViewController = (CommentsViewController *)[segue destinationViewController];
+        commentsViewController.strPostId = strPostIdForSelectedPost;
+    }
 }
 
 #pragma mark - UITextField Delegate Methods
@@ -110,6 +120,12 @@
         UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakeVideo delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:actionSheetButtonTitle,kCamera,nil];
         [actionSheet showInView:self.view];
     }];
+}
+
+- (IBAction)shareButtonTapped:(id)sender {
+}
+
+- (IBAction)likeButtonTapped:(id)sender {
 }
 
 #pragma mark - UIActionSheet Delegate Methods
@@ -415,7 +431,6 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.post);
-        mutArrOfPost = [NSMutableArray arrayWithArray:[dataResponse.post allObjects]];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];

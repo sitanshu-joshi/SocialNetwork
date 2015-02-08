@@ -44,6 +44,7 @@
 }
 
 -(void)mainMenuBtnClicked {
+    [self hidekeyBoard];
     [self.revealViewController revealToggle:self.btnMainMenu];
 }
 

@@ -11,8 +11,8 @@
 @interface CommentsViewController : UIViewController{
     
 }
+@property (strong,nonatomic) NSString *strPostId;
 
-- (IBAction)backButtonTapped:(id)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForPostDetail;
@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnPost;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewForComments;
 
+- (IBAction)backButtonTapped:(id)sender;
 - (IBAction)btnPostTapped:(id)sender;
 
 @end
