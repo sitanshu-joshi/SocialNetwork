@@ -64,7 +64,7 @@
 #define kDeleteComment              @"city/post/%@/comment/%@"                  //DELETE
 #define kGetCommentsByPostId        @"city/post/%@/comment"                     //GET
 // Places
-#define kResource_Place             @"json?query=%@&key=%@"
+#define kResource_Place             @"json?query=%@&key=%@&types=locality"
 
 
 /*

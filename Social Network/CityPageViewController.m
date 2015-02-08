@@ -20,6 +20,7 @@
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
     NSLog(@"Address:%@",self.strAddress);
+    
     NSArray *arrOfAddress = [self.strAddress componentsSeparatedByString:@","];
     NSString *strCity, *strCountry, *strState;
     strCountry = [NSString stringWithFormat:@"%@",[[arrOfAddress lastObject]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
