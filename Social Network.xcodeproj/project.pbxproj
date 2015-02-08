@@ -67,6 +67,7 @@
 		A409F13A1A83894100A994DA /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F1311A83894100A994DA /* Post.m */; };
 		A409F13B1A83894100A994DA /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F1331A83894100A994DA /* Result.m */; };
 		A409F13C1A83894100A994DA /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F1351A83894100A994DA /* User.m */; };
+		D84DCCF71A87F2DD0057003E /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = D84DCCF61A87F2DD0057003E /* delete.png */; };
 		D86DDADE1A81583000E7FA24 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86DDADD1A81583000E7FA24 /* ProfileViewController.m */; };
 		F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F4224F6A1A594061003A353E /* troyage.xcdatamodeld */; };
 		F4A173631A78BF5000E44730 /* CustomSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A173601A78BF5000E44730 /* CustomSlideViewController.m */; };
@@ -195,6 +196,7 @@
 		A409F1341A83894100A994DA /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		A409F1351A83894100A994DA /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		D56C01C0EE12F015CC28D226 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D84DCCF61A87F2DD0057003E /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		D86DDADC1A81583000E7FA24 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		D86DDADD1A81583000E7FA24 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		F4224F691A59401A003A353E /* Enum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enum.h; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 		56FCEF481A7424E3006B7374 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				D84DCCF61A87F2DD0057003E /* delete.png */,
 				A40328F81A8254100040D282 /* settings.png */,
 				A40328F21A82466E0040D282 /* share_button.png */,
 				A40328F31A82466E0040D282 /* share_photo.png */,
@@ -649,6 +652,7 @@
 				A40328F51A82466E0040D282 /* share_button.png in Resources */,
 				56FCEF541A742B4C006B7374 /* add.png in Resources */,
 				56FCEF531A742B4C006B7374 /* like.png in Resources */,
+				D84DCCF71A87F2DD0057003E /* delete.png in Resources */,
 				A40328E71A821D540040D282 /* search_City.png in Resources */,
 				56BFACD81A762DEF00CADEDF /* news1.png in Resources */,
 				56FCEF581A7431E2006B7374 /* comments.png in Resources */,
