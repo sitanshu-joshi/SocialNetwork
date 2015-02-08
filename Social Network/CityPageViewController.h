@@ -19,8 +19,11 @@
     NSURL *videoURL, *imageURL;
     NSString *strVideoName, *strImageName;
     NSData *videoData ,*imageData;
+    UIImage *imageToPost;
+    NSString* myFilePath;
     CommentsViewController *commentsViewController;
     NSString *strPostIdForSelectedPost;
+    NSMutableDictionary *dictOfPost;
 }
 @property (strong,nonatomic) NSString *strAddress;
 @property (weak, nonatomic) IBOutlet UITableView *tblView;

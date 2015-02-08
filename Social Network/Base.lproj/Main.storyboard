@@ -727,7 +727,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="202" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sitanshu Joshi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NaB-6n-dMa">
-                                                            <rect key="frame" x="65" y="6" width="239" height="21"/>
+                                                            <rect key="frame" x="65" y="6" width="185" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -742,6 +742,10 @@
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" tag="201" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_pic.png" id="MOH-Lg-j3o">
                                                             <rect key="frame" x="7" y="1" width="50" height="50"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        </imageView>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delete.png" id="0f5-WK-VTw">
+                                                            <rect key="frame" x="277" y="11" width="30" height="30"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         </imageView>
                                                     </subviews>
@@ -944,6 +948,7 @@
         <image name="back.png" width="128" height="128"/>
         <image name="city.png" width="50" height="50"/>
         <image name="comment_1.png" width="128" height="128"/>
+        <image name="delete.png" width="128" height="128"/>
         <image name="like.png" width="128" height="128"/>
         <image name="menu_1.png" width="128" height="128"/>
         <image name="news1.png" width="50" height="50"/>

@@ -30,10 +30,9 @@
     }else{
         strCity = @"";
     }
-    [self getCityIdWithCountry:strCountry State:strState City:strCity];
     page = 1;
-    strCityId = @"";    //set city id here
-    //[self getPostDetailsForCity:strCityId pageNumber:page];
+    [self getCityIdWithCountry:strCountry State:strState City:strCity];
+    dictOfPost = [NSMutableDictionary dictionary];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -69,7 +68,6 @@
 }
 #pragma mark - UITableView Delegate Methods
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self performSegueWithIdentifier:kPush_To_Comment sender:self];
     [self.txtViewForPost resignFirstResponder];
     //Get Post id of selected Post and pass to comment page to get comments for particular post
     [self performSegueWithIdentifier:kPush_To_Comment sender:nil];
@@ -123,6 +121,10 @@
 }
 
 - (IBAction)shareButtonTapped:(id)sender {
+
+    [dictOfPost setObject:self.txtViewForPost.text forKey:kPost_Text];
+    //[dictOfPost setObject:[NSNumber numberWithInt:1] forKey:kMedia_Type];
+    [self postOnCityWall:dictOfPost withCityId:strCityId];
 }
 
 - (IBAction)likeButtonTapped:(id)sender {
@@ -220,6 +222,7 @@
             NSLog(@"duration: %.2f", durationInSeconds);
             if(durationInSeconds < 20.0){
                 NSString *moviePath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaURL] path];
+                //myFilePath = moviePath;
                 videoURL = [NSURL fileURLWithPath:moviePath];
                 NSDateFormatter *myDateFormat= [[NSDateFormatter alloc]init];
                 [myDateFormat setDateFormat:@"ddMMYYYYHHmmss"];
@@ -228,22 +231,24 @@
                 videoData = nil;
                 videoData = [NSData dataWithContentsOfURL:videoURL];
                 [imagePicker dismissViewControllerAnimated:YES completion:nil];
-            }else if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeImage, 0) == kCFCompareEqualTo){
-                    NSString *imagePath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaURL] path];
-                    imageURL = [NSURL fileURLWithPath:imagePath];
-                    NSDateFormatter *myDateFormat= [[NSDateFormatter alloc]init];
-                    [myDateFormat setDateFormat:@"ddMMYYYYHHmmss"];
-                    NSString *date=[myDateFormat stringFromDate:[NSDate date]];
-                    strImageName = [NSString stringWithFormat:@"%@%@",date,[[imageURL path] lastPathComponent]];
-                    imageData = nil;
-                    imageData = [NSData dataWithContentsOfURL:imageURL];
-                    [imagePicker dismissViewControllerAnimated:YES completion:nil];
             }else{
                 //Alert
                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:kAppTitle message:kVideoLengthAlert delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
                 [alertView show];
                 alertView.tag = 6;
             }
+        }else if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeImage, 0) == kCFCompareEqualTo){
+//            NSString *imagePath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaType] path];
+            //myFilePath = imagePath;
+            imageToPost = (UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage];
+            //imageURL = [NSURL fileURLWithPath:imagePath];
+            NSDateFormatter *myDateFormat= [[NSDateFormatter alloc]init];
+            [myDateFormat setDateFormat:@"ddMMYYYYHHmmss"];
+            NSString *date=[myDateFormat stringFromDate:[NSDate date]];
+            strImageName = [NSString stringWithFormat:@"%@%@",date,[[imageURL path] lastPathComponent]];
+            imageData = nil;
+            imageData = [NSData dataWithContentsOfURL:imageURL];
+            [imagePicker dismissViewControllerAnimated:YES completion:nil];
         }
     }
 }
@@ -266,7 +271,10 @@
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
+        NSData *responseData = [[NSString stringWithFormat:@"%@",operation.HTTPRequestOperation.responseString]dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
+        NSString *errorMessage = [responseDict valueForKey:@"msg"];
+        //NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
         [alert show];
         RKLogError(@"Operation failed with error: %@", error);
@@ -306,6 +314,7 @@
         NSLog(@"%@",dataResponse.city);
         City *city = [[dataResponse.city allObjects]firstObject];
         NSString *cityId = city.ids;
+        strCityId = cityId;
         [self getPostDetailsForCity:cityId pageNumber:page];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
@@ -323,6 +332,66 @@
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kWallPostOnUserCity,cityId];
     DataForResponse *data;
+    /*
+    UIImage *image = [UIImage imageNamed:@"settings.png"];
+    
+    // Serialize the Article attributes then attach a file
+    NSMutableURLRequest *request = [[RKObjectManager sharedManager] multipartFormRequestWithObject:data method:RKRequestMethodPOST path:strPath parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:UIImagePNGRepresentation(image)
+                                    name:@"FILE"
+                                fileName:@"photo.png"
+                                mimeType:@"image/png"];
+    }];
+    
+    RKObjectRequestOperation *operation = [[RKObjectManager sharedManager] objectRequestOperationWithRequest:request success:nil failure:nil];
+    [[RKObjectManager sharedManager] enqueueObjectRequestOperation:operation]; // NOTE: Must be enqueued rather than started
+*/
+    
+   /*
+    [[RKObjectManager sharedManager] postObject:theMemory usingBlock:^(RKObjectLoader * loader){
+        
+        RKObjectMapping* serializationMapping = [[[RKObjectManager sharedManager] mappingProvider] serializationMappingForClass:[MemoContent class]];
+        NSLog(@"serializationMapping: %@", serializationMapping);
+        loader.delegate = APP; //main app delegate posting, updating
+        NSError* error = nil;
+        RKObjectSerializer * serializer = [[RKObjectSerializer alloc] initWithObject:theMemory mapping:serializationMapping];
+        NSDictionary * dictionary = [serializer serializedObject:&error];
+        RKParams * params = [RKParams paramsWithDictionary:dictionary];
+        NSData * imageData = UIImagePNGRepresentation(theMemory.photo); //image data
+        [params setData:imageData MIMEType:@"image/png" forParam:@"attachment"];
+        loader.params = params;
+        loader.serializationMIMEType = RKMIMETypeFormURLEncoded;
+    }];
+    */
+    
+//    // But this time assuming you registered a RKRequestDescriptor to handle
+//    // serializing the other fields.
+//    RKObjectManager *objectManager = [RKObjectManager sharedManager];
+//    NSMutableURLRequest *request =
+//    [objectManager multipartFormRequestWithObject:data method:RKRequestMethodPOST
+//                                             path:nil parameters:nil
+//                        constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
+//     {
+//         [formData appendPartWithFileData:UIImageJPEGRepresentation(obj.photo, 0.7)
+//                                     name:@"expense[photo_file]"
+//                                 fileName:@"photo.jpg"
+//                                 mimeType:@"image/jpeg"];
+//     }];
+//    RKObjectRequestOperation *operation =
+//    [objectManager objectRequestOperationWithRequest:request
+//                                             success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
+//     {
+//         // Success handler.
+//         NSLog(@"%@", [mappingResult firstObject]);
+//     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+//         // Error handler.
+//     }];
+//    [[AppDelegate appDelegate].rkomForPost multipartFormRequestWithObject:data method:RKRequestMethodPOST path:strPath parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+//        [formData appendPartWithFileData:UIImageJPEGRepresentation(imageToPost, 0.7)
+//                                    name:@"FILE"
+//                                fileName:strImageName
+//                                mimeType:@"image/jpeg"];
+//    }];
     [[AppDelegate appDelegate].rkomForPost postObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
