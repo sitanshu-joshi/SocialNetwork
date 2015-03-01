@@ -27,6 +27,7 @@
     #import "AppUserInfo.h"
     #import "AppDelegate.h"
     #import "Constant.h"
+    #import "ConstantStr.h"
     #import "RSActivityIndicator.h"
     #import <RestKit/RestKit/RestKit.h>
     #import "UIImageView+WebCache.h"
@@ -35,6 +36,7 @@
     // Slide View
     #import "CustomSlideViewController.h"
     #import "MenuOptionsViewController.h"
+
     // Data Objects
     #import "DataForResponse.h"
     #import "User.h"

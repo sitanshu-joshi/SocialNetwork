@@ -39,7 +39,6 @@
                                                       @"id" : @"ids",
                                                       @"likeCount" : @"likeCount",
                                                       @"commentCount" : @"commentCount",
-                                                      @"createTime" : @"createTime",
                                                       @"text" : @"text",
                                                       @"isMyLike" : @"isMyLike",
                                                       @"updatedDate" : @"updatedDate",

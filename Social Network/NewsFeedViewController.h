@@ -15,6 +15,9 @@
     NSMutableArray *resultArray;
 }
 
+@property (strong, nonatomic) NSMutableArray *arrayForNewsfeed;
+@property (nonatomic) int currentPageCount;
+
 @property (weak, nonatomic) IBOutlet UITableView *newsTableView;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnMainMenu;

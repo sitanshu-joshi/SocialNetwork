@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Login-->
@@ -255,7 +255,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HRH-H5-PiU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-310" y="-1689"/>
+            <point key="canvasLocation" x="-321" y="-1689"/>
         </scene>
         <!--NewsFeed-->
         <scene sceneID="bsP-PY-QCp">
@@ -390,7 +390,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qb2-Ur-1Rx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-743" y="-229"/>
+            <point key="canvasLocation" x="-743" y="-144"/>
         </scene>
         <!--Comments View Controller-->
         <scene sceneID="UVk-jY-MH1">
@@ -751,10 +751,9 @@
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.94117647059999998" green="0.96470588239999999" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </view>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="204" contentMode="scaleToFill" editable="NO" id="Dry-p7-VTQ">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="204" contentMode="scaleToFill" editable="NO" text="-" id="Dry-p7-VTQ">
                                                     <rect key="frame" x="2" y="51" width="316" height="75"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <string key="text">This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad This is my post for my favourite city - Ahmedabad </string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
@@ -864,14 +863,14 @@
                         <outlet property="btnShare" destination="NDC-MG-MWA" id="8RH-YL-FMy"/>
                         <outlet property="btnVideoSharing" destination="fcp-B8-oZH" id="HFD-st-aww"/>
                         <outlet property="containerViewForSharing" destination="La1-SH-Yx5" id="nbz-hN-0zz"/>
-                        <outlet property="tblView" destination="ZoN-gc-VCm" id="GSl-cJ-Km0"/>
+                        <outlet property="tblForCityPostList" destination="ZoN-gc-VCm" id="fqq-9K-Wyz"/>
                         <outlet property="txtViewForPost" destination="4hZ-eE-Dhr" id="rhE-vn-0s1"/>
                         <segue destination="odT-Am-5eH" kind="push" identifier="pushToComment" id="b4g-Ca-UKH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sVa-cB-18y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-295" y="-937"/>
+            <point key="canvasLocation" x="-224" y="-926"/>
         </scene>
         <!--Setting View Controller-->
         <scene sceneID="Z9E-G9-o6n">

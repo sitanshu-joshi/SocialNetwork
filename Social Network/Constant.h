@@ -14,7 +14,7 @@
 // App Title
 #define kAppTitle               @"Troyage"
 // Base URL
-#define kBase_URL               @"http://54.149.222.28:8080/Troyage/ws/"
+#define kBase_URL               @"http://52.11.4.241:8080/Troyage/ws/"
 #define kBase_Place_URL         @"https://maps.googleapis.com/maps/api/place/textsearch/"
 
 #define kDB_Store               @"troyage.sqlite"
@@ -48,7 +48,6 @@
 #define kResource_SignUp_Auth       @"signup/oauth"                             //POST
 #define kResource_Login             @"login"                                    //POST
 #define kLogout                     @"logout"
-#define kGetNews                    @"usercity/post?page=%d"                     //GET
 #define kGetListOfCity              @"city?page=%d"                              //GET
 #define kGetCityId                  @"city?CITY_NAME=%@&STATE=%@&COUNTRY=%@"    //GET
 #define kAddCity                    @"city"                                     //POST
@@ -63,6 +62,9 @@
 #define kUpdateComment              @"city/post/%@/comment/%@"                  //PUT
 #define kDeleteComment              @"city/post/%@/comment/%@"                  //DELETE
 #define kGetCommentsByPostId        @"city/post/%@/comment"                     //GET
+// News
+#define kResource_GetNewsFeed       @"usercity/post?page=%d"    //GET
+
 // Places
 #define kResource_Place             @"json?query=%@&key=%@&types=locality"
 

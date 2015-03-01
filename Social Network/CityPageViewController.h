@@ -11,8 +11,9 @@
 #import "CommentsViewController.h"
 
 @interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, CustomSlideViewControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>{
+    
     int page;
-    NSMutableArray *mutArrOfPost;
+    NSMutableArray *arrayForCityPostList;
     NSString *strCityId;
     UIImagePickerController *imagePicker;
     NSString *actionSheetButtonTitle;
@@ -26,13 +27,14 @@
     NSMutableDictionary *dictOfPost;
 }
 @property (strong,nonatomic) NSString *strAddress;
-@property (weak, nonatomic) IBOutlet UITableView *tblView;
+@property (weak, nonatomic) IBOutlet UITableView *tblForCityPostList;
 @property (weak, nonatomic) IBOutlet UIButton *btnMainMenu;
 @property (weak, nonatomic) IBOutlet UIView *containerViewForSharing;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhotoSharing;
 @property (weak, nonatomic) IBOutlet UIButton *btnShare;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForPost;
 @property (weak, nonatomic) IBOutlet UIButton *btnVideoSharing;
+
 - (IBAction)uploadPhotoButtonTapped:(id)sender;
 - (IBAction)uploadVideoButtonTapped:(id)sender;
 - (IBAction)shareButtonTapped:(id)sender;

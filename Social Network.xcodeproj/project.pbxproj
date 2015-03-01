@@ -201,6 +201,7 @@
 		D86DDADD1A81583000E7FA24 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		F4224F691A59401A003A353E /* Enum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enum.h; sourceTree = "<group>"; };
 		F4224F6B1A594061003A353E /* troyage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = troyage.xcdatamodel; sourceTree = "<group>"; };
+		F4876F6E1AA3791000E0F0BD /* ConstantStr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstantStr.h; sourceTree = "<group>"; };
 		F4A1735F1A78BF4F00E44730 /* CustomSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSlideViewController.h; sourceTree = "<group>"; };
 		F4A173601A78BF5000E44730 /* CustomSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSlideViewController.m; sourceTree = "<group>"; };
 		F4A173611A78BF5000E44730 /* MenuOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuOptionsViewController.h; sourceTree = "<group>"; };
@@ -566,6 +567,7 @@
 			children = (
 				F4BDDFB91983A9B100C52E97 /* Constant.h */,
 				F4224F691A59401A003A353E /* Enum.h */,
+				F4876F6E1AA3791000E0F0BD /* ConstantStr.h */,
 			);
 			name = Utility;
 			sourceTree = "<group>";

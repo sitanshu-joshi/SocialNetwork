@@ -14,10 +14,33 @@
 
 @implementation NewsFeedViewController
 @synthesize btnMainMenu,containerViewForCityInput;
+@synthesize newsTableView,tableViewForCityResult;
+@synthesize arrayForNewsfeed,currentPageCount;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self setupInitUI];
+    currentPageCount = 1;
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self getNewsForHomeTown];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+}
+
+-(void)quesionAnswerSuccess{
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.navigationController.navigationBar setHidden:NO];
+        self.newsTableView.alpha = 1;
+    }];
+}
+
+#pragma mark
+-(void)setupInitUI {
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
     containerViewForCityInput.layer.cornerRadius = 5.0;
@@ -25,22 +48,11 @@
     self.tableViewForCityResult.layer.cornerRadius = 7.0;
     self.tableViewForCityResult.layer.masksToBounds = YES;
 }
-
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-
--(void)viewDidAppear:(BOOL)animated{
+-(int)getCurrentPageNumber {
+    currentPageCount = 1;
     
-    [super viewDidAppear:animated];
-}
-
--(void)quesionAnswerSuccess{
     
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self.navigationController.navigationBar setHidden:NO];
-        self.newsTableView.alpha = 1;
-    }];
+    return currentPageCount;
 }
 
 -(void)mainMenuBtnClicked {
@@ -61,7 +73,7 @@
     UITableViewCell *cell;
     static NSString *identifier = nil;
     if(tableView == self.tableViewForCityResult){
-        identifier = @"resultCell";
+        identifier = kCell_Place_Newsfeed;
         cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (cell == nil)
         {
@@ -71,12 +83,16 @@
         UILabel *lblAddress =(UILabel *)[cell.contentView viewWithTag:999];
         lblAddress.text = result.formatted_address;
     }else{
-       identifier = @"newsCell";
+       identifier = kCell_Newsfeed;
         cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (cell == nil)
-        {
+        if (cell == nil) {
             cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
+        Post *post = [arrayForNewsfeed objectAtIndex:indexPath.row];
+        
+        
+        UILabel *lbl = (UILabel *)[cell viewWithTag:kCell_News_Feed_postText];
+        lbl.text = post.text;
     }
     return cell;
 }
@@ -158,14 +174,18 @@
 }
 
 #pragma mark - To get Post Data For Home Town
--(void)getNewsForHomeTown:(int)pageNumber{
+-(void)getNewsForHomeTown{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-    NSString *strPath = [NSString stringWithFormat:kGetNews,pageNumber];
+    NSString *strPath = [NSString stringWithFormat:kResource_GetNewsFeed,(int)[self currentPageCount]];
     [[AppDelegate appDelegate].rkomForPost getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
-        NSLog(@"%@",dataResponse.post);
+        if (dataResponse.post.count >= 1) {
+            NSLog(@"%@",dataResponse.post);
+            arrayForNewsfeed = [[NSMutableArray alloc] initWithArray:dataResponse.post.allObjects];
+            [newsTableView reloadData];
+        }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];

@@ -14,25 +14,14 @@
 
 @implementation CityPageViewController
 @synthesize btnVideoSharing,btnPhotoSharing,btnShare,btnMainMenu;
+@synthesize tblForCityPostList;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
     NSLog(@"Address:%@",self.strAddress);
-    
-    NSArray *arrOfAddress = [self.strAddress componentsSeparatedByString:@","];
-    NSString *strCity, *strCountry, *strState;
-    strCountry = [NSString stringWithFormat:@"%@",[[arrOfAddress lastObject]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-    strState = [[NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-2]]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if (arrOfAddress.count >= 3) {
-        strCity = [NSString stringWithFormat:@"%@",[[arrOfAddress objectAtIndex:[arrOfAddress count]-3]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-    }else{
-        strCity = @"";
-    }
-    page = 1;
-    [self getCityIdWithCountry:strCountry State:strState City:strCity];
-    dictOfPost = [NSMutableDictionary dictionary];
+    [self setupMethods];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -47,13 +36,28 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)setupMethods {
+    NSArray *arrOfAddress = [self.strAddress componentsSeparatedByString:@","];
+    NSString *strCity, *strCountry, *strState;
+    strCountry = [NSString stringWithFormat:@"%@",[[arrOfAddress lastObject]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+    strState = [[NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-2]]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if (arrOfAddress.count >= 3) {
+        strCity = [NSString stringWithFormat:@"%@",[[arrOfAddress objectAtIndex:[arrOfAddress count]-3]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+    }else{
+        strCity = @"";
+    }
+    page = 1;
+    [self getCityIdWithCountry:strCountry State:strState City:strCity];
+    dictOfPost = [NSMutableDictionary dictionary];
+    [tblForCityPostList setHidden:YES];
+}
+
 -(void)setUpUserInterface{
     btnShare.layer.cornerRadius = 7.0;
 }
 #pragma mark - UITableView DataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
-    //return [mutArrOfPost count];
+    return [arrayForCityPostList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -63,6 +67,35 @@
     if(cell == nil){
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
+    
+    // Draw City Cell
+    UIImageView *imgProfile = (UIImageView *)[cell viewWithTag:kCell_city_user_profile];
+    
+    UILabel *lbl = (UILabel *)[cell viewWithTag:kCell_city_user_name];
+    lbl.text = post.userId;
+    
+    lbl = (UILabel *)[cell viewWithTag:kCell_city_user_time];
+    lbl.text = [NSString stringWithFormat:@"%@",post.createdDate];
+    
+    UITextView *txt = (UITextView *)[cell viewWithTag:kCell_city_post_text];
+    txt.text = post.text;
+    
+    lbl = (UILabel *)[cell viewWithTag:kCell_city_post_commentcount];
+    lbl.text = [NSString stringWithFormat:@"%@",post.commentCount];
+    
+    UIButton *btn = (UIButton *)[cell viewWithTag:kCell_city_post_isMyLike];
+    if (post.isMyLike == [NSNumber numberWithBool:YES]) {
+        [btn setSelected:YES];
+    } else {
+        [btn setSelected:NO];
+    }
+    
+    lbl = (UILabel *)[cell viewWithTag:kCell_city_post_likecount];
+    lbl.text = [NSString stringWithFormat:@"%@",post.likeCount];
+    
+    btn = (UIButton *)[cell viewWithTag:kCell_city_post_delete];
+    
     
     return cell;
 }
@@ -266,7 +299,13 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.post);
-        mutArrOfPost = [NSMutableArray arrayWithArray:[dataResponse.post allObjects]];
+        arrayForCityPostList = [NSMutableArray arrayWithArray:[dataResponse.post allObjects]];
+        if (arrayForCityPostList.count >= 1) {
+            [tblForCityPostList setHidden:NO];
+            [tblForCityPostList reloadData];
+        }
+        
+        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
@@ -331,81 +370,27 @@
 -(void)postOnCityWall:(NSDictionary *)dict withCityId:(NSString *)cityId{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kWallPostOnUserCity,cityId];
-    DataForResponse *data;
-    /*
+    
     UIImage *image = [UIImage imageNamed:@"settings.png"];
     
     // Serialize the Article attributes then attach a file
-    NSMutableURLRequest *request = [[RKObjectManager sharedManager] multipartFormRequestWithObject:data method:RKRequestMethodPOST path:strPath parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    
+    NSDictionary *params = @{@"MEDIA_TYPE" : @"1",
+                            @"POST_TEXT" : @"Sitanshu: My First Post"};
+
+    NSMutableURLRequest *request = [[AppDelegate appDelegate].rkomForPost multipartFormRequestWithObject:nil method:RKRequestMethodPOST path:strPath parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileData:UIImagePNGRepresentation(image)
                                     name:@"FILE"
                                 fileName:@"photo.png"
                                 mimeType:@"image/png"];
     }];
     
-    RKObjectRequestOperation *operation = [[RKObjectManager sharedManager] objectRequestOperationWithRequest:request success:nil failure:nil];
-    [[RKObjectManager sharedManager] enqueueObjectRequestOperation:operation]; // NOTE: Must be enqueued rather than started
-*/
-    
-   /*
-    [[RKObjectManager sharedManager] postObject:theMemory usingBlock:^(RKObjectLoader * loader){
-        
-        RKObjectMapping* serializationMapping = [[[RKObjectManager sharedManager] mappingProvider] serializationMappingForClass:[MemoContent class]];
-        NSLog(@"serializationMapping: %@", serializationMapping);
-        loader.delegate = APP; //main app delegate posting, updating
-        NSError* error = nil;
-        RKObjectSerializer * serializer = [[RKObjectSerializer alloc] initWithObject:theMemory mapping:serializationMapping];
-        NSDictionary * dictionary = [serializer serializedObject:&error];
-        RKParams * params = [RKParams paramsWithDictionary:dictionary];
-        NSData * imageData = UIImagePNGRepresentation(theMemory.photo); //image data
-        [params setData:imageData MIMEType:@"image/png" forParam:@"attachment"];
-        loader.params = params;
-        loader.serializationMIMEType = RKMIMETypeFormURLEncoded;
-    }];
-    */
-    
-//    // But this time assuming you registered a RKRequestDescriptor to handle
-//    // serializing the other fields.
-//    RKObjectManager *objectManager = [RKObjectManager sharedManager];
-//    NSMutableURLRequest *request =
-//    [objectManager multipartFormRequestWithObject:data method:RKRequestMethodPOST
-//                                             path:nil parameters:nil
-//                        constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
-//     {
-//         [formData appendPartWithFileData:UIImageJPEGRepresentation(obj.photo, 0.7)
-//                                     name:@"expense[photo_file]"
-//                                 fileName:@"photo.jpg"
-//                                 mimeType:@"image/jpeg"];
-//     }];
-//    RKObjectRequestOperation *operation =
-//    [objectManager objectRequestOperationWithRequest:request
-//                                             success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
-//     {
-//         // Success handler.
-//         NSLog(@"%@", [mappingResult firstObject]);
-//     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-//         // Error handler.
-//     }];
-//    [[AppDelegate appDelegate].rkomForPost multipartFormRequestWithObject:data method:RKRequestMethodPOST path:strPath parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//        [formData appendPartWithFileData:UIImageJPEGRepresentation(imageToPost, 0.7)
-//                                    name:@"FILE"
-//                                fileName:strImageName
-//                                mimeType:@"image/jpeg"];
-//    }];
-    [[AppDelegate appDelegate].rkomForPost postObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [RSActivityIndicator hideIndicator];
+    RKObjectRequestOperation *operation = [[AppDelegate appDelegate].rkomForPost objectRequestOperationWithRequest:request success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
-        NSLog(@"%@",dataResponse.post);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        // Transport error or server error handled by errorDescriptor
-        [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
-        RKLogError(@"Operation failed with error: %@", error);
     }];
+    [[AppDelegate appDelegate].rkomForPost enqueueObjectRequestOperation:operation];
 }
 
 #pragma mark - To Update Wall Post
