@@ -12,6 +12,7 @@
 // Cell Identifier
 #define kCell_Place_Newsfeed                    @"resultCell"
 #define kCell_Newsfeed                          @"newsCell"
+#define kCell_Comment                           @"commentCell"
 
 
 #pragma mark Cell Components Tags
@@ -28,6 +29,10 @@
 #define kCell_city_post_isMyLike                207
 #define kCell_city_post_likecount               208
 #define kCell_city_post_delete                  209
+// Comments
+#define kCell_Comment_profile                   301
+#define kCell_Comment_name                      302
+#define kCell_comment_text                      303
 
 
 

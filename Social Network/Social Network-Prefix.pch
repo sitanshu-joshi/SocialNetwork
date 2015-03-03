@@ -41,6 +41,7 @@
     #import "DataForResponse.h"
     #import "User.h"
     #import "Post.h"
+    #import "Comment.h"
     #import "Result.h"
     #import "DataFromGoogle.h"
     #import "City.h"

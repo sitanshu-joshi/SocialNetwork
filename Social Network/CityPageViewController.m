@@ -103,6 +103,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.txtViewForPost resignFirstResponder];
     //Get Post id of selected Post and pass to comment page to get comments for particular post
+    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
+    strPostIdForSelectedPost = post.ids;
     [self performSegueWithIdentifier:kPush_To_Comment sender:nil];
 }
 

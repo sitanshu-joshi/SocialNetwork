@@ -133,6 +133,7 @@
  Wall post on user city / Update wall post
  */
 #define kPost_Text      @"POST_TEXT"
+#define kComment_Text   @"COMMENT_TEXT"
 #define kMedia_Type     @"MEDIA_TYPE"
 #define kFile           @"FILE"
 #define kFileType       @"#Type"

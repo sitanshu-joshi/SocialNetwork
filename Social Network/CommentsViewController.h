@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Comment.h"
 
-@interface CommentsViewController : UIViewController{
-    
+@interface CommentsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
+    NSMutableArray *arrayOfComments;
 }
 @property (strong,nonatomic) NSString *strPostId;
 

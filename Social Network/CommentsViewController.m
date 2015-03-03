@@ -13,6 +13,7 @@
 @end
 
 @implementation CommentsViewController
+@synthesize tblViewForComments;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -38,17 +39,28 @@
 }
 
 #pragma mark - UITableView DataSource Methods
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+    return arrayOfComments.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *identifier = @"commentCell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCell_Comment];
     if(cell == nil){
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCell_Comment];
     }
+    
+    Comment *comment = [arrayOfComments objectAtIndex:indexPath.row];
+    UITextView *txtView = (UITextView *)[cell viewWithTag:kCell_comment_text];
+    txtView.text = comment.text;
+    
+    UILabel *lbl = (UILabel *)[cell viewWithTag:kCell_Comment_name];
+//    lbl.text = comment.
+    
     return cell;
 }
 
@@ -58,7 +70,7 @@
 - (IBAction)btnPostTapped:(id)sender {
     NSString *strCommentText = self.txtViewForComment.text;
     if(strCommentText){
-        NSDictionary *dict = [NSDictionary dictionaryWithObject:strCommentText forKey:kPost_Text];
+        NSDictionary *dict = [NSDictionary dictionaryWithObject:strCommentText forKey:kCOMMENT_TEXT];
         [self addComment:dict ForPost:self.strPostId];
     }else{
         [[[UIAlertView alloc]initWithTitle:kAppTitle message:@"Please add comment for given post" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
@@ -66,15 +78,19 @@
 }
 
 #pragma mark - To get Comment
--(void)getCommentsDetailsForPostId:(NSString *)postId{
+-(void)getCommentsDetailsForPostId:(NSString *)postId {
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kGetCommentsByPostId,postId];
     [[AppDelegate appDelegate].rkomForComment getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *data  = [mappingResult.array objectAtIndex:0];
+        arrayOfComments = [[NSMutableArray alloc] initWithArray:[data.comment allObjects]];
+        [tblViewForComments reloadData];
+        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
+        [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         RKLogError(@"Operation failed with error: %@", error);
     }];
@@ -90,13 +106,16 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.comment);
+        [self getCommentsDetailsForPostId:self.strPostId];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
+        [self getCommentsDetailsForPostId:self.strPostId];
+        
+//        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
+//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+//        [alert show];
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
