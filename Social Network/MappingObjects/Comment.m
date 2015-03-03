@@ -18,6 +18,8 @@
 @dynamic text;
 @dynamic createdDate;
 @dynamic updatedDate;
+@dynamic isMyComment;
+@dynamic username;
 @dynamic data;
 
 

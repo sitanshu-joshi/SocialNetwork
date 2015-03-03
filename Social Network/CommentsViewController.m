@@ -14,6 +14,7 @@
 
 @implementation CommentsViewController
 @synthesize tblViewForComments;
+@synthesize strPostId;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -59,11 +60,36 @@
     txtView.text = comment.text;
     
     UILabel *lbl = (UILabel *)[cell viewWithTag:kCell_Comment_name];
-//    lbl.text = comment.
+    lbl.text = comment.username;
+    UIButton *btn = (UIButton *)[cell viewWithTag:kCell_comment_delete];
+    if([NSNumber numberWithBool:comment.isMyComment]) {
+        btn.tag = indexPath.row;
+    } else {
+        [btn setHidden:YES];
+    }
     
     return cell;
 }
 
+#pragma mark IBAction Event
+-(IBAction)btnDeleteActionEvent:(id)sender {
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    Comment *comment = [arrayOfComments objectAtIndex:[sender tag]];
+    [[AppDelegate appDelegate].rkomForComment deleteObject:comment path:[NSString stringWithFormat:kResource_DeleteComment,strPostId,comment.ids] parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        [arrayOfComments removeObject:comment];
+        [tblViewForComments reloadData];
+
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        [arrayOfComments removeObject:comment];
+        [tblViewForComments reloadData];
+    }];
+    
+
+}
 - (IBAction)backButtonTapped:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -112,7 +138,7 @@
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         [self getCommentsDetailsForPostId:self.strPostId];
-        
+        [self getCommentsDetailsForPostId:strPostId];
 //        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
 //        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
 //        [alert show];
@@ -123,7 +149,7 @@
 #pragma mark - To Delete Comment
 -(void)deleteCommentForPost:(NSString *)postId withCommentId:(NSString *)commentId {
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-    NSString *strPath = [NSString stringWithFormat:kDeleteComment,postId,commentId];
+    NSString *strPath = [NSString stringWithFormat:kResource_DeleteComment, postId, commentId];
     [[AppDelegate appDelegate].rkomForComment deleteObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);

@@ -60,7 +60,7 @@
 #define kGetLikeCount               @"city/post/%@/like"                        //GET
 #define kAddComment                 @"city/post/%@/comment"                     //POST
 #define kUpdateComment              @"city/post/%@/comment/%@"                  //PUT
-#define kDeleteComment              @"city/post/%@/comment/%@"                  //DELETE
+#define kResource_DeleteComment     @"city/post/%@/comment/%@"                  //DELETE
 #define kGetCommentsByPostId        @"city/post/%@/comment"                     //GET
 // News
 #define kResource_GetNewsFeed       @"usercity/post?page=%d"    //GET

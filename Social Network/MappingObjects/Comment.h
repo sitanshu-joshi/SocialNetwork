@@ -19,8 +19,9 @@
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSDate * createdDate;
 @property (nonatomic, retain) NSDate * updatedDate;
+@property (nonatomic, retain) NSNumber * isMyComment;
+@property (nonatomic, retain) NSString * username;
 @property (nonatomic, retain) DataForResponse *data;
-
 
 +(RKEntityMapping *)objectMappingForComment:(OPPCodeType)OppCodeType;
 

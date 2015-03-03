@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C109" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="City" representedClassName="City" syncable="YES">
         <attribute name="cityName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
@@ -13,10 +13,12 @@
     <entity name="Comment" representedClassName="Comment" syncable="YES">
         <attribute name="createdDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="ids" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isMyComment" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="postId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updatedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataForResponse" inverseName="comment" inverseEntity="DataForResponse" syncable="YES"/>
     </entity>
     <entity name="DataForResponse" representedClassName="DataForResponse" syncable="YES">
@@ -79,12 +81,12 @@
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataForResponse" inverseName="user" inverseEntity="DataForResponse" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Comment" positionX="-54" positionY="135" width="128" height="148"/>
+        <element name="City" positionX="-54" positionY="135" width="128" height="163"/>
+        <element name="Comment" positionX="-54" positionY="135" width="128" height="180"/>
         <element name="DataForResponse" positionX="-63" positionY="-18" width="128" height="103"/>
         <element name="DataFromGoogle" positionX="-45" positionY="144" width="128" height="73"/>
         <element name="Post" positionX="-63" positionY="135" width="128" height="283"/>
         <element name="Result" positionX="-54" positionY="135" width="128" height="165"/>
         <element name="User" positionX="-54" positionY="-9" width="128" height="328"/>
-        <element name="City" positionX="-54" positionY="135" width="128" height="163"/>
     </elements>
 </model>

@@ -33,6 +33,7 @@
 #define kCell_Comment_profile                   301
 #define kCell_Comment_name                      302
 #define kCell_comment_text                      303
+#define kCell_comment_delete                    304
 
 
 
