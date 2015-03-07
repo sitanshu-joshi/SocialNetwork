@@ -13,6 +13,8 @@
     BOOL isInputViewVisible;
     NSString *strAddress;
     NSMutableArray *resultArray;
+    Post *selectedPost;
+    MPMoviePlayerController *player;
 }
 
 @property (strong, nonatomic) NSMutableArray *arrayForNewsfeed;

@@ -32,6 +32,11 @@
     #import <RestKit/RestKit/RestKit.h>
     #import "UIImageView+WebCache.h"
     #import<AVFoundation/AVFoundation.h>
+    #import <MediaPlayer/MediaPlayer.h>
+
+    // Utility
+    #import "FileUtility.h"
+    #import "IconDownloader.h"
 
     // Slide View
     #import "CustomSlideViewController.h"

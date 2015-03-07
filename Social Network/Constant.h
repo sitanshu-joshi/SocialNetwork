@@ -42,6 +42,8 @@
 #define kPush_To_SlideBar1          @"pushToSlideBar1"
 #define kPush_To_Setting            @"pushToSetting"
 #define kPushToCityFromNews         @"pushToCityFromNews"
+#define kPush_To_CommentFromNews    @"pushToCommentFromNews"
+
 /*
  Resource Path
  */
@@ -55,8 +57,8 @@
 #define kGetPost                    @"city/post/%@?page=%d"                     //GET
 #define kUpdateWallPost             @"usercity/wall/post/%@"                    //PUT
 #define kDeleteWallPost             @"city/post/%@"                             //DELETE
-#define kLikePost                   @"city/post/%@/like"                        //POST
-#define kUnLikePost                 @"city/post/%@/unlike"                      //POST
+#define kResource_LikePost          @"city/post/%@/like"                        //POST
+#define kResource_UnLikePost        @"city/post/%@/unlike"                      //POST
 #define kGetLikeCount               @"city/post/%@/like"                        //GET
 #define kAddComment                 @"city/post/%@/comment"                     //POST
 #define kUpdateComment              @"city/post/%@/comment/%@"                  //PUT

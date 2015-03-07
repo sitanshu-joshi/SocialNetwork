@@ -11,19 +11,25 @@
 
 @interface CommentsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
     NSMutableArray *arrayOfComments;
+    
 }
-@property (strong,nonatomic) NSString *strPostId;
+@property (strong,nonatomic) Post *post;
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *imgPostContent;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForPostDetail;
 
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForComment;
-@property (weak, nonatomic) IBOutlet UILabel *lblDateTime;
 @property (weak, nonatomic) IBOutlet UIButton *btnPost;
+@property (weak, nonatomic) IBOutlet UIButton *btnLike;
+@property (weak, nonatomic) IBOutlet UILabel *lblLikeCount;
+@property (weak, nonatomic) IBOutlet UILabel *lblUserName;
+@property (weak, nonatomic) IBOutlet UILabel *lblCommentCount;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewForComments;
 
 - (IBAction)backButtonTapped:(id)sender;
 - (IBAction)btnPostTapped:(id)sender;
+-(IBAction)btnLikeDislikeAction:(id)sender;
 
 @end

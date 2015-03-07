@@ -13,7 +13,7 @@ static AppDelegate *appDelegate;
 
 @implementation AppDelegate
 @synthesize nsManegedObjectContext,managedObjectModel,persistentStoreCoordinator;
-@synthesize rkMOS,rkObjectManager,rkomForLogin,rkomForComment,rkomForPost,rkomForPlaces,rkomForCity;
+@synthesize rkMOS,rkObjectManager,rkomForLogin,rkomForComment,rkomForPost,rkomForPlaces,rkomForCity,rkomForGeneralObject;
 @synthesize loggedUser;
 
 +(AppDelegate *)appDelegate{
@@ -32,6 +32,7 @@ static AppDelegate *appDelegate;
     self.window.backgroundColor = [UIColor clearColor];
     self.window.opaque = NO;
     [self setupRestKitForInitializeUserMapping];
+    [self setupDocumentDirectory];
     
     return YES;
 }
@@ -298,6 +299,12 @@ static AppDelegate *appDelegate;
     [rkObjectManager setManagedObjectStore:rkMOS];
     
     /*
+     General Object
+     */
+    rkomForGeneralObject = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kBase_Place_URL]];
+    [rkomForGeneralObject setManagedObjectStore:rkMOS];
+    
+    /*
      Login Mapping
      */
     rkomForLogin = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kBase_URL]];
@@ -346,6 +353,15 @@ static AppDelegate *appDelegate;
     
     RKResponseDescriptor *responseDescriptorForCity = [RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:CITY] method:RKRequestMethodGET pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     [rkomForCity addResponseDescriptor:responseDescriptorForCity];
+}
+
+#pragma mark Document Directory
+-(void)setupDocumentDirectory {
+    if(![[FileUtility utility] checkDirectoryExistsAtPath:[[[FileUtility utility] documentDirectoryPath] stringByAppendingPathComponent:kDD_Images] isDirectory:YES]) {
+        // Create Document Directory
+        [[FileUtility utility] createDirectory:kDD_Images atFilePath:[[FileUtility utility] documentDirectoryPath]];
+        [[FileUtility utility] createDirectory:kDD_Video atFilePath:[[FileUtility utility] documentDirectoryPath]];
+    }
 }
 
 

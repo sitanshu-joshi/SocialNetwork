@@ -26,6 +26,17 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self getNewsForHomeTown];
+    
+    /*
+     Temporary hide cause it fails to load in simulator
+    player = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:test_mp4]];
+    player.fullscreen = YES;
+    [player setMovieSourceType:MPMovieSourceTypeStreaming];
+    [self.view addSubview:player.view];
+    
+    [player play];
+     */
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -90,9 +101,41 @@
         }
         Post *post = [arrayForNewsfeed objectAtIndex:indexPath.row];
         
-        
         UILabel *lbl = (UILabel *)[cell viewWithTag:kCell_News_Feed_postText];
         lbl.text = post.text;
+        
+        lbl = (UILabel *)[cell viewWithTag:kCell_News_Feed_username];
+        lbl.text = post.username;
+        
+        lbl = (UILabel *)[cell viewWithTag:kCell_News_Feed_likecount];
+        lbl.text = [NSString stringWithFormat:@"%@",post.likeCount];
+        
+        lbl = (UILabel *)[cell viewWithTag:kCell_News_Feed_commentcount];
+        lbl.text = [NSString stringWithFormat:@"%@",post.commentCount];
+        
+        lbl = (UILabel *)[cell viewWithTag:kCell_News_Feed_commentcount];
+        lbl.text = [NSString stringWithFormat:@"%@",post.commentCount];
+        
+        UIButton *btn = (UIButton *)[cell viewWithTag:kCell_News_Feed_likebtn];
+        if(post.isMyLike == [NSNumber numberWithBool:true]) {
+            [btn setSelected:YES];
+        } else {
+            [btn setSelected:NO];
+        }
+        
+        UIImageView *imgMedia = (UIImageView *)[cell viewWithTag:kCell_News_Feed_imgContent];
+        NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+        if([post.mediaUrl length]>0){
+            if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                imgMedia.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+            }
+        }
+        if (imgMedia.image == nil) {
+            [imgMedia setHidden:YES];
+        } else {
+            [imgMedia setHidden:NO];
+        }
+        
     }
     return cell;
 }
@@ -103,8 +146,13 @@
         [self hideCityInputView];
         Result *result = [resultArray objectAtIndex:indexPath.row];
         strAddress = result.formatted_address;
+        strAddress = [strAddress stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
         [self.tableViewForCityResult setHidden:YES];
         [self performSegueWithIdentifier:kPushToCityFromNews sender:self];
+    } else {
+        Post *post = [arrayForNewsfeed objectAtIndex:indexPath.row];
+        selectedPost = post;
+        [self performSegueWithIdentifier:kPush_To_CommentFromNews sender:self];
     }
 }
 
@@ -126,6 +174,9 @@
     if([segue.identifier isEqualToString:kPushToCityFromNews]){
         CityPageViewController *cityViewController = (CityPageViewController *)[segue destinationViewController];
         cityViewController.strAddress = strAddress;
+    } else if([segue.identifier isEqual:kPush_To_CommentFromNews]) {
+        CommentsViewController *commentView = (CommentsViewController *)[segue destinationViewController];
+        commentView.post = selectedPost;
     }
 }
 
@@ -149,6 +200,7 @@
 
 //To search place
 -(void)getPlaceForAddress:(NSString *)searchString {
+    searchString = [searchString stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
     NSString *str = [NSString stringWithFormat:kResource_Place,searchString,kPlace_API_Key];
     [[AppDelegate appDelegate].rkomForPlaces getObject:nil path:str parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -184,6 +236,11 @@
         if (dataResponse.post.count >= 1) {
             NSLog(@"%@",dataResponse.post);
             arrayForNewsfeed = [[NSMutableArray alloc] initWithArray:dataResponse.post.allObjects];
+            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"updatedDate" ascending:NO];
+            NSArray *sortedArray = [arrayForNewsfeed sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+            arrayForNewsfeed = [[NSMutableArray alloc] initWithArray:sortedArray];
+            [self downloadPostImages:arrayForNewsfeed];
+            
             [newsTableView reloadData];
         }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -196,6 +253,31 @@
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
+-(void)downloadPostImages:(NSMutableArray *)array {
+    for (int iForElse = 0; iForElse<[array count]; iForElse++) {
+        @autoreleasepool {
+            Post *post = [array objectAtIndex:iForElse];
+            NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+            if([post.mediaUrl length]>0){
+                if(![[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                    IconDownloader *iconDownloader;
+                    if (iconDownloader == nil) {
+                        iconDownloader = [[IconDownloader alloc] init];
+                        iconDownloader.strIconURL = post.mediaUrl;
+                        [iconDownloader setCompletionHandler:^(UIImage *image){
+                            NSData *data = UIImagePNGRepresentation(image);
+                            
+                            [[FileUtility utility] createFile:strFileName atFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withData:data];
+                            [newsTableView reloadData];
+                        }];
+                        [iconDownloader startDownload];
+                    }
+                }
+            }
+        }
+    }
+}
+
 //Hide City Input View
 -(void)hideCityInputView{
     [UIView animateWithDuration:0.5 animations:^{

@@ -70,6 +70,9 @@
 		D84DCCF71A87F2DD0057003E /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = D84DCCF61A87F2DD0057003E /* delete.png */; };
 		D86DDADE1A81583000E7FA24 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86DDADD1A81583000E7FA24 /* ProfileViewController.m */; };
 		F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F4224F6A1A594061003A353E /* troyage.xcdatamodeld */; };
+		F45517681AA9C6FA00F6BBF0 /* unlike.png in Resources */ = {isa = PBXBuildFile; fileRef = F45517671AA9C6FA00F6BBF0 /* unlike.png */; };
+		F455176C1AA9DEAC00F6BBF0 /* FileUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = F455176B1AA9DEAC00F6BBF0 /* FileUtility.m */; };
+		F455176F1AA9E44200F6BBF0 /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = F455176E1AA9E44200F6BBF0 /* IconDownloader.m */; };
 		F4A173631A78BF5000E44730 /* CustomSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A173601A78BF5000E44730 /* CustomSlideViewController.m */; };
 		F4A173641A78BF5000E44730 /* MenuOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A173621A78BF5000E44730 /* MenuOptionsViewController.m */; };
 		F4BDDF821983A50500C52E97 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF811983A50500C52E97 /* Foundation.framework */; };
@@ -201,6 +204,11 @@
 		D86DDADD1A81583000E7FA24 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		F4224F691A59401A003A353E /* Enum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enum.h; sourceTree = "<group>"; };
 		F4224F6B1A594061003A353E /* troyage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = troyage.xcdatamodel; sourceTree = "<group>"; };
+		F45517671AA9C6FA00F6BBF0 /* unlike.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlike.png; sourceTree = "<group>"; };
+		F455176A1AA9DEAC00F6BBF0 /* FileUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtility.h; sourceTree = "<group>"; };
+		F455176B1AA9DEAC00F6BBF0 /* FileUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUtility.m; sourceTree = "<group>"; };
+		F455176D1AA9E44200F6BBF0 /* IconDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconDownloader.h; sourceTree = "<group>"; };
+		F455176E1AA9E44200F6BBF0 /* IconDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconDownloader.m; sourceTree = "<group>"; };
 		F4876F6E1AA3791000E0F0BD /* ConstantStr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstantStr.h; sourceTree = "<group>"; };
 		F4A1735F1A78BF4F00E44730 /* CustomSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSlideViewController.h; sourceTree = "<group>"; };
 		F4A173601A78BF5000E44730 /* CustomSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSlideViewController.m; sourceTree = "<group>"; };
@@ -309,6 +317,7 @@
 		56FCEF481A7424E3006B7374 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F45517671AA9C6FA00F6BBF0 /* unlike.png */,
 				D84DCCF61A87F2DD0057003E /* delete.png */,
 				A40328F81A8254100040D282 /* settings.png */,
 				A40328F21A82466E0040D282 /* share_button.png */,
@@ -565,6 +574,10 @@
 		F4BDDFB71983A8DC00C52E97 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				F455176D1AA9E44200F6BBF0 /* IconDownloader.h */,
+				F455176E1AA9E44200F6BBF0 /* IconDownloader.m */,
+				F455176A1AA9DEAC00F6BBF0 /* FileUtility.h */,
+				F455176B1AA9DEAC00F6BBF0 /* FileUtility.m */,
 				F4BDDFB91983A9B100C52E97 /* Constant.h */,
 				F4224F691A59401A003A353E /* Enum.h */,
 				F4876F6E1AA3791000E0F0BD /* ConstantStr.h */,
@@ -651,6 +664,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A40328DC1A8202720040D282 /* RobotoCondensed-Bold.ttf in Resources */,
+				F45517681AA9C6FA00F6BBF0 /* unlike.png in Resources */,
 				A40328F51A82466E0040D282 /* share_button.png in Resources */,
 				56FCEF541A742B4C006B7374 /* add.png in Resources */,
 				56FCEF531A742B4C006B7374 /* like.png in Resources */,
@@ -749,6 +763,7 @@
 				A409F1391A83894100A994DA /* DataFromGoogle.m in Sources */,
 				F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */,
 				A409F1111A832CD100A994DA /* SDWebImageDecoder.m in Sources */,
+				F455176C1AA9DEAC00F6BBF0 /* FileUtility.m in Sources */,
 				56FCEF611A74340A006B7374 /* NewsFeedViewController.m in Sources */,
 				56BFACEA1A7670F000CADEDF /* AppUserInfo.m in Sources */,
 				A409F10E1A832CD100A994DA /* NSData+GIF.m in Sources */,
@@ -763,6 +778,7 @@
 				A409F1381A83894100A994DA /* DataForResponse.m in Sources */,
 				5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */,
 				A409F1171A832CD100A994DA /* UIImage+GIF.m in Sources */,
+				F455176F1AA9E44200F6BBF0 /* IconDownloader.m in Sources */,
 				A409F1121A832CD100A994DA /* SDWebImageDownloader.m in Sources */,
 				56BFACF61A76A0A500CADEDF /* RSActivityIndicator.m in Sources */,
 				F4A173631A78BF5000E44730 /* CustomSlideViewController.m in Sources */,

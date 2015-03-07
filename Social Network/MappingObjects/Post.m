@@ -16,6 +16,7 @@
 @dynamic createdDate;
 @dynamic ids;
 @dynamic isMyLike;
+@dynamic isMyPost;
 @dynamic likeCount;
 @dynamic text;
 @dynamic updatedDate;
@@ -26,6 +27,7 @@
 @dynamic cityName;
 @dynamic state;
 @dynamic country;
+@dynamic username;
 @dynamic desc;
 @dynamic data;
 
@@ -51,6 +53,8 @@
                                                       @"state" : @"state",
                                                       @"country" : @"country",
                                                       @"description" : @"desc",
+                                                      @"username" : @"username",
+                                                      @"isMyPost" : @"isMyPost",
                                                       }];
     }
     return mapping;

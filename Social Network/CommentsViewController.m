@@ -14,18 +14,22 @@
 
 @implementation CommentsViewController
 @synthesize tblViewForComments;
-@synthesize strPostId;
+@synthesize post;
+@synthesize btnLike,btnPost,lblCommentCount,txtViewForComment,txtViewForPostDetail;
+@synthesize lblLikeCount,lblUserName;
+@synthesize imgPostContent;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self setUpUserInterface];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    if(self.strPostId){
-        [self getCommentsDetailsForPostId:self.strPostId];
+    [self setUpUserInterface];
+    if(self.post){
+        [self getCommentsDetailsForPostId:post.ids];
     }
 }
 - (void)didReceiveMemoryWarning {
@@ -37,6 +41,20 @@
     self.containerView.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:55.0/255.0 green:81.0/255.0 blue:255.0/255.0 alpha:1.0]);
     self.containerView.layer.borderWidth = 2.0;
     
+    // Set Post content data to the UI
+    txtViewForPostDetail.text = post.text;
+    lblLikeCount.text = [NSString stringWithFormat:@"%@",post.likeCount];
+    lblCommentCount.text = [NSString stringWithFormat:@"%@",post.commentCount];
+    lblUserName.text = post.username;
+    if (post.isMyLike == [NSNumber numberWithBool:true] || post.isMyLike == [NSNumber numberWithInt:1]) {
+        [btnLike setSelected:YES];
+    } else {
+        [btnLike setSelected:NO];
+    }
+    NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+    if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+        imgPostContent.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+    }
 }
 
 #pragma mark - UITableView DataSource Methods
@@ -75,16 +93,20 @@
 -(IBAction)btnDeleteActionEvent:(id)sender {
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     Comment *comment = [arrayOfComments objectAtIndex:[sender tag]];
-    [[AppDelegate appDelegate].rkomForComment deleteObject:comment path:[NSString stringWithFormat:kResource_DeleteComment,strPostId,comment.ids] parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [[AppDelegate appDelegate].rkomForComment deleteObject:comment path:[NSString stringWithFormat:kResource_DeleteComment,post.ids,comment.ids] parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         [arrayOfComments removeObject:comment];
+        int commentcount = [lblCommentCount.text intValue] - 1;
+        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
         [tblViewForComments reloadData];
 
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         [arrayOfComments removeObject:comment];
+        int commentcount = [lblCommentCount.text intValue] - 1;
+        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
         [tblViewForComments reloadData];
     }];
     
@@ -94,12 +116,23 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (IBAction)btnPostTapped:(id)sender {
+    [txtViewForComment resignFirstResponder];
     NSString *strCommentText = self.txtViewForComment.text;
+    txtViewForComment.text = @"";
     if(strCommentText){
         NSDictionary *dict = [NSDictionary dictionaryWithObject:strCommentText forKey:kCOMMENT_TEXT];
-        [self addComment:dict ForPost:self.strPostId];
+        [self addComment:dict ForPost:post.ids];
     }else{
         [[[UIAlertView alloc]initWithTitle:kAppTitle message:@"Please add comment for given post" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
+    }
+}
+-(IBAction)btnLikeDislikeAction:(id)sender {
+    if (btnLike.selected) {
+        // Do it for dislike
+        [self unLikePostwithPostId:post.ids];
+    } else {
+        // Do it for dislike
+        [self likePostwithPostId:post.ids];
     }
 }
 
@@ -112,6 +145,10 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *data  = [mappingResult.array objectAtIndex:0];
         arrayOfComments = [[NSMutableArray alloc] initWithArray:[data.comment allObjects]];
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"updatedDate" ascending:NO];
+        NSArray *sortedArray = [arrayOfComments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        arrayOfComments = [[NSMutableArray alloc] initWithArray:sortedArray];
+        
         [tblViewForComments reloadData];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -119,6 +156,57 @@
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
+
+#pragma mark - To Like Post
+/**
+ *  This will set like post by logged in user
+ *
+ *  @param postId
+ */
+-(void)likePostwithPostId:(NSString *)postId{
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    NSString *strPath = [NSString stringWithFormat:kResource_LikePost,postId];
+    [[AppDelegate appDelegate].rkObjectManager postObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        int likecount = [lblLikeCount.text intValue] + 1;
+        lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
+        [btnLike setSelected:YES];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        int likecount = [lblLikeCount.text intValue] + 1;
+        lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
+        [btnLike setSelected:YES];
+    }];
+}
+
+#pragma mark - To UnLike Post
+/**
+ *  It will set post unliked by current logged in user.
+ *
+ *  @param dict
+ *  @param postId
+ */
+-(void)unLikePostwithPostId:(NSString *)postId{
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    NSString *strPath = [NSString stringWithFormat:kResource_UnLikePost,postId];
+    [[AppDelegate appDelegate].rkObjectManager postObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        int likecount = [lblLikeCount.text intValue] - 1;
+        lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
+        [btnLike setSelected:NO];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        int likecount = [lblLikeCount.text intValue] - 1;
+        lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
+        [btnLike setSelected:NO];
     }];
 }
 
@@ -132,16 +220,16 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.comment);
-        [self getCommentsDetailsForPostId:self.strPostId];
+        int commentcount = [lblCommentCount.text intValue] + 1;
+        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
+        [self getCommentsDetailsForPostId:post.ids];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        [self getCommentsDetailsForPostId:self.strPostId];
-        [self getCommentsDetailsForPostId:strPostId];
-//        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-//        [alert show];
+        int commentcount = [lblCommentCount.text intValue] + 1;
+        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
+        [self getCommentsDetailsForPostId:post.ids];
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }

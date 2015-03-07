@@ -40,6 +40,7 @@
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ids" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isMyLike" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isMyPost" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="mediaType" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
@@ -47,6 +48,7 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updatedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataForResponse" inverseName="post" inverseEntity="DataForResponse" syncable="YES"/>
     </entity>
     <entity name="Result" representedClassName="Result" syncable="YES">
@@ -85,7 +87,7 @@
         <element name="Comment" positionX="-54" positionY="135" width="128" height="180"/>
         <element name="DataForResponse" positionX="-63" positionY="-18" width="128" height="103"/>
         <element name="DataFromGoogle" positionX="-45" positionY="144" width="128" height="73"/>
-        <element name="Post" positionX="-63" positionY="135" width="128" height="283"/>
+        <element name="Post" positionX="-63" positionY="135" width="128" height="315"/>
         <element name="Result" positionX="-54" positionY="135" width="128" height="165"/>
         <element name="User" positionX="-54" positionY="-9" width="128" height="328"/>
     </elements>

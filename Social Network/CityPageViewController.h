@@ -23,7 +23,7 @@
     UIImage *imageToPost;
     NSString* myFilePath;
     CommentsViewController *commentsViewController;
-    NSString *strPostIdForSelectedPost;
+    Post *selectedPost;
     NSMutableDictionary *dictOfPost;
 }
 @property (strong,nonatomic) NSString *strAddress;

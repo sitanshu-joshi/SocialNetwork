@@ -21,12 +21,12 @@
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
     NSLog(@"Address:%@",self.strAddress);
-    [self setupMethods];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self setUpUserInterface];
+    [self setupMethods];
 }
 -(void)mainMenuBtnClicked {
     [self.revealViewController revealToggle:btnMainMenu];
@@ -72,8 +72,22 @@
     // Draw City Cell
     UIImageView *imgProfile = (UIImageView *)[cell viewWithTag:kCell_city_user_profile];
     
+    
+    UIImageView *imgMedia = (UIImageView *)[cell viewWithTag:kCell_city_post_image];
+    NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+    if([post.mediaUrl length]>0){
+        if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+            imgMedia.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+        }
+    }
+    if (imgMedia.image == nil) {
+        [imgMedia setHidden:YES];
+    } else {
+        [imgMedia setHidden:NO];
+    }
+    
     UILabel *lbl = (UILabel *)[cell viewWithTag:kCell_city_user_name];
-    lbl.text = post.userId;
+    lbl.text = post.username;
     
     lbl = (UILabel *)[cell viewWithTag:kCell_city_user_time];
     lbl.text = [NSString stringWithFormat:@"%@",post.createdDate];
@@ -86,16 +100,20 @@
     
     UIButton *btn = (UIButton *)[cell viewWithTag:kCell_city_post_isMyLike];
     if (post.isMyLike == [NSNumber numberWithBool:YES]) {
-        [btn setSelected:YES];
+        [btn setEnabled:YES];
     } else {
-        [btn setSelected:NO];
+        [btn setEnabled:NO];
     }
     
     lbl = (UILabel *)[cell viewWithTag:kCell_city_post_likecount];
     lbl.text = [NSString stringWithFormat:@"%@",post.likeCount];
     
     btn = (UIButton *)[cell viewWithTag:kCell_city_post_delete];
-    
+    if(post.isMyPost == [NSNumber numberWithBool:true]) {
+        [btn setHidden:YES];
+    } else {
+        [btn setHidden:NO];
+    }
     
     return cell;
 }
@@ -104,14 +122,14 @@
     [self.txtViewForPost resignFirstResponder];
     //Get Post id of selected Post and pass to comment page to get comments for particular post
     Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
-    strPostIdForSelectedPost = post.ids;
+    selectedPost = post;
     [self performSegueWithIdentifier:kPush_To_Comment sender:nil];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:kPush_To_Comment]){
         commentsViewController = (CommentsViewController *)[segue destinationViewController];
-        commentsViewController.strPostId = strPostIdForSelectedPost;
+        commentsViewController.post = selectedPost;
     }
 }
 
@@ -303,6 +321,10 @@
         NSLog(@"%@",dataResponse.post);
         arrayForCityPostList = [NSMutableArray arrayWithArray:[dataResponse.post allObjects]];
         if (arrayForCityPostList.count >= 1) {
+            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"updatedDate" ascending:NO];
+            NSArray *sortedArray = [arrayForCityPostList sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+            arrayForCityPostList = [[NSMutableArray alloc] initWithArray:sortedArray];
+            [self downloadPostImages:arrayForCityPostList];
             [tblForCityPostList setHidden:NO];
             [tblForCityPostList reloadData];
         }
@@ -320,6 +342,31 @@
         [alert show];
         RKLogError(@"Operation failed with error: %@", error);
     }];
+}
+
+-(void)downloadPostImages:(NSMutableArray *)array {
+    for (int iForElse = 0; iForElse<[array count]; iForElse++) {
+        @autoreleasepool {
+            Post *post = [array objectAtIndex:iForElse];
+            NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+            if([post.mediaUrl length]>0){
+                if(![[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                    IconDownloader *iconDownloader;
+                    if (iconDownloader == nil) {
+                        iconDownloader = [[IconDownloader alloc] init];
+                        iconDownloader.strIconURL = post.mediaUrl;
+                        [iconDownloader setCompletionHandler:^(UIImage *image){
+                            NSData *data = UIImagePNGRepresentation(image);
+                            
+                            [[FileUtility utility] createFile:strFileName atFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withData:data];
+                            [tblForCityPostList reloadData];
+                        }];
+                        [iconDownloader startDownload];
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -437,11 +484,16 @@
 }
 
 #pragma mark - To Like Post
--(void)likePost:(NSDictionary *)dict withPostId:(NSString *)postId{
+/**
+ *  This will set like post by logged in user
+ *
+ *  @param postId
+ */
+-(void)likePostwithPostId:(NSString *)postId{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-    NSString *strPath = [NSString stringWithFormat:kLikePost,postId];
+    NSString *strPath = [NSString stringWithFormat:kResource_LikePost,postId];
     DataForResponse *data;
-    [[AppDelegate appDelegate].rkomForPost postObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [[AppDelegate appDelegate].rkomForPost postObject:data path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
@@ -458,11 +510,17 @@
 }
 
 #pragma mark - To UnLike Post
--(void)unLikePost:(NSDictionary *)dict withPostId:(NSString *)postId{
+/**
+ *  It will set post unliked by current logged in user.
+ *
+ *  @param dict
+ *  @param postId
+ */
+-(void)unLikePostwithPostId:(NSString *)postId{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-    NSString *strPath = [NSString stringWithFormat:kUnLikePost,postId];
+    NSString *strPath = [NSString stringWithFormat:kResource_UnLikePost,postId];
     DataForResponse *data;
-    [[AppDelegate appDelegate].rkomForPost postObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [[AppDelegate appDelegate].rkomForPost postObject:data path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];

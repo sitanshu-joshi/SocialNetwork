@@ -17,6 +17,8 @@
 @property (nonatomic, retain) NSDate * createdDate;
 @property (nonatomic, retain) NSString * ids;
 @property (nonatomic, retain) NSNumber * isMyLike;
+@property (nonatomic, retain) NSNumber * isMyPost;
+@property (nonatomic, retain) NSString * username;
 @property (nonatomic, retain) NSNumber * likeCount;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSDate * updatedDate;
