@@ -42,7 +42,7 @@
                                                       @"likeCount" : @"likeCount",
                                                       @"commentCount" : @"commentCount",
                                                       @"text" : @"text",
-                                                      @"isMyLike" : @"isMyLike",
+                                                      @"isMyLiked" : @"isMyLike",
                                                       @"updatedDate" : @"updatedDate",
                                                       @"createdDate" : @"createdDate",
                                                       @"userId" : @"userId",

@@ -18,6 +18,7 @@
 @synthesize btnLike,btnPost,lblCommentCount,txtViewForComment,txtViewForPostDetail;
 @synthesize lblLikeCount,lblUserName;
 @synthesize imgPostContent;
+@synthesize btnPlay;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -42,18 +43,27 @@
     self.containerView.layer.borderWidth = 2.0;
     
     // Set Post content data to the UI
+    [btnPlay setHidden:YES];
     txtViewForPostDetail.text = post.text;
     lblLikeCount.text = [NSString stringWithFormat:@"%@",post.likeCount];
     lblCommentCount.text = [NSString stringWithFormat:@"%@",post.commentCount];
     lblUserName.text = post.username;
-    if (post.isMyLike == [NSNumber numberWithBool:true] || post.isMyLike == [NSNumber numberWithInt:1]) {
+    BOOL ismyLike = [post.isMyLike boolValue];
+    if (ismyLike == true) {
         [btnLike setSelected:YES];
     } else {
         [btnLike setSelected:NO];
     }
-    NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
-    if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
-        imgPostContent.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+    if (post.mediaUrl != nil) {
+        BOOL isImage = [[UtilityMethods utilityMethods] isUrlForImage:post.mediaUrl];
+        if (isImage == true) {
+            NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+            if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                imgPostContent.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+            }
+        } else {
+            [self generateImage:post.mediaUrl];
+        }
     }
 }
 
@@ -275,4 +285,41 @@
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
+
+/**
+ *  This will generate thumbnail of live URL. 
+ *
+ */
+-(void)generateImage:(NSString *)strUrl {
+    
+    AVURLAsset *asset=[[AVURLAsset alloc] initWithURL:[NSURL URLWithString:strUrl] options:nil];
+    AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+    generator.appliesPreferredTrackTransform=TRUE;
+    CMTime thumbTime = CMTimeMakeWithSeconds(0,30);
+    
+    AVAssetImageGeneratorCompletionHandler handler = ^(CMTime requestedTime, CGImageRef im, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error){
+        if (result != AVAssetImageGeneratorSucceeded) {
+            NSLog(@"couldn't generate thumbnail, error:%@", error);
+        } else {
+            [btnPost setHidden:NO];
+        }
+        
+        imgPostContent.image = [UIImage imageWithCGImage:im];
+    };
+    
+    CGSize maxSize = CGSizeMake(320, 180);
+    generator.maximumSize = maxSize;
+    [generator generateCGImagesAsynchronouslyForTimes:[NSArray arrayWithObject:[NSValue valueWithCMTime:thumbTime]] completionHandler:handler];
+    
+}
+
+-(IBAction)btnPlayVideo:(id)sender {
+    player = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:test_mp4]];
+    player.fullscreen = YES;
+    [player setMovieSourceType:MPMovieSourceTypeStreaming];
+//    [self.view addSubview:player.view];
+    
+    [player play];
+}
+
 @end

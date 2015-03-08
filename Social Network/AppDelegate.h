@@ -46,9 +46,6 @@
 @property (nonatomic, strong) RKObjectManager *rkomForCity;
 @property (nonatomic, strong) RKObjectManager *rkomForGeneralObject;
 
-
-
-
 // Local instance
 @property (nonatomic, strong) User *loggedUser;
 

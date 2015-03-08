@@ -516,6 +516,16 @@
                                         <rect key="frame" x="35" y="68" width="278" height="108"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Pj5-5I-hgP">
+                                        <rect key="frame" x="151" y="99" width="46" height="46"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="play.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="btnPlayVideo:" destination="odT-Am-5eH" eventType="touchUpInside" id="IKO-iP-fAY"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9LU-X6-O8X">
                                         <rect key="frame" x="3" y="58" width="30" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -603,6 +613,7 @@
                     <navigationItem key="navigationItem" id="3ym-2Q-a0l"/>
                     <connections>
                         <outlet property="btnLike" destination="9LU-X6-O8X" id="vDp-cX-5vZ"/>
+                        <outlet property="btnPlay" destination="Pj5-5I-hgP" id="8nO-qC-Ulp"/>
                         <outlet property="btnPost" destination="FB5-86-XRD" id="5El-i4-njO"/>
                         <outlet property="containerView" destination="0jp-Nb-Prb" id="nk5-L5-wbl"/>
                         <outlet property="imgPostContent" destination="2Or-hr-0Uj" id="GKM-Xo-COS"/>
@@ -1038,6 +1049,7 @@
         <image name="like.png" width="128" height="128"/>
         <image name="menu_1.png" width="128" height="128"/>
         <image name="news1.png" width="50" height="50"/>
+        <image name="play.png" width="46" height="46"/>
         <image name="profile_pic.png" width="128" height="128"/>
         <image name="reveal-icon.png" width="22" height="17"/>
         <image name="settings.png" width="128" height="128"/>
@@ -1052,7 +1064,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="HfY-6T-sF8"/>
-        <segue reference="s1d-TF-zWK"/>
+        <segue reference="132-FC-bLt"/>
         <segue reference="yGZ-1n-fiw"/>
         <segue reference="Upl-ib-L76"/>
     </inferredMetricsTieBreakers>

@@ -99,20 +99,22 @@
     lbl.text = [NSString stringWithFormat:@"%@",post.commentCount];
     
     UIButton *btn = (UIButton *)[cell viewWithTag:kCell_city_post_isMyLike];
-    if (post.isMyLike == [NSNumber numberWithBool:YES]) {
-        [btn setEnabled:YES];
+    BOOL ismyLike = [post.isMyLike boolValue];
+    if (ismyLike == true) {
+        [btn setSelected:YES];
     } else {
-        [btn setEnabled:NO];
+        [btn setSelected:NO];
     }
     
     lbl = (UILabel *)[cell viewWithTag:kCell_city_post_likecount];
     lbl.text = [NSString stringWithFormat:@"%@",post.likeCount];
     
     btn = (UIButton *)[cell viewWithTag:kCell_city_post_delete];
-    if(post.isMyPost == [NSNumber numberWithBool:true]) {
-        [btn setHidden:YES];
-    } else {
+    BOOL ismyPost = [post.isMyPost boolValue];
+    if(ismyPost == true) {
         [btn setHidden:NO];
+    } else {
+        [btn setHidden:YES];
     }
     
     return cell;

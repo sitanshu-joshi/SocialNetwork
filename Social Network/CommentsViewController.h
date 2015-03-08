@@ -11,8 +11,9 @@
 
 @interface CommentsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
     NSMutableArray *arrayOfComments;
-    
+    MPMoviePlayerController *player;
 }
+
 @property (strong,nonatomic) Post *post;
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
@@ -27,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblUserName;
 @property (weak, nonatomic) IBOutlet UILabel *lblCommentCount;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewForComments;
+@property (weak, nonatomic) IBOutlet UIButton *btnPlay;
 
 - (IBAction)backButtonTapped:(id)sender;
 - (IBAction)btnPostTapped:(id)sender;

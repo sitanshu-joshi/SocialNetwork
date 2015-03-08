@@ -36,18 +36,10 @@
     
     [player play];
      */
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-}
-
--(void)quesionAnswerSuccess{
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self.navigationController.navigationBar setHidden:NO];
-        self.newsTableView.alpha = 1;
-    }];
 }
 
 #pragma mark
@@ -61,8 +53,6 @@
 }
 -(int)getCurrentPageNumber {
     currentPageCount = 1;
-    
-    
     return currentPageCount;
 }
 
@@ -76,14 +66,14 @@
     if(tableView == self.tableViewForCityResult){
         return [resultArray count];
     }else{
-        return 10;
+        return arrayForNewsfeed.count;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell;
     static NSString *identifier = nil;
-    if(tableView == self.tableViewForCityResult){
+    if(tableView == self.tableViewForCityResult) {
         identifier = kCell_Place_Newsfeed;
         cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (cell == nil)
@@ -93,7 +83,7 @@
         Result *result = [resultArray objectAtIndex:indexPath.row];
         UILabel *lblAddress =(UILabel *)[cell.contentView viewWithTag:999];
         lblAddress.text = result.formatted_address;
-    }else{
+    } else {
        identifier = kCell_Newsfeed;
         cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (cell == nil) {
@@ -117,25 +107,21 @@
         lbl.text = [NSString stringWithFormat:@"%@",post.commentCount];
         
         UIButton *btn = (UIButton *)[cell viewWithTag:kCell_News_Feed_likebtn];
-        if(post.isMyLike == [NSNumber numberWithBool:true]) {
+        BOOL like = [post.isMyLike boolValue];
+        if(like == true) {
             [btn setSelected:YES];
         } else {
             [btn setSelected:NO];
         }
         
         UIImageView *imgMedia = (UIImageView *)[cell viewWithTag:kCell_News_Feed_imgContent];
+        imgMedia.image = nil;
         NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
         if([post.mediaUrl length]>0){
             if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
                 imgMedia.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
             }
         }
-        if (imgMedia.image == nil) {
-            [imgMedia setHidden:YES];
-        } else {
-            [imgMedia setHidden:NO];
-        }
-        
     }
     return cell;
 }
@@ -234,7 +220,6 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         if (dataResponse.post.count >= 1) {
-            NSLog(@"%@",dataResponse.post);
             arrayForNewsfeed = [[NSMutableArray alloc] initWithArray:dataResponse.post.allObjects];
             NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"updatedDate" ascending:NO];
             NSArray *sortedArray = [arrayForNewsfeed sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
