@@ -18,8 +18,11 @@
     UIImagePickerController *imagePicker;
     NSString *actionSheetButtonTitle;
     NSURL *videoURL, *imageURL;
-    NSString *strVideoName, *strImageName;
-    NSData *videoData ,*imageData;
+    NSString *contentToPost;
+    NSData *contentData;
+    NSString *fileName;
+    NSString *fileType;
+    NSString *mediaType;
     UIImage *imageToPost;
     NSString* myFilePath;
     CommentsViewController *commentsViewController;

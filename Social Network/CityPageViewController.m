@@ -21,12 +21,13 @@
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
     NSLog(@"Address:%@",self.strAddress);
+    [self setupMethods];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self setUpUserInterface];
-    [self setupMethods];
+    
 }
 -(void)mainMenuBtnClicked {
     [self.revealViewController revealToggle:btnMainMenu];
@@ -267,9 +268,9 @@
 //THis will call when Video Captured.
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     @autoreleasepool {
-        NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+        NSString *media = [info objectForKey: UIImagePickerControllerMediaType];
         // Handle a movie capture
-        if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo) {
+        if (CFStringCompare ((__bridge CFStringRef) media, kUTTypeMovie, 0) == kCFCompareEqualTo) {
             AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[info objectForKey:UIImagePickerControllerMediaURL] options:nil];
             NSTimeInterval durationInSeconds = 0.0;
             if (asset)
@@ -282,9 +283,11 @@
                 NSDateFormatter *myDateFormat= [[NSDateFormatter alloc]init];
                 [myDateFormat setDateFormat:@"ddMMYYYYHHmmss"];
                 NSString *date=[myDateFormat stringFromDate:[NSDate date]];
-                strVideoName = [NSString stringWithFormat:@"%@%@",date,[[videoURL path] lastPathComponent]];
-                videoData = nil;
-                videoData = [NSData dataWithContentsOfURL:videoURL];
+                fileName = [NSString stringWithFormat:@"%@%@",date,[[videoURL path] lastPathComponent]];
+                fileType = @"video/quicktime";
+                mediaType = @"2";
+                contentData = nil;
+                contentData = [NSData dataWithContentsOfURL:videoURL];
                 [imagePicker dismissViewControllerAnimated:YES completion:nil];
             }else{
                 //Alert
@@ -292,17 +295,20 @@
                 [alertView show];
                 alertView.tag = 6;
             }
-        }else if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeImage, 0) == kCFCompareEqualTo){
-//            NSString *imagePath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaType] path];
+        }else if (CFStringCompare ((__bridge CFStringRef) media, kUTTypeImage, 0) == kCFCompareEqualTo){
+            //NSString *imagePath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaType] path];
+            imageURL = [info objectForKey:@"UIImagePickerControllerReferenceURL"];
             //myFilePath = imagePath;
             imageToPost = (UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage];
             //imageURL = [NSURL fileURLWithPath:imagePath];
             NSDateFormatter *myDateFormat= [[NSDateFormatter alloc]init];
             [myDateFormat setDateFormat:@"ddMMYYYYHHmmss"];
             NSString *date=[myDateFormat stringFromDate:[NSDate date]];
-            strImageName = [NSString stringWithFormat:@"%@%@",date,[[imageURL path] lastPathComponent]];
-            imageData = nil;
-            imageData = [NSData dataWithContentsOfURL:imageURL];
+            fileName = [NSString stringWithFormat:@"%@%@",date,[[imageURL path] lastPathComponent]];
+            fileType = @"image/png";
+            mediaType = @"1";
+            contentData = nil;
+            contentData = [NSData dataWithContentsOfURL:imageURL];
             [imagePicker dismissViewControllerAnimated:YES completion:nil];
         }
     }
@@ -422,18 +428,18 @@
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kWallPostOnUserCity,cityId];
     
-    UIImage *image = [UIImage imageNamed:@"settings.png"];
+    //UIImage *image = imageToPost;
     
     // Serialize the Article attributes then attach a file
-    
-    NSDictionary *params = @{@"MEDIA_TYPE" : @"1",
-                            @"POST_TEXT" : @"Sitanshu: My First Post"};
+    NSString *strTextToPost = self.txtViewForPost.text;
+    NSDictionary *params = @{@"MEDIA_TYPE" : mediaType,
+                            @"POST_TEXT" :strTextToPost};
 
     NSMutableURLRequest *request = [[AppDelegate appDelegate].rkomForPost multipartFormRequestWithObject:nil method:RKRequestMethodPOST path:strPath parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileData:UIImagePNGRepresentation(image)
+        [formData appendPartWithFileData:contentData
                                     name:@"FILE"
-                                fileName:@"photo.png"
-                                mimeType:@"image/png"];
+                                fileName:fileName
+                                mimeType:fileType];
     }];
     
     RKObjectRequestOperation *operation = [[AppDelegate appDelegate].rkomForPost objectRequestOperationWithRequest:request success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {

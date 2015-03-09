@@ -74,7 +74,6 @@
         [tagListView.tags removeAllObjects];
        // tagListView = nil;
         [self setTableViewHeightZero];
-        
     }
 }
 
@@ -97,11 +96,13 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     Result *result = [resultArray objectAtIndex:indexPath.row];
     //[self updateSelectedCityToServerWithAddress:result.formatted_address];
     [self addCityTagWithAddress:result.formatted_address];
+
 }
+
 -(void)updateSelectedCityToServerWithAddress:(NSString *)address{
     if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
         if(![address isEqualToString:@""]){
