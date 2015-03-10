@@ -42,33 +42,7 @@
 - (IBAction)uploadVideoButtonTapped:(id)sender;
 - (IBAction)shareButtonTapped:(id)sender;
 - (IBAction)likeButtonTapped:(id)sender;
+- (IBAction)deleteButtonTapped:(id)sender;
 
-/*
- Multipart Req with Restkit
- */
-/*
- NSString* myFilePath = @"/some/path/to/picture.gif";
- RKParams* params = [RKParams params];
- 
- // Set some simple values -- just like we would with NSDictionary
- [params setValue:@"Blake" forParam:@"name"];
- [params setValue:@"blake@restkit.org" forParam:@"email"];
- 
- // Create an Attachment
- RKParamsAttachment* attachment = [params setFile:myFilePath forParam:@"image1"];
- attachment.MIMEType = @"image/gif";
- attachment.fileName = @"picture.gif";
- 
- // Attach an Image from the App Bundle
- UIImage* image = [UIImage imageNamed:@"another_image.png"];
- NSData* imageData = UIImagePNGRepresentation(image);
- [params setData:imageData MIMEType:@"image/png" forParam:@"image2"];
- 
- // Let's examine the RKRequestSerializable info...
- NSLog(@"RKParams HTTPHeaderValueForContentType = %@", [params HTTPHeaderValueForContentType]);
- NSLog(@"RKParams HTTPHeaderValueForContentLength = %d", [params HTTPHeaderValueForContentLength]);
- 
- // Send a Request!
- [[RKClient sharedClient] post:@"/uploadImages" params:params delegate:self];
- */
+
 @end

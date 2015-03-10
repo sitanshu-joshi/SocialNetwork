@@ -186,6 +186,12 @@
 - (IBAction)likeButtonTapped:(id)sender {
 }
 
+- (IBAction)deleteButtonTapped:(UIButton *)sender {
+    NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
+    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
+    [self deleteWallPost:post.ids];
+}
+
 #pragma mark - UIActionSheet Delegate Methods
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(buttonIndex == 0){
@@ -305,10 +311,11 @@
             [myDateFormat setDateFormat:@"ddMMYYYYHHmmss"];
             NSString *date=[myDateFormat stringFromDate:[NSDate date]];
             fileName = [NSString stringWithFormat:@"%@%@",date,[[imageURL path] lastPathComponent]];
-            fileType = @"image/png";
+            fileType = @"image/jpeg";
             mediaType = @"1";
             contentData = nil;
-            contentData = [NSData dataWithContentsOfURL:imageURL];
+            contentData =  UIImageJPEGRepresentation(imageToPost, 1.0);
+            //contentData = [NSData dataWithContentsOfURL:imageURL];
             [imagePicker dismissViewControllerAnimated:YES completion:nil];
         }
     }
@@ -443,8 +450,10 @@
     }];
     
     RKObjectRequestOperation *operation = [[AppDelegate appDelegate].rkomForPost objectRequestOperationWithRequest:request success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
     }];
     [[AppDelegate appDelegate].rkomForPost enqueueObjectRequestOperation:operation];
