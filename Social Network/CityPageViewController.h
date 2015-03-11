@@ -28,6 +28,8 @@
     CommentsViewController *commentsViewController;
     Post *selectedPost;
     NSMutableDictionary *dictOfPost;
+    UIButton *btnLike;
+    UILabel *lblLikeCount;
 }
 @property (strong,nonatomic) NSString *strAddress;
 @property (weak, nonatomic) IBOutlet UITableView *tblForCityPostList;
@@ -37,6 +39,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnShare;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForPost;
 @property (weak, nonatomic) IBOutlet UIButton *btnVideoSharing;
+
 
 - (IBAction)uploadPhotoButtonTapped:(id)sender;
 - (IBAction)uploadVideoButtonTapped:(id)sender;

@@ -73,7 +73,6 @@
     // Draw City Cell
     UIImageView *imgProfile = (UIImageView *)[cell viewWithTag:kCell_city_user_profile];
     
-    
     UIImageView *imgMedia = (UIImageView *)[cell viewWithTag:kCell_city_post_image];
     NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
     if([post.mediaUrl length]>0){
@@ -99,24 +98,28 @@
     lbl = (UILabel *)[cell viewWithTag:kCell_city_post_commentcount];
     lbl.text = [NSString stringWithFormat:@"%@",post.commentCount];
     
-    UIButton *btn = (UIButton *)[cell viewWithTag:kCell_city_post_isMyLike];
+    btnLike = (UIButton *)[cell viewWithTag:kCell_city_post_isMyLike];
+    [btnLike addTarget:self
+                 action:@selector(btnLikeDislikeAction:)
+       forControlEvents:UIControlEventTouchUpInside];
     BOOL ismyLike = [post.isMyLike boolValue];
     if (ismyLike == true) {
-        [btn setSelected:YES];
+        [btnLike setSelected:YES];
     } else {
-        [btn setSelected:NO];
+        [btnLike setSelected:NO];
     }
     
-    lbl = (UILabel *)[cell viewWithTag:kCell_city_post_likecount];
-    lbl.text = [NSString stringWithFormat:@"%@",post.likeCount];
+    lblLikeCount = (UILabel *)[cell viewWithTag:kCell_city_post_likecount];
+    lblLikeCount.text = [NSString stringWithFormat:@"%@",post.likeCount];
     
-    btn = (UIButton *)[cell viewWithTag:kCell_city_post_delete];
+    UIButton *btnDelete = (UIButton *)[cell viewWithTag:kCell_city_post_delete];
     BOOL ismyPost = [post.isMyPost boolValue];
     if(ismyPost == true) {
-        [btn setHidden:NO];
+        [btnDelete setHidden:NO];
     } else {
-        [btn setHidden:YES];
+        [btnDelete setHidden:YES];
     }
+    
     
     return cell;
 }
@@ -190,6 +193,18 @@
     NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
     Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
     [self deleteWallPost:post.ids];
+}
+
+-(IBAction)btnLikeDislikeAction:(UIButton *)sender {
+    NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
+    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
+    if (sender.selected) {
+        // Do it for dislike
+        [self unLikePostwithPostId:post.ids];
+    } else {
+        // Do it for dislike
+        [self likePostwithPostId:post.ids];
+    }
 }
 
 #pragma mark - UIActionSheet Delegate Methods
@@ -515,13 +530,19 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.post);
+        int likecount = [lblLikeCount.text intValue] + 1;
+        lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
+        [btnLike setSelected:YES];
+        [self.tblForCityPostList reloadData];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
+        int likecount = [lblLikeCount.text intValue] + 1;
+        lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
+        [btnLike setSelected:YES];
+        [self.tblForCityPostList reloadData];
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
@@ -542,13 +563,17 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.post);
+        int likecount = [lblLikeCount.text intValue] - 1;
+        lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
+        [btnLike setSelected:NO];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
+        int likecount = [lblLikeCount.text intValue] - 1;
+        lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
+        [btnLike setSelected:NO];
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
