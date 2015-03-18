@@ -89,13 +89,17 @@
     
     UILabel *lbl = (UILabel *)[cell viewWithTag:kCell_Comment_name];
     lbl.text = comment.username;
-    UIButton *btn = (UIButton *)[cell viewWithTag:kCell_comment_delete];
+    UIButton *btnDelete = (UIButton *)[cell viewWithTag:kCell_comment_delete];
+    UIButton *btnEdit = (UIButton *)[cell viewWithTag:kCell_comment_edit];
     if([NSNumber numberWithBool:comment.isMyComment]) {
-        btn.tag = indexPath.row;
+        btnDelete.tag = indexPath.row;
+        [btnEdit setHidden:false];
+        txtView.editable = false;
     } else {
-        [btn setHidden:YES];
+        [btnDelete setHidden:YES];
+        [btnEdit setHidden:NO];
+        txtView.editable = false;
     }
-    
     return cell;
 }
 
@@ -122,6 +126,17 @@
     
 
 }
+- (IBAction)btnEditTapped:(UIButton *)sender{
+     NSIndexPath* indexPath = [self.tblViewForComments indexPathForRowAtPoint:[self.tblViewForComments convertPoint:sender.center fromView:sender.superview]];
+    Comment *comment = [arrayOfComments objectAtIndex:indexPath.row];
+    strCommentId = comment.ids;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.viewForEditComment.frame = CGRectMake(0,140, self.viewForEditComment.frame.size.width, self.viewForEditComment.frame.size.height);
+        self.txtViewToUpdateComment.text = comment.text;
+        [self.txtViewToUpdateComment becomeFirstResponder];
+    }];
+}
+
 - (IBAction)backButtonTapped:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -146,6 +161,31 @@
     }
 }
 
+- (IBAction)updateCommentBtnTapped:(id)sender {
+    //Call update comment method
+    NSMutableDictionary *dictOfCommnent =[NSMutableDictionary dictionary];
+    [dictOfCommnent setObject:self.txtViewToUpdateComment.text forKey:kCOMMENT_TEXT];
+    [self updateComment:dictOfCommnent ForPost:self.post.ids withCommentId:strCommentId];
+}
+
+#pragma mark - UITextView Delegate Methods
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView{
+    [textView resignFirstResponder];
+    [UIView animateWithDuration:0.5 animations:^{
+        self.viewForEditComment.frame = CGRectMake(0, 700, self.viewForEditComment.frame.size.width, self.viewForEditComment.frame.size.height);
+    }];
+    return YES;
+}
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if([text isEqualToString:@"\n"]){
+        [textView resignFirstResponder];
+        [UIView animateWithDuration:0.5 animations:^{
+            self.viewForEditComment.frame = CGRectMake(0, 700, self.viewForEditComment.frame.size.width, self.viewForEditComment.frame.size.height);
+        }];
+        return false;
+    }
+    return true;
+}
 #pragma mark - To get Comment
 -(void)getCommentsDetailsForPostId:(NSString *)postId {
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
@@ -268,20 +308,24 @@
 #pragma mark - To Update Comment
 -(void)updateComment:(NSDictionary *)dict ForPost:(NSString *)postId withCommentId:(NSString *)commentId {
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [self.txtViewToUpdateComment resignFirstResponder];
     NSString *strPath = [NSString stringWithFormat:kUpdateComment,postId,commentId];
     DataForResponse *data;
     [[AppDelegate appDelegate].rkomForComment putObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
-        NSLog(@"%@",dataResponse.comment);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
+        NSData *data = [operation.HTTPRequestOperation.responseString dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        if([[dict valueForKey:@"code"]integerValue] == 2000){
+            NSString *message = [dict valueForKey:@"msg"];
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:message delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+            [alert show];
+            [self getCommentsDetailsForPostId:self.post.ids];
+        }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }

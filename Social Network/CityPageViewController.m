@@ -86,17 +86,17 @@
         [imgMedia setHidden:NO];
     }
     
-    UILabel *lbl = (UILabel *)[cell viewWithTag:kCell_city_user_name];
-    lbl.text = post.username;
+    UILabel *lblUserName = (UILabel *)[cell viewWithTag:kCell_city_user_name];
+    lblUserName.text = post.username;
     
-    lbl = (UILabel *)[cell viewWithTag:kCell_city_user_time];
-    lbl.text = [NSString stringWithFormat:@"%@",post.createdDate];
+    UILabel *lblTime = (UILabel *)[cell viewWithTag:kCell_city_user_time];
+    lblTime.text = [NSString stringWithFormat:@"%@",post.createdDate];
     
-    UITextView *txt = (UITextView *)[cell viewWithTag:kCell_city_post_text];
-    txt.text = post.text;
+    UITextView *txtViewForPost = (UITextView *)[cell viewWithTag:kCell_city_post_text];
+    txtViewForPost.text = post.text;
     
-    lbl = (UILabel *)[cell viewWithTag:kCell_city_post_commentcount];
-    lbl.text = [NSString stringWithFormat:@"%@",post.commentCount];
+    UILabel *lblCommentCount = (UILabel *)[cell viewWithTag:kCell_city_post_commentcount];
+    lblCommentCount.text = [NSString stringWithFormat:@"%@",post.commentCount];
     
     btnLike = (UIButton *)[cell viewWithTag:kCell_city_post_isMyLike];
     [btnLike addTarget:self
@@ -113,13 +113,15 @@
     lblLikeCount.text = [NSString stringWithFormat:@"%@",post.likeCount];
     
     UIButton *btnDelete = (UIButton *)[cell viewWithTag:kCell_city_post_delete];
+    UIButton *btnEdit = (UIButton *) [cell.contentView viewWithTag:kCell_city_post_Update];
     BOOL ismyPost = [post.isMyPost boolValue];
     if(ismyPost == true) {
         [btnDelete setHidden:NO];
+        [btnEdit setHidden:NO];
     } else {
         [btnDelete setHidden:YES];
+        [btnEdit setHidden:YES];
     }
-    
     
     return cell;
 }
@@ -139,12 +141,25 @@
     }
 }
 
-#pragma mark - UITextField Delegate Methods
+#pragma mark - UITextView Delegate Methods
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     if([text isEqualToString:@"\n"]) {
         [textView resignFirstResponder];
+        if([textView isEqual:self.txtViewForUpdatePost]){
+            [UIView animateWithDuration:0.5 animations:^{
+                self.viewForUpdatePost.frame = CGRectMake(0, 700, self.viewForUpdatePost.frame.size.width, self.viewForUpdatePost.frame.size.height);
+            }];
+        }
         return NO;
     }
+    return YES;
+}
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView{
+    [textView resignFirstResponder];
+    [UIView animateWithDuration:0.5 animations:^{
+        self.viewForUpdatePost.frame = CGRectMake(0, 700, self.viewForUpdatePost.frame.size.width, self.viewForUpdatePost.frame.size.height);
+    }];
     return YES;
 }
 
@@ -182,8 +197,7 @@
 - (IBAction)shareButtonTapped:(id)sender {
 
     [dictOfPost setObject:self.txtViewForPost.text forKey:kPost_Text];
-    //[dictOfPost setObject:[NSNumber numberWithInt:1] forKey:kMedia_Type];
-    [self postOnCityWall:dictOfPost withCityId:strCityId];
+    [self postOnCityWall:dictOfPost withCityId:self.strCityId];
 }
 
 - (IBAction)likeButtonTapped:(id)sender {
@@ -193,6 +207,25 @@
     NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
     Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
     [self deleteWallPost:post.ids];
+}
+
+- (IBAction)updatePostBtnTapped:(id)sender {
+    NSMutableDictionary *dictOfPostData =[NSMutableDictionary dictionary];
+    [dictOfPostData setObject:self.txtViewForUpdatePost.text forKey:kPost_Text];
+    [self updateWallPost:dictOfPostData withPostId:myPostId];
+}
+
+
+
+- (IBAction)btnUpdatePostTapped:(UIButton *)sender {
+    NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
+    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
+   myPostId= post.ids;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.viewForUpdatePost.frame = CGRectMake(0,140, self.viewForUpdatePost.frame.size.width, self.viewForUpdatePost.frame.size.height);
+        self.txtViewForUpdatePost.text = post.text;
+        [self.txtViewForUpdatePost becomeFirstResponder];
+    }];
 }
 
 -(IBAction)btnLikeDislikeAction:(UIButton *)sender {
@@ -432,7 +465,7 @@
         NSLog(@"%@",dataResponse.city);
         City *city = [[dataResponse.city allObjects]firstObject];
         NSString *cityId = city.ids;
-        strCityId = cityId;
+        self.strCityId = cityId;
         [self getPostDetailsForCity:cityId pageNumber:page];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
@@ -477,20 +510,24 @@
 #pragma mark - To Update Wall Post
 -(void)updateWallPost:(NSDictionary *)dict withPostId:(NSString *)postId{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [self.txtViewForUpdatePost resignFirstResponder];
     NSString *strPath = [NSString stringWithFormat:kUpdateWallPost,postId];
     DataForResponse *data;
     [[AppDelegate appDelegate].rkomForPost putObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
-        NSLog(@"%@",dataResponse.post);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
+        NSData *data = [operation.HTTPRequestOperation.responseString dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        if([[dict valueForKey:@"code"]integerValue] == 2000){
+            NSString *message = [dict valueForKey:@"msg"];
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:message delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+            [alert show];
+            [self getPostDetailsForCity:self.strCityId pageNumber:page];
+        }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }

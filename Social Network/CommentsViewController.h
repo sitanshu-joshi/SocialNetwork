@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "Comment.h"
 
-@interface CommentsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
+@interface CommentsViewController : UIViewController<UITableViewDataSource, UITableViewDelegate,UITextViewDelegate> {
     NSMutableArray *arrayOfComments;
     MPMoviePlayerController *player;
+    NSString *strCommentId;
 }
 
 @property (strong,nonatomic) Post *post;
@@ -20,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgPostContent;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForPostDetail;
+@property (weak, nonatomic) IBOutlet UITextView *txtViewToUpdateComment;
 
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForComment;
 @property (weak, nonatomic) IBOutlet UIButton *btnPost;
@@ -29,9 +31,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblCommentCount;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewForComments;
 @property (weak, nonatomic) IBOutlet UIButton *btnPlay;
+@property (weak, nonatomic) IBOutlet UIView *viewForEditComment;
 
+- (IBAction)btnEditTapped:(id)sender;
 - (IBAction)backButtonTapped:(id)sender;
 - (IBAction)btnPostTapped:(id)sender;
 -(IBAction)btnLikeDislikeAction:(id)sender;
+- (IBAction)updateCommentBtnTapped:(id)sender;
 
 @end

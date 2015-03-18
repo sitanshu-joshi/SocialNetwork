@@ -40,11 +40,14 @@
 #define kCell_city_post_likecount               208
 #define kCell_city_post_delete                  209
 #define kCell_city_post_image                   210
+#define kCell_city_post_Update                  211
+
 // Comments
 #define kCell_Comment_profile                   301
 #define kCell_Comment_name                      302
 #define kCell_comment_text                      303
 #define kCell_comment_delete                    304
+#define kCell_comment_edit                      305
 
 #define test_mp4            @"http://0.s3.envato.com/h264-video-previews/80fad324-9db4-11e3-bf3d-0050569255a8/490527.mp4"
 

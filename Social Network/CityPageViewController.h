@@ -11,10 +11,8 @@
 #import "CommentsViewController.h"
 
 @interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, CustomSlideViewControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>{
-    
     int page;
     NSMutableArray *arrayForCityPostList;
-    NSString *strCityId;
     UIImagePickerController *imagePicker;
     NSString *actionSheetButtonTitle;
     NSURL *videoURL, *imageURL;
@@ -30,7 +28,9 @@
     NSMutableDictionary *dictOfPost;
     UIButton *btnLike;
     UILabel *lblLikeCount;
+    NSString *myPostId;
 }
+@property (strong, nonatomic) NSString *strCityId;
 @property (strong,nonatomic) NSString *strAddress;
 @property (weak, nonatomic) IBOutlet UITableView *tblForCityPostList;
 @property (weak, nonatomic) IBOutlet UIButton *btnMainMenu;
@@ -39,6 +39,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnShare;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForPost;
 @property (weak, nonatomic) IBOutlet UIButton *btnVideoSharing;
+@property (weak, nonatomic) IBOutlet UIView *viewForUpdatePost;
+@property (weak, nonatomic) IBOutlet UITextView *txtViewForUpdatePost;
 
 
 - (IBAction)uploadPhotoButtonTapped:(id)sender;
@@ -46,9 +48,11 @@
 - (IBAction)shareButtonTapped:(id)sender;
 - (IBAction)likeButtonTapped:(id)sender;
 - (IBAction)deleteButtonTapped:(id)sender;
+- (IBAction)updatePostBtnTapped:(id)sender;
+- (IBAction)btnUpdatePostTapped:(id)sender;
+
 
 /*
- 
  #pragma mark - UITableView DataSorce Methods
  - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
  return [arrayOfNewsResponse count];
