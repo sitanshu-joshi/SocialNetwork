@@ -35,6 +35,7 @@
 #define kCell_city_user_name                    202
 #define kCell_city_user_time                    203
 #define kCell_city_post_text                    204
+#define kCell_city_post_Comment                 205
 #define kCell_city_post_commentcount            206
 #define kCell_city_post_isMyLike                207
 #define kCell_city_post_likecount               208

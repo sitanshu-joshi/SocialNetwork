@@ -70,10 +70,34 @@
     }
     Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
     
-    // Draw City Cell
     UIImageView *imgProfile = (UIImageView *)[cell viewWithTag:kCell_city_user_profile];
-    
+    UILabel *lblUserName = (UILabel *)[cell viewWithTag:kCell_city_user_name];
+    UILabel *lblTime = (UILabel *)[cell viewWithTag:kCell_city_user_time];
+    UILabel *lblForPost = (UILabel *)[cell viewWithTag:kCell_city_post_text];
     UIImageView *imgMedia = (UIImageView *)[cell viewWithTag:kCell_city_post_image];
+    UILabel *lblCommentCount = (UILabel *)[cell viewWithTag:kCell_city_post_commentcount];
+    UIButton *btnComment = (UIButton *) [cell.contentView viewWithTag:kCell_city_post_Comment];
+    btnLike = (UIButton *)[cell viewWithTag:kCell_city_post_isMyLike];
+    lblLikeCount = (UILabel *)[cell viewWithTag:kCell_city_post_likecount];
+    UIButton *btnDelete = (UIButton *)[cell viewWithTag:kCell_city_post_delete];
+    UIButton *btnEdit = (UIButton *) [cell.contentView viewWithTag:kCell_city_post_Update];
+    
+    lblUserName.text = post.username;
+    lblTime.text = [NSString stringWithFormat:@"%@",post.createdDate];
+    
+    NSString *strOfPost = post.text;
+    [lblForPost setFont:Font_Roboto_Condensed_16];
+    NSDictionary *attributesDictionaryForDescription = [NSDictionary dictionaryWithObjectsAndKeys:  Font_Roboto_Condensed_16, NSFontAttributeName,[UIColor blackColor], NSForegroundColorAttributeName,nil];
+    CGRect rectForPost = [strOfPost boundingRectWithSize:CGSizeMake(300.f, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionaryForDescription context:nil];
+    lblForPost.frame = CGRectMake(lblForPost.frame.origin.x, lblForPost.frame.origin.y, lblForPost.frame.size.width, rectForPost.size.height);
+    
+    lblForPost.text = strOfPost;
+    lblForPost.textColor = [UIColor blackColor];
+    lblForPost.layer.cornerRadius = 5.0;
+    lblForPost.layer.masksToBounds = YES;
+    lblForPost.lineBreakMode = NSLineBreakByTruncatingTail;
+    lblForPost.numberOfLines = 0;
+    
     NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
     if([post.mediaUrl length]>0){
         if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
@@ -85,20 +109,14 @@
     } else {
         [imgMedia setHidden:NO];
     }
-    
-    UILabel *lblUserName = (UILabel *)[cell viewWithTag:kCell_city_user_name];
-    lblUserName.text = post.username;
-    
-    UILabel *lblTime = (UILabel *)[cell viewWithTag:kCell_city_user_time];
-    lblTime.text = [NSString stringWithFormat:@"%@",post.createdDate];
-    
-    UITextView *txtViewForPost = (UITextView *)[cell viewWithTag:kCell_city_post_text];
-    txtViewForPost.text = post.text;
-    
-    UILabel *lblCommentCount = (UILabel *)[cell viewWithTag:kCell_city_post_commentcount];
+    imgMedia.layer.cornerRadius = 5.0;
+    imgMedia.layer.masksToBounds = YES;
+    imgMedia.frame = CGRectMake(imgMedia.frame.origin.x, lblForPost.frame.origin.y + lblForPost.frame.size.height + 5, imgMedia.frame.size.width, imgMedia.frame.size.height);
+//    lblCommentCount.frame = CGRectMake(lblCommentCount.frame.origin.x, imgMedia.frame.origin.y + imgMedia.frame.size.height + 5, lblCommentCount.frame.size.width, lblCommentCount.frame.size.height);
+//    btnComment.frame = CGRectMake(btnComment.frame.origin.x, imgMedia.frame.origin.y + imgMedia.frame.size.height + 5, btnComment.frame.size.width, btnComment.frame.size.height);
+//    btnLike.frame = CGRectMake(btnLike.frame.origin.x, imgMedia.frame.origin.y + imgMedia.frame.size.height + 5, btnLike.frame.size.width, btnLike.frame.size.height);
+//    lblLikeCount.frame = CGRectMake(lblLikeCount.frame.origin.x, imgMedia.frame.origin.y + imgMedia.frame.size.height + 5, lblLikeCount.frame.size.width, lblLikeCount.frame.size.height);
     lblCommentCount.text = [NSString stringWithFormat:@"%@",post.commentCount];
-    
-    btnLike = (UIButton *)[cell viewWithTag:kCell_city_post_isMyLike];
     [btnLike addTarget:self
                  action:@selector(btnLikeDislikeAction:)
        forControlEvents:UIControlEventTouchUpInside];
@@ -108,12 +126,7 @@
     } else {
         [btnLike setSelected:NO];
     }
-    
-    lblLikeCount = (UILabel *)[cell viewWithTag:kCell_city_post_likecount];
     lblLikeCount.text = [NSString stringWithFormat:@"%@",post.likeCount];
-    
-    UIButton *btnDelete = (UIButton *)[cell viewWithTag:kCell_city_post_delete];
-    UIButton *btnEdit = (UIButton *) [cell.contentView viewWithTag:kCell_city_post_Update];
     BOOL ismyPost = [post.isMyPost boolValue];
     if(ismyPost == true) {
         [btnDelete setHidden:NO];
@@ -140,6 +153,16 @@
         commentsViewController.post = selectedPost;
     }
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
+    NSString *postText = post.text;
+    NSDictionary *attributesDictionaryForDescription = [NSDictionary dictionaryWithObjectsAndKeys:  Font_Roboto_Condensed_16, NSFontAttributeName,[UIColor blackColor], NSForegroundColorAttributeName,nil];
+    CGRect rectForDescription = [postText boundingRectWithSize:CGSizeMake(300.f, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionaryForDescription context:nil];
+    CGFloat heightOfCell = rectForDescription.origin.y + rectForDescription.size.height + 240;
+    return heightOfCell;
+}
+
 
 #pragma mark - UITextView Delegate Methods
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -487,9 +510,10 @@
     
     // Serialize the Article attributes then attach a file
     NSString *strTextToPost = self.txtViewForPost.text;
-    NSDictionary *params = @{@"MEDIA_TYPE" : mediaType,
-                            @"POST_TEXT" :strTextToPost};
-
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    mediaType ? [params setObject:mediaType forKey:@"MEDIA_TYPE"] : @"";
+    strTextToPost ? [params setObject:strTextToPost forKey:@"POST_TEXT"] : @"" ;
+    
     NSMutableURLRequest *request = [[AppDelegate appDelegate].rkomForPost multipartFormRequestWithObject:nil method:RKRequestMethodPOST path:strPath parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileData:contentData
                                     name:@"FILE"
