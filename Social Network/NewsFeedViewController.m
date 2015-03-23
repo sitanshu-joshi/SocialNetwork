@@ -116,12 +116,17 @@
         
         UIImageView *imgMedia = (UIImageView *)[cell viewWithTag:kCell_News_Feed_imgContent];
         imgMedia.image = nil;
-        NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
-        if([post.mediaUrl length]>0){
-            if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
-                imgMedia.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+        if([post.mediaType intValue] == 1){
+            NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+            if([post.mediaUrl length]>0){
+                if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                    imgMedia.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+                }
             }
+        }else if ([post.mediaType intValue] == 2){
+            imgMedia.image = [UIImage imageNamed:@"video-placeholder.png"];
         }
+
     }
     return cell;
 }

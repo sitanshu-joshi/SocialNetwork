@@ -54,16 +54,21 @@
     } else {
         [btnLike setSelected:NO];
     }
-    if (post.mediaUrl != nil) {
-        BOOL isImage = [[UtilityMethods utilityMethods] isUrlForImage:post.mediaUrl];
-        if (isImage == true) {
-            NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
-            if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
-                imgPostContent.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+    if([post.mediaType intValue] == 1){
+        
+        if (post.mediaUrl != nil) {
+            BOOL isImage = [[UtilityMethods utilityMethods] isUrlForImage:post.mediaUrl];
+            if (isImage == true) {
+                NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+                if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                    imgPostContent.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+                }
+            } else {
+                [self generateImage:post.mediaUrl];
             }
-        } else {
-            [self generateImage:post.mediaUrl];
         }
+    }else if ([post.mediaType intValue] == 2){
+        imgPostContent.image = [UIImage imageNamed:@"video-placeholder.png"];
     }
 }
 

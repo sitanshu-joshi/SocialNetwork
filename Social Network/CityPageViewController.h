@@ -50,6 +50,7 @@
 - (IBAction)deleteButtonTapped:(id)sender;
 - (IBAction)updatePostBtnTapped:(id)sender;
 - (IBAction)btnUpdatePostTapped:(id)sender;
+- (IBAction)refreshBtnTapped:(id)sender;
 
 
 /*

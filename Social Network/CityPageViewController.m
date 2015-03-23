@@ -56,6 +56,8 @@
 -(void)setUpUserInterface{
     btnShare.layer.cornerRadius = 7.0;
 }
+
+
 #pragma mark - UITableView DataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [arrayForCityPostList count];
@@ -97,25 +99,25 @@
     lblForPost.layer.masksToBounds = YES;
     lblForPost.lineBreakMode = NSLineBreakByTruncatingTail;
     lblForPost.numberOfLines = 0;
-    
-    NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
-    if([post.mediaUrl length]>0){
-        if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
-            imgMedia.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+    if([post.mediaType intValue] == 1){
+        NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+        if([post.mediaUrl length]>0){
+            if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                imgMedia.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+            }
         }
+        if (imgMedia.image == nil) {
+            [imgMedia setHidden:YES];
+        } else {
+            [imgMedia setHidden:NO];
+        }
+    }else if([post.mediaType intValue] == 2){
+        imgMedia.image = [UIImage imageNamed:@"video-placeholder.png"];
     }
-    if (imgMedia.image == nil) {
-        [imgMedia setHidden:YES];
-    } else {
-        [imgMedia setHidden:NO];
-    }
+    
     imgMedia.layer.cornerRadius = 5.0;
     imgMedia.layer.masksToBounds = YES;
     imgMedia.frame = CGRectMake(imgMedia.frame.origin.x, lblForPost.frame.origin.y + lblForPost.frame.size.height + 5, imgMedia.frame.size.width, imgMedia.frame.size.height);
-//    lblCommentCount.frame = CGRectMake(lblCommentCount.frame.origin.x, imgMedia.frame.origin.y + imgMedia.frame.size.height + 5, lblCommentCount.frame.size.width, lblCommentCount.frame.size.height);
-//    btnComment.frame = CGRectMake(btnComment.frame.origin.x, imgMedia.frame.origin.y + imgMedia.frame.size.height + 5, btnComment.frame.size.width, btnComment.frame.size.height);
-//    btnLike.frame = CGRectMake(btnLike.frame.origin.x, imgMedia.frame.origin.y + imgMedia.frame.size.height + 5, btnLike.frame.size.width, btnLike.frame.size.height);
-//    lblLikeCount.frame = CGRectMake(lblLikeCount.frame.origin.x, imgMedia.frame.origin.y + imgMedia.frame.size.height + 5, lblLikeCount.frame.size.width, lblLikeCount.frame.size.height);
     lblCommentCount.text = [NSString stringWithFormat:@"%@",post.commentCount];
     [btnLike addTarget:self
                  action:@selector(btnLikeDislikeAction:)
@@ -249,6 +251,10 @@
         self.txtViewForUpdatePost.text = post.text;
         [self.txtViewForUpdatePost becomeFirstResponder];
     }];
+}
+
+- (IBAction)refreshBtnTapped:(id)sender {
+    [self setupMethods];
 }
 
 -(IBAction)btnLikeDislikeAction:(UIButton *)sender {
