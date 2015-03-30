@@ -2,25 +2,25 @@
 //  DataForResponse.m
 //  Social Network
 //
-//  Created by Sagar Gondaliya on 1/28/15.
+//  Created by Sitanshu Joshi on 3/26/15.
 //  Copyright (c) 2015 Sitanshu Joshi. All rights reserved.
 //
 
 #import "DataForResponse.h"
+#import "City.h"
 #import "Comment.h"
+#import "Notification.h"
 #import "Post.h"
 #import "User.h"
-#import "City.h"
 
 
 @implementation DataForResponse
 
+@dynamic city;
+@dynamic comment;
 @dynamic post;
 @dynamic user;
-@dynamic comment;
-@dynamic city;
-
-
+@dynamic notification;
 
 +(RKEntityMapping *)objectMappingForDataResponse:(OPPCodeType)OppCodeType {
     

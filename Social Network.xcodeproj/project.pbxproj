@@ -63,7 +63,6 @@
 		A409F11E1A832D2E00A994DA /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F11D1A832D2E00A994DA /* SettingViewController.m */; };
 		A409F1361A83894100A994DA /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F1291A83894100A994DA /* City.m */; };
 		A409F1371A83894100A994DA /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F12B1A83894100A994DA /* Comment.m */; };
-		A409F1381A83894100A994DA /* DataForResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F12D1A83894100A994DA /* DataForResponse.m */; };
 		A409F1391A83894100A994DA /* DataFromGoogle.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F12F1A83894100A994DA /* DataFromGoogle.m */; };
 		A409F13A1A83894100A994DA /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F1311A83894100A994DA /* Post.m */; };
 		A409F13B1A83894100A994DA /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F1331A83894100A994DA /* Result.m */; };
@@ -77,6 +76,8 @@
 		F45517951AAC566E00F6BBF0 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = F45517941AAC566E00F6BBF0 /* play.png */; };
 		F4A173631A78BF5000E44730 /* CustomSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A173601A78BF5000E44730 /* CustomSlideViewController.m */; };
 		F4A173641A78BF5000E44730 /* MenuOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A173621A78BF5000E44730 /* MenuOptionsViewController.m */; };
+		F4B5087A1AC40F0700452BA2 /* DataForResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B508791AC40F0700452BA2 /* DataForResponse.m */; };
+		F4B5087D1AC40F0800452BA2 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B5087C1AC40F0800452BA2 /* Notification.m */; };
 		F4BDDF821983A50500C52E97 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF811983A50500C52E97 /* Foundation.framework */; };
 		F4BDDF841983A50500C52E97 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF831983A50500C52E97 /* CoreGraphics.framework */; };
 		F4BDDF861983A50500C52E97 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4BDDF851983A50500C52E97 /* UIKit.framework */; };
@@ -192,8 +193,6 @@
 		A409F1291A83894100A994DA /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
 		A409F12A1A83894100A994DA /* Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Comment.h; sourceTree = "<group>"; };
 		A409F12B1A83894100A994DA /* Comment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Comment.m; sourceTree = "<group>"; };
-		A409F12C1A83894100A994DA /* DataForResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataForResponse.h; sourceTree = "<group>"; };
-		A409F12D1A83894100A994DA /* DataForResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataForResponse.m; sourceTree = "<group>"; };
 		A409F12E1A83894100A994DA /* DataFromGoogle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataFromGoogle.h; sourceTree = "<group>"; };
 		A409F12F1A83894100A994DA /* DataFromGoogle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataFromGoogle.m; sourceTree = "<group>"; };
 		A409F1301A83894100A994DA /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
@@ -219,6 +218,10 @@
 		F4A173601A78BF5000E44730 /* CustomSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSlideViewController.m; sourceTree = "<group>"; };
 		F4A173611A78BF5000E44730 /* MenuOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuOptionsViewController.h; sourceTree = "<group>"; };
 		F4A173621A78BF5000E44730 /* MenuOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuOptionsViewController.m; sourceTree = "<group>"; };
+		F4B508781AC40F0700452BA2 /* DataForResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataForResponse.h; sourceTree = "<group>"; };
+		F4B508791AC40F0700452BA2 /* DataForResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataForResponse.m; sourceTree = "<group>"; };
+		F4B5087B1AC40F0800452BA2 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
+		F4B5087C1AC40F0800452BA2 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		F4BDDF7E1983A50500C52E97 /* Social Network.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Social Network.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BDDF811983A50500C52E97 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F4BDDF831983A50500C52E97 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -441,12 +444,14 @@
 		A409F1271A83894100A994DA /* MappingObjects */ = {
 			isa = PBXGroup;
 			children = (
+				F4B5087B1AC40F0800452BA2 /* Notification.h */,
+				F4B5087C1AC40F0800452BA2 /* Notification.m */,
+				F4B508781AC40F0700452BA2 /* DataForResponse.h */,
+				F4B508791AC40F0700452BA2 /* DataForResponse.m */,
 				A409F1281A83894100A994DA /* City.h */,
 				A409F1291A83894100A994DA /* City.m */,
 				A409F12A1A83894100A994DA /* Comment.h */,
 				A409F12B1A83894100A994DA /* Comment.m */,
-				A409F12C1A83894100A994DA /* DataForResponse.h */,
-				A409F12D1A83894100A994DA /* DataForResponse.m */,
 				A409F12E1A83894100A994DA /* DataFromGoogle.h */,
 				A409F12F1A83894100A994DA /* DataFromGoogle.m */,
 				A409F1301A83894100A994DA /* Post.h */,
@@ -768,6 +773,7 @@
 				A409F1371A83894100A994DA /* Comment.m in Sources */,
 				A409F1141A832CD100A994DA /* SDWebImageManager.m in Sources */,
 				A40328D11A8201310040D282 /* AMTagListView.m in Sources */,
+				F4B5087D1AC40F0800452BA2 /* Notification.m in Sources */,
 				F4EC946C1A81ED350063F0E4 /* CommentsViewController.m in Sources */,
 				A40328EB1A8225660040D282 /* Reachability.m in Sources */,
 				F4BDDF921983A50500C52E97 /* AppDelegate.m in Sources */,
@@ -780,6 +786,7 @@
 				56FCEF611A74340A006B7374 /* NewsFeedViewController.m in Sources */,
 				56BFACEA1A7670F000CADEDF /* AppUserInfo.m in Sources */,
 				A409F10E1A832CD100A994DA /* NSData+GIF.m in Sources */,
+				F4B5087A1AC40F0700452BA2 /* DataForResponse.m in Sources */,
 				D86DDADE1A81583000E7FA24 /* ProfileViewController.m in Sources */,
 				A40328D21A8201310040D282 /* AMTagView.m in Sources */,
 				F4A173641A78BF5000E44730 /* MenuOptionsViewController.m in Sources */,
@@ -788,7 +795,6 @@
 				A409F10D1A832CD100A994DA /* MKAnnotationView+WebCache.m in Sources */,
 				A409F1161A832CD100A994DA /* UIButton+WebCache.m in Sources */,
 				56BFACF71A76A0A500CADEDF /* UILabel+Additions.m in Sources */,
-				A409F1381A83894100A994DA /* DataForResponse.m in Sources */,
 				5616CFAC19A507A1001FF581 /* HomeViewController.m in Sources */,
 				A409F1171A832CD100A994DA /* UIImage+GIF.m in Sources */,
 				F455176F1AA9E44200F6BBF0 /* IconDownloader.m in Sources */,

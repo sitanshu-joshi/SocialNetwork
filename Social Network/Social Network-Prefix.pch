@@ -51,6 +51,6 @@
     #import "Result.h"
     #import "DataFromGoogle.h"
     #import "City.h"
-
+    #import "Notification.h"
 
 #endif

@@ -17,7 +17,8 @@ typedef enum {
     LIKE_COUNT,
     COMMENT,
     PLACES,
-    CITY
+    CITY,
+    NOTIFICATION
 } OPPCodeType;
 
 

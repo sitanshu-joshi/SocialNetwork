@@ -13,7 +13,7 @@ static AppDelegate *appDelegate;
 
 @implementation AppDelegate
 @synthesize nsManegedObjectContext,managedObjectModel,persistentStoreCoordinator;
-@synthesize rkMOS,rkObjectManager,rkomForLogin,rkomForComment,rkomForPost,rkomForPlaces,rkomForCity,rkomForGeneralObject;
+@synthesize rkMOS,rkObjectManager,rkomForLogin,rkomForComment,rkomForPost,rkomForPlaces,rkomForCity,rkomForNotification,rkomForGeneralObject;
 @synthesize loggedUser;
 
 +(AppDelegate *)appDelegate{
@@ -350,9 +350,15 @@ static AppDelegate *appDelegate;
     rkomForCity = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kBase_URL]];
     [rkomForCity setManagedObjectStore:rkMOS];
     [rkomForCity addRequestDescriptor:[RKRequestDescriptor requestDescriptorWithMapping:[[DataForResponse objectMappingForDataResponse:CITY] inverseMapping] objectClass:[DataForResponse class] rootKeyPath:@"data" method:RKRequestMethodGET]];
+    [rkomForCity addResponseDescriptor:[RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:CITY] method:RKRequestMethodGET pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]];
     
-    RKResponseDescriptor *responseDescriptorForCity = [RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:CITY] method:RKRequestMethodGET pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-    [rkomForCity addResponseDescriptor:responseDescriptorForCity];
+    /*
+     Notification Mapping
+     */
+    rkomForNotification = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kBase_URL]];
+    [rkomForNotification setManagedObjectStore:rkMOS];
+    [rkomForNotification addRequestDescriptor:[RKRequestDescriptor requestDescriptorWithMapping:[[DataForResponse objectMappingForDataResponse:NOTIFICATION] inverseMapping] objectClass:[DataForResponse class] rootKeyPath:@"data" method:RKRequestMethodGET]];
+    [rkomForNotification addResponseDescriptor:[RKResponseDescriptor responseDescriptorWithMapping:[DataForResponse objectMappingForDataResponse:NOTIFICATION] method:RKRequestMethodGET pathPattern:nil keyPath:@"data" statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]];
 }
 
 #pragma mark Document Directory
