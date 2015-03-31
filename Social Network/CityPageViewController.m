@@ -104,6 +104,7 @@
     lblForPost.lineBreakMode = NSLineBreakByTruncatingTail;
     lblForPost.numberOfLines = 0;
     if([post.mediaType intValue] == 1){
+        imgMedia.image = [UIImage imageNamed:@"img_placeholder .jpg"];
         NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
         if([post.mediaUrl length]>0){
             if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){

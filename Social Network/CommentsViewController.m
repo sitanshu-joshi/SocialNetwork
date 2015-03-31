@@ -55,7 +55,7 @@
         [btnLike setSelected:NO];
     }
     if([post.mediaType intValue] == 1){
-        
+        imgPostContent.image = [UIImage imageNamed:@"img_placeholder .jpg"];
         if (post.mediaUrl != nil) {
             BOOL isImage = [[UtilityMethods utilityMethods] isUrlForImage:post.mediaUrl];
             if (isImage == true) {
