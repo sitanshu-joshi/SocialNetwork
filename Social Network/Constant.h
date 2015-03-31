@@ -66,6 +66,8 @@
 #define kGetCommentsByPostId        @"city/post/%@/comment"                     //GET
 // News
 #define kResource_GetNewsFeed       @"usercity/post?page=%d"    //GET
+#define kResource_NF_count          @"notification/count"
+#define kResource_NF_List           @"notification?page=1"
 
 // Places
 #define kResource_Place             @"json?query=%@&key=%@&types=locality"

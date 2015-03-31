@@ -13,7 +13,7 @@
 @end
 
 @implementation CityPageViewController
-@synthesize btnVideoSharing,btnPhotoSharing,btnShare,btnMainMenu;
+@synthesize btnVideoSharing,btnPhotoSharing,btnShare,btnMainMenu,btnBarNews,btnBarNotification,btnBarNotificationCount,btnBarPost;
 @synthesize tblForCityPostList;
 
 - (void)viewDidLoad {
@@ -27,6 +27,8 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self setUpUserInterface];
+    [self performSelector:@selector(getNotificationCount) withObject:nil afterDelay:20.0];
+    
     
 }
 -(void)mainMenuBtnClicked {
@@ -51,6 +53,8 @@
     [self getCityIdWithCountry:strCountry State:strState City:strCity];
     dictOfPost = [NSMutableDictionary dictionary];
     [tblForCityPostList setHidden:YES];
+    btnBarNotificationCount.layer.cornerRadius = 14.0;
+    [btnBarNotificationCount setHidden:YES];
 }
 
 -(void)setUpUserInterface{
@@ -662,6 +666,25 @@
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
         [alert show];
         RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
+
+-(void)getNotificationCount {
+    [[AppDelegate appDelegate].rkomForNotification getObjectsAtPath:kResource_NF_count parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSString *strResponse = operation.HTTPRequestOperation.responseString;
+         NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[strResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
+        
+        NSArray *nfCount = [[jsonObject valueForKey:@"data"] valueForKey:@"count"];
+        btnBarNotificationCount.titleLabel.text = [NSString stringWithFormat:@"%@",[nfCount firstObject]];
+        NSLog(@"%@",[[jsonObject valueForKey:@"data"] valueForKey:@"count"]);
+        [btnBarNotificationCount setHidden:NO];
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        NSString *strResponse = operation.HTTPRequestOperation.responseString;
+        NSLog(@"%@",strResponse);
+        
+        
+        
     }];
 }
 

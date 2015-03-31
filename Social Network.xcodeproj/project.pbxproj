@@ -70,6 +70,7 @@
 		D84DCCF71A87F2DD0057003E /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = D84DCCF61A87F2DD0057003E /* delete.png */; };
 		D86DDADE1A81583000E7FA24 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86DDADD1A81583000E7FA24 /* ProfileViewController.m */; };
 		F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F4224F6A1A594061003A353E /* troyage.xcdatamodeld */; };
+		F435BFDE1ACAC8400045494B /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F435BFDD1ACAC8400045494B /* NotificationViewController.m */; };
 		F45517681AA9C6FA00F6BBF0 /* unlike.png in Resources */ = {isa = PBXBuildFile; fileRef = F45517671AA9C6FA00F6BBF0 /* unlike.png */; };
 		F455176C1AA9DEAC00F6BBF0 /* FileUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = F455176B1AA9DEAC00F6BBF0 /* FileUtility.m */; };
 		F455176F1AA9E44200F6BBF0 /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = F455176E1AA9E44200F6BBF0 /* IconDownloader.m */; };
@@ -207,6 +208,8 @@
 		D86DDADD1A81583000E7FA24 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		F4224F691A59401A003A353E /* Enum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enum.h; sourceTree = "<group>"; };
 		F4224F6B1A594061003A353E /* troyage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = troyage.xcdatamodel; sourceTree = "<group>"; };
+		F435BFDC1ACAC8400045494B /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
+		F435BFDD1ACAC8400045494B /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
 		F45517671AA9C6FA00F6BBF0 /* unlike.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlike.png; sourceTree = "<group>"; };
 		F455176A1AA9DEAC00F6BBF0 /* FileUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtility.h; sourceTree = "<group>"; };
 		F455176B1AA9DEAC00F6BBF0 /* FileUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUtility.m; sourceTree = "<group>"; };
@@ -473,6 +476,15 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		F435BFDB1ACAC8070045494B /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				F435BFDC1ACAC8400045494B /* NotificationViewController.h */,
+				F435BFDD1ACAC8400045494B /* NotificationViewController.m */,
+			);
+			name = Notification;
+			sourceTree = "<group>";
+		};
 		F4A1735E1A78BF4F00E44730 /* SJSlidebar */ = {
 			isa = PBXGroup;
 			children = (
@@ -576,6 +588,7 @@
 		F4BDDFB61983A71000C52E97 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				F435BFDB1ACAC8070045494B /* Notification */,
 				A409F11B1A832D2E00A994DA /* Setting */,
 				D86DDADB1A81581E00E7FA24 /* Profile */,
 				56BFACDE1A7633F600CADEDF /* Login */,
@@ -776,6 +789,7 @@
 				F4B5087D1AC40F0800452BA2 /* Notification.m in Sources */,
 				F4EC946C1A81ED350063F0E4 /* CommentsViewController.m in Sources */,
 				A40328EB1A8225660040D282 /* Reachability.m in Sources */,
+				F435BFDE1ACAC8400045494B /* NotificationViewController.m in Sources */,
 				F4BDDF921983A50500C52E97 /* AppDelegate.m in Sources */,
 				A409F13A1A83894100A994DA /* Post.m in Sources */,
 				A409F1101A832CD100A994DA /* SDWebImageCompat.m in Sources */,

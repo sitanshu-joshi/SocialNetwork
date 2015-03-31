@@ -17,6 +17,7 @@
 #define kCell_Place_Newsfeed                    @"resultCell"
 #define kCell_Newsfeed                          @"newsCell"
 #define kCell_Comment                           @"commentCell"
+#define kCell_Notification                      @"cellForNotification"
 
 
 #pragma mark Cell Components Tags
@@ -49,6 +50,10 @@
 #define kCell_comment_text                      303
 #define kCell_comment_delete                    304
 #define kCell_comment_edit                      305
+
+// Notification
+#define kCell_Noti_user_icon                    401
+#define kCell_Noti_user_name                    402
 
 #define test_mp4            @"http://0.s3.envato.com/h264-video-previews/80fad324-9db4-11e3-bf3d-0050569255a8/490527.mp4"
 
