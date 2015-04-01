@@ -32,6 +32,7 @@
 #define kCell_News_Feed_username                107
 
 // City Page
+#define kCell_city_user_Background              200
 #define kCell_city_user_profile                 201
 #define kCell_city_user_name                    202
 #define kCell_city_user_time                    203

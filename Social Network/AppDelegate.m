@@ -33,7 +33,6 @@ static AppDelegate *appDelegate;
     self.window.opaque = NO;
     [self setupRestKitForInitializeUserMapping];
     [self setupDocumentDirectory];
-    
     return YES;
 }
 							

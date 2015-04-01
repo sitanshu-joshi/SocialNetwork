@@ -101,7 +101,17 @@
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kResource_SignUp_Auth parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
-        [self performSegueWithIdentifier:kPush_To_Question sender:nil];
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+        {
+            // app already launched
+            [self performSegueWithIdentifier:kPush_To_SlideBar sender:nil];
+        }else {
+            // This is the first launch ever
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self performSegueWithIdentifier:kPush_To_Question sender:nil];
+        }
+        
     
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *data  = [mappingResult.array objectAtIndex:0];

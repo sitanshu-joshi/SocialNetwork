@@ -12,6 +12,7 @@
 
 @interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, CustomSlideViewControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>{
     int page;
+    NSMutableArray *arrOfCellHeight;
     NSMutableArray *arrayForCityPostList;
     UIImagePickerController *imagePicker;
     NSString *actionSheetButtonTitle;

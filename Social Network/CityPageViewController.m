@@ -18,6 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    arrOfCellHeight = [NSMutableArray array];
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
     NSLog(@"Address:%@",self.strAddress);
@@ -63,26 +64,31 @@
 
 
 #pragma mark - UITableView DataSource Methods
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return [arrayForCityPostList count];
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 1;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    CGRect frame;
     static NSString *identifier = @"cell";
     [self.txtViewForPost resignFirstResponder];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if(cell == nil){
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
-    
-    UIImageView *imgProfile = (UIImageView *)[cell viewWithTag:kCell_city_user_profile];
+    Post *post = [arrayForCityPostList objectAtIndex:indexPath.section];
+    UIImageView *imgBg = (UIImageView *)[cell viewWithTag:kCell_city_user_Background];
+    //UIImageView *imgProfile = (UIImageView *)[cell viewWithTag:kCell_city_user_profile];
     UILabel *lblUserName = (UILabel *)[cell viewWithTag:kCell_city_user_name];
     UILabel *lblTime = (UILabel *)[cell viewWithTag:kCell_city_user_time];
     UILabel *lblForPost = (UILabel *)[cell viewWithTag:kCell_city_post_text];
     UIImageView *imgMedia = (UIImageView *)[cell viewWithTag:kCell_city_post_image];
     UILabel *lblCommentCount = (UILabel *)[cell viewWithTag:kCell_city_post_commentcount];
-    UIButton *btnComment = (UIButton *) [cell.contentView viewWithTag:kCell_city_post_Comment];
+    //UIButton *btnComment = (UIButton *) [cell.contentView viewWithTag:kCell_city_post_Comment];
     btnLike = (UIButton *)[cell viewWithTag:kCell_city_post_isMyLike];
     lblLikeCount = (UILabel *)[cell viewWithTag:kCell_city_post_likecount];
     UIButton *btnDelete = (UIButton *)[cell viewWithTag:kCell_city_post_delete];
@@ -91,38 +97,62 @@
     lblUserName.text = post.username;
     lblTime.text = [NSString stringWithFormat:@"%@",post.createdDate];
     
-    NSString *strOfPost = post.text;
-    [lblForPost setFont:Font_Roboto_Condensed_16];
-    NSDictionary *attributesDictionaryForDescription = [NSDictionary dictionaryWithObjectsAndKeys:  Font_Roboto_Condensed_16, NSFontAttributeName,[UIColor blackColor], NSForegroundColorAttributeName,nil];
-    CGRect rectForPost = [strOfPost boundingRectWithSize:CGSizeMake(300.f, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionaryForDescription context:nil];
-    lblForPost.frame = CGRectMake(lblForPost.frame.origin.x, lblForPost.frame.origin.y, lblForPost.frame.size.width, rectForPost.size.height);
+    frame = lblForPost.frame;
+    int intBufferHeight = 8.0;
+//    if(IS_IPHONE_5){
+//        intBufferHeight = 28.0;
+//    }
+    frame.size.height = [self calculateLabelHeightBasedOnString:[NSString stringWithFormat:@"%@",post.text]].size.height+intBufferHeight;
+    [lblForPost setFrame:frame];
+    lblForPost.text = nil;
     
-    lblForPost.text = strOfPost;
-    lblForPost.textColor = [UIColor blackColor];
+    NSDictionary *attribs = @{
+                              NSForegroundColorAttributeName: [UIColor whiteColor],
+                              NSFontAttributeName: [UIFont fontWithName:@"Helvetica Neue" size:13.0]
+                              };
+    NSMutableAttributedString *attributedText =
+    [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",post.text]
+                                           attributes:attribs];
+    lblForPost.attributedText = attributedText;
     lblForPost.layer.cornerRadius = 5.0;
     lblForPost.layer.masksToBounds = YES;
-    lblForPost.lineBreakMode = NSLineBreakByTruncatingTail;
+    lblForPost.lineBreakMode = NSLineBreakByWordWrapping;
     lblForPost.numberOfLines = 0;
+    
+    frame = imgMedia.frame;
+    int intOriginY = 123.0;
+//    if(IS_IPHONE_5){
+//        intOriginY = 54.0f;
+//    }
+    
     if([post.mediaType intValue] == 1){
+        frame.origin.y = [self calculateLabelHeightBasedOnString:[NSString stringWithFormat:@"%@",post.text]].size.height+intOriginY;
+        [imgMedia setFrame:frame];
         imgMedia.image = [UIImage imageNamed:@"img_placeholder .jpg"];
         NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
         if([post.mediaUrl length]>0){
             if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
                 imgMedia.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
             }
-        }
-        if (imgMedia.image == nil) {
-            [imgMedia setHidden:YES];
-        } else {
+            imgMedia.layer.borderColor = (__bridge CGColorRef)([UIColor blackColor]);
+            imgMedia.layer.borderWidth = 10.0;
             [imgMedia setHidden:NO];
+        }else{
+            [imgMedia setHidden:YES];
         }
     }else if([post.mediaType intValue] == 2){
+        frame.origin.y = [self calculateLabelHeightBasedOnString:[NSString stringWithFormat:@"%@",post.text]].size.height+intOriginY;
+        [imgMedia setFrame:frame];
         imgMedia.image = [UIImage imageNamed:@"video-placeholder.png"];
+        imgMedia.layer.borderColor = (__bridge CGColorRef)([UIColor whiteColor]);
+        imgMedia.layer.borderWidth = 2.0;
+    }else{
+        [imgMedia setHidden:YES];
+        frame.origin.y = [self calculateLabelHeightBasedOnString:[NSString stringWithFormat:@"%@",post.text]].size.height;
+        [imgMedia setFrame:frame];
     }
-    
     imgMedia.layer.cornerRadius = 5.0;
     imgMedia.layer.masksToBounds = YES;
-    imgMedia.frame = CGRectMake(imgMedia.frame.origin.x, lblForPost.frame.origin.y + lblForPost.frame.size.height + 5, imgMedia.frame.size.width, imgMedia.frame.size.height);
     lblCommentCount.text = [NSString stringWithFormat:@"%@",post.commentCount];
     [btnLike addTarget:self
                  action:@selector(btnLikeDislikeAction:)
@@ -142,14 +172,16 @@
         [btnDelete setHidden:YES];
         [btnEdit setHidden:YES];
     }
-    
+    imgBg.frame = CGRectMake(imgBg.frame.origin.x, imgBg.frame.origin.y, imgBg.frame.size.width, imgMedia.frame.origin.y + imgMedia.frame.size.height + 5);
+    imgBg.layer.cornerRadius = 5.0;
+    imgBg.layer.masksToBounds = YES;
     return cell;
 }
 #pragma mark - UITableView Delegate Methods
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.txtViewForPost resignFirstResponder];
     //Get Post id of selected Post and pass to comment page to get comments for particular post
-    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
+    Post *post = [arrayForCityPostList objectAtIndex:indexPath.section];
     selectedPost = post;
     [self performSegueWithIdentifier:kPush_To_Comment sender:nil];
 }
@@ -161,15 +193,40 @@
     }
 }
 
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
+//    NSString *postText = post.text;
+//    NSDictionary *attributesDictionaryForDescription = [NSDictionary dictionaryWithObjectsAndKeys:  Font_Roboto_Condensed_16, NSFontAttributeName,[UIColor blackColor], NSForegroundColorAttributeName,nil];
+//    CGRect rectForDescription = [postText boundingRectWithSize:CGSizeMake(300.f, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionaryForDescription context:nil];
+//    CGFloat heightOfCell = rectForDescription.origin.y + rectForDescription.size.height + 240;
+//    return heightOfCell;
+//    
+//    
+//}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
-    NSString *postText = post.text;
-    NSDictionary *attributesDictionaryForDescription = [NSDictionary dictionaryWithObjectsAndKeys:  Font_Roboto_Condensed_16, NSFontAttributeName,[UIColor blackColor], NSForegroundColorAttributeName,nil];
-    CGRect rectForDescription = [postText boundingRectWithSize:CGSizeMake(300.f, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionaryForDescription context:nil];
-    CGFloat heightOfCell = rectForDescription.origin.y + rectForDescription.size.height + 240;
-    return heightOfCell;
+    return [[arrOfCellHeight objectAtIndex:indexPath.section] intValue];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    CGFloat heightOfHeader;
+    if(section == 0){
+        heightOfHeader = 0.0;
+    }else{
+        heightOfHeader = 10.0;
+    }
+    return heightOfHeader;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *viewForHeader;
+    if(section == 0){
+        viewForHeader = nil;
+    }else{
+        viewForHeader = [[UIView alloc] initWithFrame:CGRectZero];
+    }
+    return viewForHeader;
+}
 
 #pragma mark - UITextView Delegate Methods
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -413,6 +470,7 @@
     NSString *strPath = [NSString stringWithFormat:kGetPost,cityId,pageNumber];
     [[AppDelegate appDelegate].rkomForPost getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
+        [arrOfCellHeight removeAllObjects];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.post);
@@ -422,11 +480,32 @@
             NSArray *sortedArray = [arrayForCityPostList sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
             arrayForCityPostList = [[NSMutableArray alloc] initWithArray:sortedArray];
             [self downloadPostImages:arrayForCityPostList];
+            for (int i=0;i<[arrayForCityPostList count]; i++) {
+                Post *post = [arrayForCityPostList objectAtIndex:i];
+                
+                NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                      [UIFont fontWithName:@"Helventica Neue" size:13], NSFontAttributeName,
+                                                      nil];
+                int intOfDefaultWidth = 300.0f;
+//                if(IS_IPHONE_5){
+//                    intOfDefaultWidth = 250.0f;
+//                }
+                NSString *strDesc = [NSString stringWithFormat:@"%@",post.text];
+                CGRect rect = [strDesc boundingRectWithSize:CGSizeMake(intOfDefaultWidth, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionary context:nil];
+                int intBufferSize = 125.0;
+//                if(IS_IPHONE_5){
+//                    intBufferSize = 88.0f;
+//                }
+                int height = intBufferSize;
+                height+=rect.size.height;
+                if(post.mediaUrl){
+                    height = height + 128.0;
+                }
+                [arrOfCellHeight addObject:[NSString stringWithFormat:@"%d",height]];
+            }
             [tblForCityPostList setHidden:NO];
             [tblForCityPostList reloadData];
         }
-        
-        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
@@ -687,6 +766,20 @@
         
         
     }];
+}
+
+#pragma mark - Dynamic Height Calculation Method
+
+-(CGRect)calculateLabelHeightBasedOnString:(NSString *)strDesc {
+    NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          [UIFont fontWithName:@"Helventica Neue" size:13], NSFontAttributeName,
+                                          nil];
+    int intOfDefaultWidth = 300.0;
+//    if(IS_IPHONE_5){
+//        intOfDefaultWidth = 250.0f;
+//    }
+    CGRect rect = [strDesc boundingRectWithSize:CGSizeMake(intOfDefaultWidth, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionary context:nil];
+    return rect;
 }
 
 @end

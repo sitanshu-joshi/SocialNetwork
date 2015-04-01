@@ -473,7 +473,7 @@ static NSString * const SWSegueRightIdentifier = @"sw_right";
         
         @try
         {
-            [self performSegueWithIdentifier:SWSegueRightIdentifier sender:nil];
+            //[self performSegueWithIdentifier:SWSegueRightIdentifier sender:nil];
         }
         @catch(NSException *exception){
             
