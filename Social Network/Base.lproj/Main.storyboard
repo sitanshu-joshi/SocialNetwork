@@ -146,6 +146,30 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.67823262120000005" blue="0.67823262120000005" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                             </view>
+                            <view contentMode="scaleToFill" id="58S-sz-eaj">
+                                <rect key="frame" x="90" y="448" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7Jj-fs-0Qe">
+                                        <rect key="frame" x="25" y="18" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="Quesion_ANswer.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <segue destination="BnG-3K-hsK" kind="custom" customClass="CustomSlideViewControllerSegue" id="5W5-rz-ZlJ"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Question" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4W6-At-GMn">
+                                        <rect key="frame" x="16" y="71" width="69" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.67823262120000005" blue="0.67823262120000005" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -179,7 +203,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IVl-Ux-RYa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1169" y="-926"/>
+            <point key="canvasLocation" x="-1149" y="-926"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="coy-UO-ZOJ">
@@ -883,6 +907,13 @@
                                     <action selector="nextButtonTapped:" destination="BnG-3K-hsK" eventType="touchUpInside" id="bP0-Cx-Azw"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="v2t-s2-WnM">
+                                <rect key="frame" x="16" y="23" width="25" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="menu_1.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -890,6 +921,7 @@
                     <connections>
                         <outlet property="btnNext" destination="0Ui-2o-69c" id="Of4-6Z-n91"/>
                         <outlet property="btnSkip" destination="bxB-5i-8OT" id="QmX-k3-szV"/>
+                        <outlet property="mainMenuButton" destination="v2t-s2-WnM" id="3WI-5F-pxK"/>
                         <outlet property="scrollViewMain" destination="AQH-55-zAW" id="X9n-zg-CPv"/>
                         <outlet property="searchBar" destination="FwH-oE-PfD" id="r5E-k3-GyU"/>
                         <outlet property="tableViewForResult" destination="p2d-rA-37W" id="Dkd-cP-i2a"/>
@@ -1144,12 +1176,12 @@
                                                         <action selector="likeButtonTapped:" destination="x6q-TR-cMR" eventType="touchUpInside" id="twm-it-Rd4"/>
                                                     </connections>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" alpha="0.49999999999999961" tag="204" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="a0t-eR-5qq">
-                                                    <rect key="frame" x="10" y="94" width="300" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999964" tag="204" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="a0t-eR-5qq">
+                                                    <rect key="frame" x="10" y="94" width="300" height="26"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -1298,19 +1330,20 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Quesion_ANswer.png" width="128" height="128"/>
         <image name="back.png" width="128" height="128"/>
-        <image name="city.png" width="50" height="50"/>
+        <image name="city.png" width="128" height="128"/>
         <image name="comment_1.png" width="128" height="128"/>
         <image name="delete.png" width="128" height="128"/>
         <image name="edit.png" width="128" height="128"/>
         <image name="img_placeholder .jpg" width="900" height="563"/>
         <image name="like.png" width="128" height="128"/>
         <image name="menu_1.png" width="128" height="128"/>
-        <image name="news1.png" width="50" height="50"/>
+        <image name="news1.png" width="128" height="128"/>
         <image name="play.png" width="46" height="46"/>
         <image name="profile_pic.png" width="128" height="128"/>
         <image name="reveal-icon.png" width="22" height="17"/>
-        <image name="settings.png" width="128" height="128"/>
+        <image name="settings.png" width="111" height="111"/>
         <image name="share_photo.png" width="128" height="128"/>
         <image name="share_video.png" width="75" height="75"/>
         <image name="unlike.png" width="64" height="64"/>
@@ -1321,9 +1354,10 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="yGZ-1n-fiw"/>
+        <segue reference="tTA-7t-R4o"/>
+        <segue reference="5W5-rz-ZlJ"/>
+        <segue reference="XHn-Qt-HWG"/>
         <segue reference="s1d-TF-zWK"/>
-        <segue reference="Upl-ib-L76"/>
         <segue reference="b4g-Ca-UKH"/>
     </inferredMetricsTieBreakers>
 </document>

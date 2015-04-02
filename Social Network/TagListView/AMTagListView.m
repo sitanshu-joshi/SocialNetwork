@@ -169,7 +169,7 @@
 {
 	for (NSString* address in array) {
         NSArray *addressComponenet = [address componentsSeparatedByString:@"," ];
-        NSString *strText = [addressComponenet objectAtIndex:[addressComponenet count]-2];
+        NSString *strText = [addressComponenet objectAtIndex:0];
 		[self addTag:strText withClose:isClose color:tagColor withDesc:strText];
 	}
 }

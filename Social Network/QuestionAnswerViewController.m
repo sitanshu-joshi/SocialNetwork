@@ -14,13 +14,18 @@
 @end
 
 @implementation QuestionAnswerViewController
-@synthesize tableViewForResult,tagListView,scrollViewMain;
+@synthesize tableViewForResult,tagListView,scrollViewMain,mainMenuButton;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor blackColor]];
+    [mainMenuButton addTarget:self action: @selector(mainMenuBtnClickAtProfile) forControlEvents:UIControlEventTouchUpInside];
+    self.revealViewController.delegate = self;
     //[tableViewForResult setHidden:YES];
     [self setTableViewHeightZero];
+    pageCount = 1;
+    cityArray = [NSMutableArray array];
+    [self sendRequestToGetCityListFromDatabase];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -45,17 +50,11 @@
 }
 
 
--(void)setUpUserInterface{
-
-    self.txtViewForQuestion1.layer.cornerRadius = 7.0;
-    self.txtViewForQuestion1.layer.masksToBounds = YES;
-    self.txtViewForQuestion1.text = Question1;
-    self.btnNext.layer.cornerRadius = 5.0;
-    tableViewForResult.layer.cornerRadius = 7.0;
-    tableViewForResult.layer.masksToBounds = YES;
-}
-
 #pragma mark - IBAction Methods
+
+-(void)mainMenuBtnClickAtProfile {
+    [self.revealViewController revealToggle:self.mainMenuButton];
+}
 
 - (IBAction)btnSkipTapped:(id)sender {
     [self pushToNewsContoller];
@@ -76,6 +75,7 @@
         [self setTableViewHeightZero];
     }
 }
+
 
 #pragma mark - Table View delegate methods
 
@@ -102,6 +102,49 @@
     [self addCityTagWithAddress:result.formatted_address];
 
 }
+
+#pragma mark - Helper Methods
+
+-(void)setUpUserInterface{
+    
+    self.txtViewForQuestion1.layer.cornerRadius = 7.0;
+    self.txtViewForQuestion1.layer.masksToBounds = YES;
+    self.txtViewForQuestion1.text = Question1;
+    self.btnNext.layer.cornerRadius = 5.0;
+    tableViewForResult.layer.cornerRadius = 7.0;
+    tableViewForResult.layer.masksToBounds = YES;
+}
+
+//To add City Tags
+-(void)addCityTagWithAddress:(NSString *)strAddress {
+    if (strAddress.length > 0) {
+        NSArray *arrayOfCurrentAddress =[NSArray arrayWithObject:strAddress];
+        [tagListView addTags:arrayOfCurrentAddress withClose:YES color:tagColorForCity];
+        [self.searchBar resignFirstResponder];
+        [self hidekeyBoard];
+    }
+}
+
+
+//To hide Keyboard
+-(void)hidekeyBoard {
+    [self.searchBar resignFirstResponder];
+    //[tableViewForResult setHidden:YES];
+    [self setTableViewHeightZero];
+}
+
+//To push To News Controller
+-(void)pushToNewsContoller{
+    [self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
+    [self hidekeyBoard];
+    [self scrollableOff];
+}
+
+
+-(void)setTableViewHeightZero{
+    tableViewForResult.frame = CGRectMake(tableViewForResult.frame.origin.x, tableViewForResult.frame.origin.y, tableViewForResult.frame.size.width, 0);
+}
+
 
 -(void)updateSelectedCityToServerWithAddress:(NSString *)address{
     if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
@@ -161,7 +204,7 @@
     return YES;
 }
 
-//To search place
+#pragma mark  - Google Place API Request
 -(void)getPlaceForAddress:(NSString *)searchString {
     NSString *str = [NSString stringWithFormat:kResource_Place,searchString,kPlace_API_Key];
     [[AppDelegate appDelegate].rkomForPlaces getObject:nil path:str parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -188,54 +231,54 @@
 }
 
 
+#pragma mark - Rest API Implementation
+-(void)sendRequestToGetCityListFromDatabase{
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    NSString *strPath = [NSString stringWithFormat:kGetListOfCity,pageCount];
+    [[AppDelegate appDelegate].rkomForPost getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
+        if (dataResponse.post.count >= 1) {
+            cityArray = [[NSMutableArray alloc] initWithArray:dataResponse.post.allObjects];
+        }
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingMutableContainers error:&error];
+        if(dictResponse){
+            NSString *message = [NSString stringWithFormat:@"%@",[dictResponse valueForKey:@"msg"]];
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:message delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
+
+
 -(void)submitAnswer:(NSMutableDictionary *)dict {
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kAddCity parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         //[self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-
+        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
         //NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         NSLog(@"%@",error.localizedDescription);
         [RSActivityIndicator hideIndicator];
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
+        NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingMutableContainers error:&error];
+        if(dictResponse){
+            NSString *message = [NSString stringWithFormat:@"%@",[dictResponse valueForKey:@"msg"]];
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:message delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+            [alert show];
+        }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
 
-//To add City Tags
--(void)addCityTagWithAddress:(NSString *)strAddress {
-    if (strAddress.length > 0) {
-        NSArray *arrayOfCurrentAddress =[NSArray arrayWithObject:strAddress];
-        [tagListView addTags:arrayOfCurrentAddress withClose:YES color:tagColorForCity];
-        [self.searchBar resignFirstResponder];
-        [self hidekeyBoard];
-    }
-}
-
-
-//To hide Keyboard
--(void)hidekeyBoard {
-    [self.searchBar resignFirstResponder];
-    //[tableViewForResult setHidden:YES];
-    [self setTableViewHeightZero];
-}
-
-
-//To push To News Controller
--(void)pushToNewsContoller{
-    [self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
-    [self hidekeyBoard];
-    [self scrollableOff];
-}
-
--(void)setTableViewHeightZero{
-    tableViewForResult.frame = CGRectMake(tableViewForResult.frame.origin.x, tableViewForResult.frame.origin.y, tableViewForResult.frame.size.width, 0);
-}
 #pragma mark Autoresizing
 -(void)scrollableOn {
     if (self.view.frame.size.height == 568) {

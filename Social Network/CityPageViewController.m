@@ -22,7 +22,28 @@
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
     NSLog(@"Address:%@",self.strAddress);
-    [self setupMethods];
+    dictOfPost = [NSMutableDictionary dictionary];
+    [tblForCityPostList setHidden:YES];
+    btnBarNotificationCount.layer.cornerRadius = 14.0;
+    [btnBarNotificationCount setHidden:YES];
+    page = 1;
+    if(self.strAddress){
+        NSArray *arrOfAddress = [self.strAddress componentsSeparatedByString:@","];
+        
+        strCountry = [NSString stringWithFormat:@"%@",[[arrOfAddress lastObject]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+        strState = [[NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-2]]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (arrOfAddress.count >= 3) {
+            strCity = [NSString stringWithFormat:@"%@",[[arrOfAddress objectAtIndex:[arrOfAddress count]-3]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+        }else{
+            strCity = @"";
+        }
+        [self getCityIdWithCountry:strCountry State:strState City:strCity];
+    }else{
+        strCountry = @"India";
+        strState = @"Gujarat";
+        strCity = @"Ahmedabad";
+        [self getCityIdWithCountry:strCountry State:strState City:strCity];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -38,24 +59,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(void)setupMethods {
-    NSArray *arrOfAddress = [self.strAddress componentsSeparatedByString:@","];
-    NSString *strCity, *strCountry, *strState;
-    strCountry = [NSString stringWithFormat:@"%@",[[arrOfAddress lastObject]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-    strState = [[NSString stringWithFormat:@"%@",[arrOfAddress objectAtIndex:[arrOfAddress count]-2]]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if (arrOfAddress.count >= 3) {
-        strCity = [NSString stringWithFormat:@"%@",[[arrOfAddress objectAtIndex:[arrOfAddress count]-3]stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-    }else{
-        strCity = @"";
-    }
-    page = 1;
-    [self getCityIdWithCountry:strCountry State:strState City:strCity];
-    dictOfPost = [NSMutableDictionary dictionary];
-    [tblForCityPostList setHidden:YES];
-    btnBarNotificationCount.layer.cornerRadius = 14.0;
-    [btnBarNotificationCount setHidden:YES];
 }
 
 -(void)setUpUserInterface{
@@ -108,7 +111,7 @@
     
     NSDictionary *attribs = @{
                               NSForegroundColorAttributeName: [UIColor whiteColor],
-                              NSFontAttributeName: [UIFont fontWithName:@"Helvetica Neue" size:13.0]
+                              NSFontAttributeName: [UIFont fontWithName:@"Helvetica Neue" size:15.0]
                               };
     NSMutableAttributedString *attributedText =
     [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",post.text]
@@ -316,7 +319,7 @@
 }
 
 - (IBAction)refreshBtnTapped:(id)sender {
-    [self setupMethods];
+   [self getCityIdWithCountry:strCountry State:strState City:strCity];
 }
 
 -(IBAction)btnLikeDislikeAction:(UIButton *)sender {
@@ -584,9 +587,12 @@
         // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
+        NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingMutableContainers error:&error];
+        if(dictResponse){
+            NSString *message = [NSString stringWithFormat:@"%@",[dictResponse valueForKey:@"msg"]];
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:message delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+            [alert show];
+        }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
@@ -772,7 +778,7 @@
 
 -(CGRect)calculateLabelHeightBasedOnString:(NSString *)strDesc {
     NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                          [UIFont fontWithName:@"Helventica Neue" size:13], NSFontAttributeName,
+                                          [UIFont fontWithName:@"Helventica Neue" size:15.0], NSFontAttributeName,
                                           nil];
     int intOfDefaultWidth = 300.0;
 //    if(IS_IPHONE_5){

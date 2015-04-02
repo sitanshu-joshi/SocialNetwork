@@ -30,6 +30,7 @@
     UIButton *btnLike;
     UILabel *lblLikeCount;
     NSString *myPostId;
+    NSString *strCity, *strCountry, *strState;
 }
 @property (strong, nonatomic) NSString *strCityId;
 @property (strong,nonatomic) NSString *strAddress;
@@ -48,8 +49,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnBarPost;
 @property (weak, nonatomic) IBOutlet UIButton *btnBarNotification;
 @property (weak, nonatomic) IBOutlet UIButton *btnBarNotificationCount;
-
--(IBAction)btnNotificationTappedAction:(id)sender;
 
 - (IBAction)uploadPhotoButtonTapped:(id)sender;
 - (IBAction)uploadVideoButtonTapped:(id)sender;
