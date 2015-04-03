@@ -7,6 +7,7 @@
 //
 
 #import "NotificationViewController.h"
+#import "NotificationCell.h"
 
 @interface NotificationViewController ()
 
@@ -51,14 +52,17 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCell_Notification forIndexPath:indexPath];
     
-    Notification *notification = [arrayForNotification objectAtIndex:indexPath.row];
-    
-    UILabel *lbl = (UILabel *)[cell viewWithTag:kCell_Noti_user_name];
-    lbl.text = notification.ids;
-    
-    return cell;
+    @autoreleasepool {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCell_Notification forIndexPath:indexPath];
+        // Array operation
+        Notification *notification = [arrayForNotification objectAtIndex:indexPath.row];
+        // Cell
+        NotificationCell *cellNew = (NotificationCell *)cell;
+        cellNew.lblName.text = [NSString stringWithFormat:@"%@",notification.ids];
+        
+        return cell;
+    }
 }
 
 
