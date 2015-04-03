@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Login-->
@@ -820,73 +820,69 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="AQH-55-zAW">
-                                <rect key="frame" x="0.0" y="64" width="320" height="416"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="Q.1 What is your favorite destination?" id="cFt-JQ-pEg">
-                                        <rect key="frame" x="8" y="8" width="304" height="46"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="BnG-3K-hsK" id="JF3-Yz-pt9"/>
-                                        </connections>
-                                    </textView>
-                                    <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Enter City" showsCancelButton="YES" id="FwH-oE-PfD">
-                                        <rect key="frame" x="0.0" y="54" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="BnG-3K-hsK" id="vDk-Cc-UJI"/>
-                                        </connections>
-                                    </searchBar>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="ltH-iC-AWk" customClass="AMTagListView">
-                                        <rect key="frame" x="0.0" y="107" width="320" height="310"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" red="0.59898024299999997" green="0.84686710860000003" blue="0.71650137130000002" alpha="0.32000000000000001" colorSpace="calibratedRGB"/>
-                                    </scrollView>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="40" sectionHeaderHeight="22" sectionFooterHeight="22" id="p2d-rA-37W">
-                                        <rect key="frame" x="8" y="106" width="304" height="240"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.33333333333333331" alpha="0.5" colorSpace="calibratedWhite"/>
-                                        <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <prototypes>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="resultCell" rowHeight="40" id="a3C-eZ-a8O">
-                                                <rect key="frame" x="0.0" y="22" width="263" height="38"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a3C-eZ-a8O" id="5nD-ut-KXh">
-                                                    <rect key="frame" x="0.0" y="0.0" width="263" height="37"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" tag="999" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tig-4U-wel">
-                                                            <rect key="frame" x="8" y="9" width="288" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                </tableViewCellContentView>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                            </tableViewCell>
-                                        </prototypes>
-                                        <connections>
-                                            <outlet property="dataSource" destination="BnG-3K-hsK" id="SPw-8L-7n7"/>
-                                            <outlet property="delegate" destination="BnG-3K-hsK" id="B6x-yS-Wtf"/>
-                                        </connections>
-                                    </tableView>
-                                </subviews>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Enter City" showsCancelButton="YES" id="FwH-oE-PfD">
+                                <rect key="frame" x="10" y="120" width="300" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BnG-3K-hsK" id="vDk-Cc-UJI"/>
+                                </connections>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="U2N-as-Z7C">
+                                <rect key="frame" x="0.0" y="164" width="320" height="335"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </scrollView>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cityCell" id="MvU-LZ-aBE">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MvU-LZ-aBE" id="od8-Px-797">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BnG-3K-hsK" id="Y44-LL-03w"/>
+                                    <outlet property="delegate" destination="BnG-3K-hsK" id="g4u-PM-eby"/>
+                                </connections>
+                            </tableView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="40" sectionHeaderHeight="22" sectionFooterHeight="22" id="p2d-rA-37W">
+                                <rect key="frame" x="10" y="164" width="300" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="resultCell" rowHeight="40" id="a3C-eZ-a8O">
+                                        <rect key="frame" x="0.0" y="22" width="263" height="38"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a3C-eZ-a8O" id="5nD-ut-KXh">
+                                            <rect key="frame" x="0.0" y="0.0" width="263" height="37"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="999" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tig-4U-wel">
+                                                    <rect key="frame" x="8" y="9" width="288" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BnG-3K-hsK" id="SPw-8L-7n7"/>
+                                    <outlet property="delegate" destination="BnG-3K-hsK" id="B6x-yS-Wtf"/>
+                                </connections>
+                            </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bxB-5i-8OT">
                                 <rect key="frame" x="251" y="20" width="53" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -900,7 +896,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0Ui-2o-69c">
-                                <rect key="frame" x="101" y="507" width="119" height="32"/>
+                                <rect key="frame" x="101" y="516" width="119" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.67823262120000005" blue="0.67823262120000005" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Next">
@@ -918,19 +914,26 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is your favourite destination ?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4j9-UF-g2n">
+                                <rect key="frame" x="10" y="72" width="300" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.75" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="0.94820668520526319" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="hTk-lX-Wye"/>
                     <connections>
                         <outlet property="btnNext" destination="0Ui-2o-69c" id="Of4-6Z-n91"/>
                         <outlet property="btnSkip" destination="bxB-5i-8OT" id="QmX-k3-szV"/>
+                        <outlet property="lblQuestion" destination="4j9-UF-g2n" id="jxe-zi-ar6"/>
                         <outlet property="mainMenuButton" destination="v2t-s2-WnM" id="3WI-5F-pxK"/>
-                        <outlet property="scrollViewMain" destination="AQH-55-zAW" id="X9n-zg-CPv"/>
                         <outlet property="searchBar" destination="FwH-oE-PfD" id="r5E-k3-GyU"/>
+                        <outlet property="tableViewForCityList" destination="U2N-as-Z7C" id="MhE-oG-b7B"/>
                         <outlet property="tableViewForResult" destination="p2d-rA-37W" id="Dkd-cP-i2a"/>
-                        <outlet property="tagListView" destination="ltH-iC-AWk" id="5xT-6D-8te"/>
-                        <outlet property="txtViewForQuestion1" destination="cFt-JQ-pEg" id="lRH-1k-UQV"/>
                         <segue destination="jhJ-E8-seI" kind="push" identifier="pushToSlideBar1" id="tTA-7t-R4o"/>
                     </connections>
                 </viewController>
@@ -1358,10 +1361,10 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="tTA-7t-R4o"/>
-        <segue reference="5W5-rz-ZlJ"/>
-        <segue reference="XHn-Qt-HWG"/>
         <segue reference="s1d-TF-zWK"/>
+        <segue reference="tTA-7t-R4o"/>
+        <segue reference="eKe-pi-UOy"/>
+        <segue reference="XHn-Qt-HWG"/>
         <segue reference="b4g-Ca-UKH"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AMTagListView.h"
+
 
 @interface QuestionAnswerViewController : UIViewController<UITextViewDelegate,CustomSlideViewControllerDelegate>{
     UIEdgeInsets contentInsets;
@@ -17,11 +17,10 @@
     int pageCount;
 }
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewMain;
-@property (weak, nonatomic) IBOutlet UITextView *txtViewForQuestion1;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-@property (weak, nonatomic) IBOutlet AMTagListView *tagListView;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewForResult;
+@property (weak, nonatomic) IBOutlet UITableView *tableViewForCityList;
+@property (weak, nonatomic) IBOutlet UILabel *lblQuestion;
 @property (weak, nonatomic) IBOutlet UIButton *mainMenuButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSkip;

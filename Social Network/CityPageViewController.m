@@ -611,12 +611,13 @@
     strTextToPost ? [params setObject:strTextToPost forKey:@"POST_TEXT"] : @"" ;
     
     NSMutableURLRequest *request = [[AppDelegate appDelegate].rkomForPost multipartFormRequestWithObject:nil method:RKRequestMethodPOST path:strPath parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileData:contentData
-                                    name:@"FILE"
-                                fileName:fileName
-                                mimeType:fileType];
+        if(mediaType != nil){
+            [formData appendPartWithFileData:contentData
+                                        name:@"FILE"
+                                    fileName:fileName
+                                    mimeType:fileType];
+        }
     }];
-    
     RKObjectRequestOperation *operation = [[AppDelegate appDelegate].rkomForPost objectRequestOperationWithRequest:request success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);

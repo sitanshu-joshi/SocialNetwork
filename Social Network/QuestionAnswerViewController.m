@@ -14,36 +14,35 @@
 @end
 
 @implementation QuestionAnswerViewController
-@synthesize tableViewForResult,tagListView,scrollViewMain,mainMenuButton;
+@synthesize tableViewForResult,mainMenuButton,tableViewForCityList,lblQuestion;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor blackColor]];
     [mainMenuButton addTarget:self action: @selector(mainMenuBtnClickAtProfile) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
-    //[tableViewForResult setHidden:YES];
     [self setTableViewHeightZero];
     pageCount = 1;
     cityArray = [NSMutableArray array];
-    [self sendRequestToGetCityListFromDatabase];
+    lblQuestion.text = Question1;
+    //[self sendRequestToGetCityListFromDatabase];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     isVIsited = @"Yes";
     wantsToVisit = @"No";
-    [self setUpUserInterface];
+    self.btnNext.layer.cornerRadius = 5.0;
+    tableViewForResult.layer.cornerRadius = 7.0;
+    tableViewForResult.layer.masksToBounds = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [RSActivityIndicator hideIndicator];
     [self performSelector:@selector(hidekeyBoard) withObject:nil afterDelay:0.3];
-    //tableViewForResult = nil;
-    [tagListView.tags removeAllObjects];
-    tagListView = nil;
-    scrollViewMain = nil;
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -65,71 +64,119 @@
         [self pushToNewsContoller];
     }else{
         [self.btnNext setTitle:@"Done" forState:UIControlStateNormal];
-        self.txtViewForQuestion1.text = Question2;
         isVIsited = @"No";
         wantsToVisit = @"Yes";
         [self hidekeyBoard];
         self.searchBar.text = @"";
-        [tagListView.tags removeAllObjects];
-       // tagListView = nil;
         [self setTableViewHeightZero];
+        [tableViewForResult setHidden:NO];
+        lblQuestion.text = Question2;
     }
 }
 
 
 #pragma mark - Table View delegate methods
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    if(tableView == tableViewForResult){
+        return 1;
+    }else{
+        return 2;
+    }
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [resultArray count]; /* return size of result array */
+    if(tableView == tableViewForResult){
+        return [resultArray count]; /* return size of result array */
+    }else{
+        return 5;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"resultCell"];
-    if(!cell){
+    UITableViewCell *cell;
+    if(tableView == tableViewForResult){
         cell = [tableView dequeueReusableCellWithIdentifier:@"resultCell"];
+        if(!cell){
+            cell = [tableView dequeueReusableCellWithIdentifier:@"resultCell"];
+        }
+        Result *result = [resultArray objectAtIndex:indexPath.row];
+        UILabel *lblAddress =(UILabel *)[cell.contentView viewWithTag:999];
+        lblAddress.text = result.formatted_address;
+        CGRect frame = [tableView frame];
+        if(frame.size.height < 100){
+            [tableView setFrame:CGRectMake(frame.origin.x,
+                                           frame.origin.y,
+                                           frame.size.width,
+                                           frame.size.height + cell.frame.size.height)];
+        }
+        return cell;
+    }else{
+        cell = [tableView dequeueReusableCellWithIdentifier:@"cityCell"];
+        if(!cell){
+            cell = [tableView dequeueReusableCellWithIdentifier:@"cityCell"];
+        }
+        if(indexPath.section == 0){
+         cell.textLabel.text = @"Ahmedabad";
+        }else{
+             cell.textLabel.text = @"Napier";
+        }
+        return cell;
     }
-    Result *result = [resultArray objectAtIndex:indexPath.row];
-    UILabel *lblAddress =(UILabel *)[cell.contentView viewWithTag:999];
-    lblAddress.text = result.formatted_address;
-    return cell;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    Result *result = [resultArray objectAtIndex:indexPath.row];
-    [self updateSelectedCityToServerWithAddress:result.formatted_address];
-    [self addCityTagWithAddress:result.formatted_address];
-
-}
-
-#pragma mark - Helper Methods
-
--(void)setUpUserInterface{
-    
-    self.txtViewForQuestion1.layer.cornerRadius = 7.0;
-    self.txtViewForQuestion1.layer.masksToBounds = YES;
-    self.txtViewForQuestion1.text = Question1;
-    self.btnNext.layer.cornerRadius = 5.0;
-    tableViewForResult.layer.cornerRadius = 7.0;
-    tableViewForResult.layer.masksToBounds = YES;
-}
-
-//To add City Tags
--(void)addCityTagWithAddress:(NSString *)strAddress {
-    if (strAddress.length > 0) {
-        NSArray *arrayOfCurrentAddress =[NSArray arrayWithObject:strAddress];
-        [tagListView addTags:arrayOfCurrentAddress withClose:YES color:tagColorForCity];
+    if(tableView == tableViewForResult){
+        [self setTableViewHeightZero];
+        tableViewForCityList.userInteractionEnabled = YES;
+        [tableViewForResult setHidden:YES];
         [self.searchBar resignFirstResponder];
-        [self hidekeyBoard];
+        self.searchBar.text = nil;
+        Result *result = [resultArray objectAtIndex:indexPath.row];
+        [self updateSelectedCityToServerWithAddress:result.formatted_address];
+    }else{
+        
     }
 }
 
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+     CGFloat heightOfHeader;
+    if(tableView == tableViewForCityList){
+            heightOfHeader = 20.0;
+    }else{
+         heightOfHeader = 0.0;
+    }
+    return heightOfHeader;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *viewForHeader = [[UIView alloc] initWithFrame:CGRectZero];
+    viewForHeader.backgroundColor = [UIColor blackColor];
+    UILabel *lblHeader = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, tableView.frame.size.width, 20)];
+    lblHeader.font = [UIFont fontWithName:@"Helvetica" size:15.0];
+    lblHeader.backgroundColor = [UIColor clearColor];
+    lblHeader.textColor = [UIColor whiteColor];
+    if(tableView == tableViewForCityList){
+        if(section == 0){
+            lblHeader.text = @"Visited City";
+            [viewForHeader addSubview:lblHeader];
+        }else{
+            lblHeader.text = @"Want to Visit";
+            [viewForHeader addSubview:lblHeader];
+        }
+    }else{
+        lblHeader = nil;
+    }
+    return viewForHeader;
+}
+
+#pragma mark - Helper Methods
+
 //To hide Keyboard
 -(void)hidekeyBoard {
     [self.searchBar resignFirstResponder];
-    //[tableViewForResult setHidden:YES];
     [self setTableViewHeightZero];
 }
 
@@ -137,7 +184,6 @@
 -(void)pushToNewsContoller{
     [self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
     [self hidekeyBoard];
-    [self scrollableOff];
 }
 
 
@@ -177,7 +223,11 @@
 }
 
 #pragma mark - UISearchBar Delegate Methods
-
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    self.tableViewForCityList.userInteractionEnabled = NO;
+    [self.view bringSubviewToFront:self.tableViewForResult];
+    return YES;
+}
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     NSLog(@"============== %@",searchText);
     [self getPlaceForAddress:searchText];
@@ -261,8 +311,11 @@
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kAddCity parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
-        //[self performSegueWithIdentifier:kPush_To_SlideBar1 sender:nil];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
+        NSLog(@"%@",dataResponse.city);
+        [self nextButtonTapped:self.btnNext];
+        //City *city = [[dataResponse.city allObjects]firstObject];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         // Transport error or server error handled by errorDescriptor
@@ -279,22 +332,4 @@
     }];
 }
 
-#pragma mark Autoresizing
--(void)scrollableOn {
-    if (self.view.frame.size.height == 568) {
-        scrollViewMain.contentSize = (CGSize){1.0, self.view.frame.size.height-216-64};
-        scrollViewMain.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-216-64);
-    } else {
-        scrollViewMain.contentSize = (CGSize){1.0, self.view.frame.size.height-216-64};
-        scrollViewMain.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-216-64);
-    }
-}
--(void)scrollableOff {
-    @autoreleasepool {
-        scrollViewMain.contentSize = (CGSize){1.0, self.view.frame.size.height-64};
-        scrollViewMain.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64);
-        [self setTableViewHeightZero];
-        [self.searchBar resignFirstResponder];
-    }
-}
 @end
