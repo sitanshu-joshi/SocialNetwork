@@ -13,7 +13,10 @@
     UIEdgeInsets contentInsets;
     NSMutableArray *resultArray;
     NSMutableArray *cityArray;
-    NSString *isVIsited , *wantsToVisit;
+    
+    NSMutableArray *arrayOfVisited;
+    NSMutableArray *arrayOfWantTovisit;
+    
     int pageCount;
 }
 
@@ -22,11 +25,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableViewForCityList;
 @property (weak, nonatomic) IBOutlet UILabel *lblQuestion;
 @property (weak, nonatomic) IBOutlet UIButton *mainMenuButton;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentForCityType;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSkip;
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 
 - (IBAction)btnSkipTapped:(id)sender;
 - (IBAction)nextButtonTapped:(id)sender;
+- (IBAction)valueForSegmentChange:(id)sender;
 
 @end

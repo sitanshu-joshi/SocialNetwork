@@ -6,8 +6,10 @@
         <attribute name="createdDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ids" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isVisitedCity" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updatedDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="wantsToVisit" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataForResponse" inverseName="city" inverseEntity="DataForResponse" syncable="YES"/>
     </entity>
     <entity name="Comment" representedClassName="Comment" syncable="YES">
@@ -38,8 +40,11 @@
         <attribute name="ids" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isRead" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="objectType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="objectUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recepientName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recipientId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="senderId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="senderName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataForResponse" inverseName="notification" inverseEntity="DataForResponse" syncable="YES"/>
     </entity>
     <entity name="Post" representedClassName="Post" syncable="YES">
@@ -94,13 +99,13 @@
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataForResponse" inverseName="user" inverseEntity="DataForResponse" syncable="YES"/>
     </entity>
     <elements>
-        <element name="City" positionX="-54" positionY="135" width="128" height="163"/>
+        <element name="City" positionX="-54" positionY="135" width="128" height="195"/>
         <element name="Comment" positionX="-54" positionY="135" width="128" height="180"/>
         <element name="DataForResponse" positionX="-63" positionY="-18" width="128" height="118"/>
         <element name="DataFromGoogle" positionX="-45" positionY="144" width="128" height="73"/>
+        <element name="Notification" positionX="-54" positionY="135" width="128" height="210"/>
         <element name="Post" positionX="-63" positionY="135" width="128" height="315"/>
         <element name="Result" positionX="-54" positionY="135" width="128" height="165"/>
         <element name="User" positionX="-54" positionY="-9" width="128" height="328"/>
-        <element name="Notification" positionX="-54" positionY="135" width="128" height="163"/>
     </elements>
 </model>

@@ -15,6 +15,7 @@
 
 @implementation QuestionAnswerViewController
 @synthesize tableViewForResult,mainMenuButton,tableViewForCityList,lblQuestion;
+@synthesize segmentForCityType;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -30,11 +31,11 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    isVIsited = @"Yes";
-    wantsToVisit = @"No";
     self.btnNext.layer.cornerRadius = 5.0;
     tableViewForResult.layer.cornerRadius = 7.0;
     tableViewForResult.layer.masksToBounds = YES;
+    
+     [self getMyListOfCities];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -64,8 +65,6 @@
         [self pushToNewsContoller];
     }else{
         [self.btnNext setTitle:@"Done" forState:UIControlStateNormal];
-        isVIsited = @"No";
-        wantsToVisit = @"Yes";
         [self hidekeyBoard];
         self.searchBar.text = @"";
         [self setTableViewHeightZero];
@@ -73,7 +72,13 @@
         lblQuestion.text = Question2;
     }
 }
-
+- (IBAction)valueForSegmentChange:(id)sender {
+    if (segmentForCityType.selectedSegmentIndex == 0) {
+        lblQuestion.text =Question1;
+    } else if (segmentForCityType.selectedSegmentIndex == 1) {
+        lblQuestion.text =Question2;
+    }
+}
 
 #pragma mark - Table View delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -89,7 +94,11 @@
     if(tableView == tableViewForResult){
         return [resultArray count]; /* return size of result array */
     }else{
-        return 5;
+        if (section == 0) {
+           return arrayOfWantTovisit.count;
+        } else {
+           return arrayOfVisited.count;
+        }
     }
 }
 
@@ -116,10 +125,15 @@
         if(!cell){
             cell = [tableView dequeueReusableCellWithIdentifier:@"cityCell"];
         }
+        City *city ;
+        
         if(indexPath.section == 0){
-         cell.textLabel.text = @"Ahmedabad";
+            city = [arrayOfWantTovisit objectAtIndex:indexPath.row];
+            cell.textLabel.text = city.desc;
+        
         }else{
-             cell.textLabel.text = @"Napier";
+            city = [arrayOfVisited objectAtIndex:indexPath.row];
+            cell.textLabel.text = city.desc;
         }
         return cell;
     }
@@ -160,10 +174,10 @@
     lblHeader.textColor = [UIColor whiteColor];
     if(tableView == tableViewForCityList){
         if(section == 0){
-            lblHeader.text = @"Visited City";
+            lblHeader.text = @"Want to Visit City";
             [viewForHeader addSubview:lblHeader];
         }else{
-            lblHeader.text = @"Want to Visit";
+            lblHeader.text = @"Visited City";
             [viewForHeader addSubview:lblHeader];
         }
     }else{
@@ -210,8 +224,13 @@
             [dict setValue:strState forKey:kSTATE];
             [dict setValue:strCountry forKey:kCOUNTRY];
             [dict setValue:address forKey:kDESCRIPTION];
-            [dict setObject:isVIsited forKey:kIS_VISITED];
-            [dict setObject:wantsToVisit forKey:kWANTS_TO_VISIT];
+            if (segmentForCityType.selectedSegmentIndex == 0) {
+                [dict setObject:@"true" forKey:kWANTS_TO_VISIT];
+                [dict setObject:@"false" forKey:kIS_VISITED];
+            } else if (segmentForCityType.selectedSegmentIndex == 1) {
+                [dict setObject:@"false" forKey:kWANTS_TO_VISIT];
+                [dict setObject:@"true" forKey:kIS_VISITED];
+            }
             [self submitAnswer:dict];
         }else{
             [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Enter_City delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
@@ -321,6 +340,39 @@
         // Transport error or server error handled by errorDescriptor
         //NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         NSLog(@"%@",error.localizedDescription);
+        [RSActivityIndicator hideIndicator];
+        NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingMutableContainers error:&error];
+        if(dictResponse){
+            NSString *message = [NSString stringWithFormat:@"%@",[dictResponse valueForKey:@"msg"]];
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:message delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
+
+-(void)getMyListOfCities {
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [[AppDelegate appDelegate].rkomForCity getObjectsAtPath:kGetMyListOfCity parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *dataResponse = [mappingResult.array firstObject];
+        NSArray *arrayForCity = [dataResponse.city allObjects];
+        
+        arrayOfWantTovisit = [NSMutableArray array];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"wantsToVisit == true"];
+        arrayOfWantTovisit = [[NSMutableArray alloc] initWithArray:[arrayForCity filteredArrayUsingPredicate:predicate]];
+        
+        predicate = [NSPredicate predicateWithFormat:@"isVisitedCity == true"];
+        arrayOfVisited = [[NSMutableArray alloc] initWithArray:[arrayForCity filteredArrayUsingPredicate:predicate]];
+        
+        [tableViewForCityList reloadData];
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        // Transport error or server error handled by errorDescriptor
+        //NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         [RSActivityIndicator hideIndicator];
         NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingMutableContainers error:&error];
         if(dictResponse){

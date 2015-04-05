@@ -26,8 +26,9 @@
 
 //Questions
 
-#define Question1       @"Which cities did you visit ?"
-#define Question2       @"Which cities will you want to visit ?"
+#define Question1       @"Which cities will you want to visit ?"
+#define Question2       @"Which cities did you visit ?"
+
 
 
 /*
@@ -50,12 +51,14 @@
 #define kResource_SignUp_Auth       @"signup/oauth"                             //POST
 #define kResource_Login             @"login"                                    //POST
 #define kLogout                     @"logout"
-#define kGetListOfCity              @"city?page=%d"                              //GET
+
+#define kGetMyListOfCity            @"usercity/"                                 // GET
+#define kGetListOfCity              @"city?page=%d"                             //GET
 #define kGetCityId                  @"city?CITY_NAME=%@&STATE=%@&COUNTRY=%@"    //GET
 #define kAddCity                    @"city"                                     //POST
 #define kWallPostOnUserCity         @"city/post/%@"                             //POST
 #define kGetPost                    @"city/post/%@?page=%d"                     //GET
-#define kUpdateWallPost             @"usercity/wall/post/%@"                    //PUT
+#define kUpdateWallPost             @"usercity/post/%@"                    //PUT
 #define kDeleteWallPost             @"city/post/%@"                             //DELETE
 #define kResource_LikePost          @"city/post/%@/like"                        //POST
 #define kResource_UnLikePost        @"city/post/%@/unlike"                      //POST

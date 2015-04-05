@@ -239,7 +239,9 @@
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+        NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[operation.HTTPRequestOperation.responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
+        
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:[jsonObject valueForKey:@"msg"] delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
         [alert show];
         RKLogError(@"Operation failed with error: %@", error);
     }];

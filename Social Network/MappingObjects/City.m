@@ -19,6 +19,8 @@
 @dynamic desc;
 @dynamic createdDate;
 @dynamic updatedDate;
+@dynamic isVisitedCity;
+@dynamic wantsToVisit;
 @dynamic data;
 
 
@@ -36,6 +38,8 @@
                                                       @"state" : @"state",
                                                       @"country" : @"country",
                                                       @"description" : @"desc",
+                                                      @"isVisitedCity" : @"isVisitedCity",
+                                                      @"wantsToVisit" : @"wantsToVisit",
                                                       }];
     }
     return mapping;

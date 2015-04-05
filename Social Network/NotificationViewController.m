@@ -59,7 +59,7 @@
         Notification *notification = [arrayForNotification objectAtIndex:indexPath.row];
         // Cell
         NotificationCell *cellNew = (NotificationCell *)cell;
-        cellNew.lblName.text = [NSString stringWithFormat:@"%@",notification.ids];
+        cellNew.lblName.text = [NSString stringWithFormat:@"%@",notification.senderName];
         
         return cell;
     }
@@ -71,7 +71,9 @@
     [[AppDelegate appDelegate].rkomForNotification getObjectsAtPath:kResource_NF_List parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSString *strResponse = operation.HTTPRequestOperation.responseString;
         NSLog(@"%@",strResponse);
-        arrayForNotification = [[NSMutableArray alloc] initWithArray:mappingResult.array];
+        DataForResponse *data = [mappingResult.array firstObject];
+        
+        arrayForNotification = [[NSMutableArray alloc] initWithArray:[data.notification allObjects]];
         if (arrayForNotification.count == 0) {
             [lblNoData setHidden:NO];
             [tableForNotification setHidden:YES];

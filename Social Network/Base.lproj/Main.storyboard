@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="k23-4u-O6T">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <scenes>
         <!--Login-->
@@ -814,14 +814,14 @@
                                 <color key="backgroundColor" red="0.55294120311737061" green="0.90588241815567017" blue="0.91764712333679199" alpha="0.58999999999999997" colorSpace="deviceRGB"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Questions" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LKs-AU-wba">
-                                <rect key="frame" x="95" y="20" width="131" height="24"/>
+                                <rect key="frame" x="95" y="23" width="131" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Enter City" showsCancelButton="YES" id="FwH-oE-PfD">
-                                <rect key="frame" x="10" y="120" width="300" height="44"/>
+                                <rect key="frame" x="10" y="128" width="300" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -896,7 +896,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0Ui-2o-69c">
-                                <rect key="frame" x="101" y="516" width="119" height="32"/>
+                                <rect key="frame" x="101" y="525" width="119" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.67823262120000005" blue="0.67823262120000005" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Next">
@@ -914,14 +914,25 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is your favourite destination ?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4j9-UF-g2n">
-                                <rect key="frame" x="10" y="72" width="300" height="48"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select/ Add your favorite destinaton." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4j9-UF-g2n">
+                                <rect key="frame" x="10" y="109" width="300" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.75" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="akx-aN-nv6">
+                                <rect key="frame" x="10" y="72" width="300" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Want to Visit City"/>
+                                    <segment title="Visited City"/>
+                                </segments>
+                                <connections>
+                                    <action selector="valueForSegmentChange:" destination="BnG-3K-hsK" eventType="valueChanged" id="FiT-nx-Yno"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.94820668520526319" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -932,6 +943,7 @@
                         <outlet property="lblQuestion" destination="4j9-UF-g2n" id="jxe-zi-ar6"/>
                         <outlet property="mainMenuButton" destination="v2t-s2-WnM" id="3WI-5F-pxK"/>
                         <outlet property="searchBar" destination="FwH-oE-PfD" id="r5E-k3-GyU"/>
+                        <outlet property="segmentForCityType" destination="akx-aN-nv6" id="ygY-Bz-K7z"/>
                         <outlet property="tableViewForCityList" destination="U2N-as-Z7C" id="MhE-oG-b7B"/>
                         <outlet property="tableViewForResult" destination="p2d-rA-37W" id="Dkd-cP-i2a"/>
                         <segue destination="jhJ-E8-seI" kind="push" identifier="pushToSlideBar1" id="tTA-7t-R4o"/>
@@ -939,7 +951,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JB0-fd-kXn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-743" y="-1689"/>
+            <point key="canvasLocation" x="-833" y="-1718"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="p08-e4-RkG">

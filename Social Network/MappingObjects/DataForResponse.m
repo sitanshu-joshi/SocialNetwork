@@ -35,7 +35,10 @@
         [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"comments" toKeyPath:@"comment" withMapping:[Comment objectMappingForComment:COMMENT]]];
     }else if (OppCodeType == CITY) {
         [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"city" toKeyPath:@"city" withMapping:[City objectMappingForCity:CITY]]];
+    }else if (OppCodeType == NOTIFICATION) {
+        [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"notification" toKeyPath:@"notification" withMapping:[Notification objectMappingForNotification:NOTIFICATION]]];
     }
+    
     
     return mapping;
 }

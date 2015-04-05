@@ -19,6 +19,10 @@
 @dynamic isRead;
 @dynamic senderId;
 @dynamic recipientId;
+@dynamic objectUrl;
+@dynamic recepientName;
+@dynamic senderName;
+
 @dynamic data;
 
 +(RKEntityMapping *)objectMappingForNotification:(OPPCodeType)OppCodeType {
@@ -35,6 +39,9 @@
                                                       @"isRead" : @"isRead",
                                                       @"senderId" : @"senderId",
                                                       @"recipientId" : @"recipientId",
+                                                      @"objectUrl" : @"objectUrl",
+                                                      @"recepientName" : @"recepientName",
+                                                      @"senderName" : @"senderName",
                                                       }];
     }
     return mapping;

@@ -20,6 +20,9 @@
 @property (nonatomic, retain) NSString * desc;
 @property (nonatomic, retain) NSDate * createdDate;
 @property (nonatomic, retain) NSDate * updatedDate;
+@property (nonatomic, retain) NSNumber * wantsToVisit;
+@property (nonatomic, retain) NSNumber * isVisitedCity;
+
 @property (nonatomic, retain) DataForResponse *data;
 
 

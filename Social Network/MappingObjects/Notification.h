@@ -20,6 +20,10 @@
 @property (nonatomic, retain) NSNumber * isRead;
 @property (nonatomic, retain) NSString * senderId;
 @property (nonatomic, retain) NSString * recipientId;
+@property (nonatomic, retain) NSString * objectUrl;
+@property (nonatomic, retain) NSString * senderName;
+@property (nonatomic, retain) NSString * recepientName;
+
 @property (nonatomic, retain) DataForResponse *data;
 
 +(RKEntityMapping *)objectMappingForNotification:(OPPCodeType)OppCodeType;
