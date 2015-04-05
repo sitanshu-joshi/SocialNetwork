@@ -126,14 +126,14 @@
             cell = [tableView dequeueReusableCellWithIdentifier:@"cityCell"];
         }
         City *city ;
-        
+        UILabel *lblName = (UILabel *)[cell viewWithTag:501];
         if(indexPath.section == 0){
             city = [arrayOfWantTovisit objectAtIndex:indexPath.row];
-            cell.textLabel.text = city.desc;
+            lblName.text = city.desc;
         
         }else{
             city = [arrayOfVisited objectAtIndex:indexPath.row];
-            cell.textLabel.text = city.desc;
+            lblName.text = city.desc;
         }
         return cell;
     }
@@ -249,7 +249,8 @@
 }
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     NSLog(@"============== %@",searchText);
-    [self getPlaceForAddress:searchText];
+    NSString *str = [searchText stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+    [self getPlaceForAddress:str];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchbar {
@@ -301,6 +302,20 @@
 
 
 #pragma mark - Rest API Implementation
+- (IBAction)btnDeleteCityAction:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    UITableViewCell *cell = (UITableViewCell *)[[btn superview] superview];
+    NSIndexPath *indexPath = [tableViewForCityList indexPathForCell:cell];
+    City *city;
+    if (segmentForCityType.selectedSegmentIndex == 0) {
+        city = [arrayOfWantTovisit objectAtIndex:indexPath.row];
+    } else if (segmentForCityType.selectedSegmentIndex == 1) {
+        city = [arrayOfWantTovisit objectAtIndex:indexPath.row];
+    }
+    
+
+}
+
 -(void)sendRequestToGetCityListFromDatabase{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kGetListOfCity,pageCount];
@@ -333,7 +348,8 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.city);
-        [self nextButtonTapped:self.btnNext];
+        
+        [self getMyListOfCities];
         //City *city = [[dataResponse.city allObjects]firstObject];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {

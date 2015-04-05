@@ -31,6 +31,8 @@
     UILabel *lblLikeCount;
     NSString *myPostId;
     NSString *strCity, *strCountry, *strState;
+    
+    BOOL isNFCount;
 }
 @property (strong, nonatomic) NSString *strCityId;
 @property (strong,nonatomic) NSString *strAddress;

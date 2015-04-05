@@ -71,6 +71,7 @@
 #define kResource_GetNewsFeed       @"usercity/post?page=%d"    //GET
 #define kResource_NF_count          @"notification/count"
 #define kResource_NF_List           @"notification?page=1"
+#define kResource_NF_Read_Count     @"notification/count"
 
 // Places
 #define kResource_Place             @"json?query=%@&key=%@&types=locality"

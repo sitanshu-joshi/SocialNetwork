@@ -26,6 +26,7 @@
     [tblForCityPostList setHidden:YES];
     btnBarNotificationCount.layer.cornerRadius = 14.0;
     [btnBarNotificationCount setHidden:YES];
+    isNFCount = true;
     page = 1;
     if(self.strAddress){
         NSArray *arrOfAddress = [self.strAddress componentsSeparatedByString:@","];
@@ -49,9 +50,13 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self setUpUserInterface];
+    
     [self performSelector:@selector(getNotificationCount) withObject:nil afterDelay:20.0];
-    
-    
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    isNFCount = false;
 }
 -(void)mainMenuBtnClicked {
     [self.revealViewController revealToggle:btnMainMenu];
@@ -757,6 +762,7 @@
 }
 
 -(void)getNotificationCount {
+    NSLog(@"Executed...");
     [[AppDelegate appDelegate].rkomForNotification getObjectsAtPath:kResource_NF_count parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSString *strResponse = operation.HTTPRequestOperation.responseString;
          NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[strResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
@@ -765,6 +771,9 @@
         btnBarNotificationCount.titleLabel.text = [NSString stringWithFormat:@"%@",[nfCount firstObject]];
         NSLog(@"%@",[[jsonObject valueForKey:@"data"] valueForKey:@"count"]);
         [btnBarNotificationCount setHidden:NO];
+        if (isNFCount) {
+            [self performSelector:@selector(getNotificationCount) withObject:nil afterDelay:20.0];
+        }
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         NSString *strResponse = operation.HTTPRequestOperation.responseString;

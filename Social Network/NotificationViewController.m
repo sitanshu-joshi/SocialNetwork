@@ -26,6 +26,7 @@
     [super viewWillAppear:animated];
     [lblNoData setHidden:YES];
     [self getNotificationList];
+//    [self getReadNotification];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,7 +60,8 @@
         Notification *notification = [arrayForNotification objectAtIndex:indexPath.row];
         // Cell
         NotificationCell *cellNew = (NotificationCell *)cell;
-        cellNew.lblName.text = [NSString stringWithFormat:@"%@",notification.senderName];
+        cellNew.lblName.text = [NSString stringWithFormat:@"%@ %@",notification.senderName,notification.activityType];
+        
         
         return cell;
     }
@@ -90,6 +92,20 @@
     }];
 }
 
+-(void)getReadNotification {
+    Notification *notificaion;
+    [[AppDelegate appDelegate].rkomForNotification putObject:notificaion path:kResource_NF_Read_Count parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSString *strResponse = operation.HTTPRequestOperation.responseString;
+        NSLog(@"%@",strResponse);
+        DataForResponse *data = [mappingResult.array firstObject];
+        
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        NSString *strResponse = operation.HTTPRequestOperation.responseString;
+        NSLog(@"%@",strResponse);
+        
+    }];
+}
 -(IBAction)btnBackAction:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
