@@ -823,7 +823,7 @@
                                 </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="U2N-as-Z7C">
-                                <rect key="frame" x="0.0" y="164" width="320" height="335"/>
+                                <rect key="frame" x="0.0" y="164" width="320" height="404"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -846,6 +846,9 @@
                                                     <state key="normal" title="Button" image="delete.png">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="btnDeleteCityAction:" destination="BnG-3K-hsK" eventType="touchUpInside" id="0i0-Oj-72W"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -858,7 +861,7 @@
                                 </connections>
                             </tableView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="40" sectionHeaderHeight="22" sectionFooterHeight="22" id="p2d-rA-37W">
-                                <rect key="frame" x="10" y="92" width="300" height="65"/>
+                                <rect key="frame" x="10" y="164" width="300" height="65"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -904,18 +907,6 @@
                                     <action selector="btnSkipTapped:" destination="BnG-3K-hsK" eventType="touchUpInside" id="nF1-WG-S6i"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0Ui-2o-69c">
-                                <rect key="frame" x="101" y="525" width="119" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.0" green="0.67823262120000005" blue="0.67823262120000005" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Next">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="nextButtonTapped:" destination="BnG-3K-hsK" eventType="touchUpInside" id="bP0-Cx-Azw"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="v2t-s2-WnM">
                                 <rect key="frame" x="16" y="23" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -947,7 +938,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="hTk-lX-Wye"/>
                     <connections>
-                        <outlet property="btnNext" destination="0Ui-2o-69c" id="Of4-6Z-n91"/>
                         <outlet property="btnSkip" destination="bxB-5i-8OT" id="QmX-k3-szV"/>
                         <outlet property="lblQuestion" destination="4j9-UF-g2n" id="jxe-zi-ar6"/>
                         <outlet property="mainMenuButton" destination="v2t-s2-WnM" id="3WI-5F-pxK"/>

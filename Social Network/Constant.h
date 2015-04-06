@@ -68,6 +68,7 @@
 #define kResource_DeleteComment     @"city/post/%@/comment/%@"                  //DELETE
 #define kGetCommentsByPostId        @"city/post/%@/comment"                     //GET
 // News
+#define kResource_mycity_delete     @"usercity/%@"              //Delete
 #define kResource_GetNewsFeed       @"usercity/post?page=%d"    //GET
 #define kResource_NF_count          @"notification/count"
 #define kResource_NF_List           @"notification?page=1"

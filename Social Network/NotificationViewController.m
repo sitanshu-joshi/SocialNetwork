@@ -26,7 +26,7 @@
     [super viewWillAppear:animated];
     [lblNoData setHidden:YES];
     [self getNotificationList];
-//    [self getReadNotification];
+    [self getReadNotification];
 }
 
 - (void)didReceiveMemoryWarning {

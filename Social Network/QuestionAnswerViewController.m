@@ -60,18 +60,6 @@
     [self pushToNewsContoller];
 }
 
-- (IBAction)nextButtonTapped:(id)sender {
-    if([self.btnNext.titleLabel.text isEqualToString:@"Done"]){
-        [self pushToNewsContoller];
-    }else{
-        [self.btnNext setTitle:@"Done" forState:UIControlStateNormal];
-        [self hidekeyBoard];
-        self.searchBar.text = @"";
-        [self setTableViewHeightZero];
-        [tableViewForResult setHidden:NO];
-        lblQuestion.text = Question2;
-    }
-}
 - (IBAction)valueForSegmentChange:(id)sender {
     if (segmentForCityType.selectedSegmentIndex == 0) {
         lblQuestion.text =Question1;
@@ -313,9 +301,20 @@
         city = [arrayOfWantTovisit objectAtIndex:indexPath.row];
     }
     
-
+    [self deleteCity:city];
 }
 
+-(void)deleteCity:(City *)city {
+    [RSActivityIndicator showIndicator];
+    [[AppDelegate appDelegate].rkomForCity deleteObject:city path:[NSString stringWithFormat:kResource_mycity_delete,city.ids] parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+       [RSActivityIndicator hideIndicator];
+        
+        [self getMyListOfCities];
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [RSActivityIndicator hideIndicator];
+    }];
+}
 -(void)sendRequestToGetCityListFromDatabase{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kGetListOfCity,pageCount];

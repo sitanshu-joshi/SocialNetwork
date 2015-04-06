@@ -15,6 +15,7 @@
 @implementation CityPageViewController
 @synthesize btnVideoSharing,btnPhotoSharing,btnShare,btnMainMenu,btnBarNews,btnBarNotification,btnBarNotificationCount,btnBarPost;
 @synthesize tblForCityPostList;
+@synthesize txtViewForPost,txtViewForUpdatePost;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -604,6 +605,10 @@
 
 #pragma mark - To Post Data on City Wall
 -(void)postOnCityWall:(NSDictionary *)dict withCityId:(NSString *)cityId{
+    // Hide Keyboards
+    [txtViewForUpdatePost resignFirstResponder];
+    [txtViewForPost resignFirstResponder];
+    
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kWallPostOnUserCity,cityId];
     
@@ -768,9 +773,14 @@
          NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[strResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
         
         NSArray *nfCount = [[jsonObject valueForKey:@"data"] valueForKey:@"count"];
-        btnBarNotificationCount.titleLabel.text = [NSString stringWithFormat:@"%@",[nfCount firstObject]];
-        NSLog(@"%@",[[jsonObject valueForKey:@"data"] valueForKey:@"count"]);
-        [btnBarNotificationCount setHidden:NO];
+        int nf_count = [[nfCount firstObject] intValue];
+        if (nf_count >= 1) {
+            btnBarNotificationCount.titleLabel.text = [NSString stringWithFormat:@"%d",nf_count];
+            [btnBarNotificationCount setHidden:NO];
+        } else {
+            [btnBarNotificationCount setHidden:YES];
+        }
+        
         if (isNFCount) {
             [self performSelector:@selector(getNotificationCount) withObject:nil afterDelay:20.0];
         }
