@@ -31,7 +31,8 @@
     UILabel *lblLikeCount;
     NSString *myPostId;
     NSString *strCity, *strCountry, *strState;
-    
+    BOOL isFullScreen;
+    CGRect prevFrame;
     BOOL isNFCount;
 }
 @property (strong, nonatomic) NSString *strCityId;
@@ -45,6 +46,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnVideoSharing;
 @property (weak, nonatomic) IBOutlet UIView *viewForUpdatePost;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForUpdatePost;
+@property (weak, nonatomic) IBOutlet UIImageView *imgViewForFullScreenImage;
 
 // Top Bar
 @property (weak, nonatomic) IBOutlet UIButton *btnBarNews;
@@ -60,6 +62,7 @@
 - (IBAction)updatePostBtnTapped:(id)sender;
 - (IBAction)btnUpdatePostTapped:(id)sender;
 - (IBAction)refreshBtnTapped:(id)sender;
+- (IBAction)mediaBtnTapped:(UIButton *)sender;
 
 
 @end

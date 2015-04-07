@@ -19,6 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    isFullScreen = false;
     arrOfCellHeight = [NSMutableArray array];
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
@@ -95,7 +96,7 @@
     UILabel *lblUserName = (UILabel *)[cell viewWithTag:kCell_city_user_name];
     UILabel *lblTime = (UILabel *)[cell viewWithTag:kCell_city_user_time];
     UILabel *lblForPost = (UILabel *)[cell viewWithTag:kCell_city_post_text];
-    UIImageView *imgMedia = (UIImageView *)[cell viewWithTag:kCell_city_post_image];
+    UIButton *btnImgMedia = (UIButton *)[cell viewWithTag:kCell_city_post_image];
     UILabel *lblCommentCount = (UILabel *)[cell viewWithTag:kCell_city_post_commentcount];
     //UIButton *btnComment = (UIButton *) [cell.contentView viewWithTag:kCell_city_post_Comment];
     btnLike = (UIButton *)[cell viewWithTag:kCell_city_post_isMyLike];
@@ -128,7 +129,7 @@
     lblForPost.lineBreakMode = NSLineBreakByWordWrapping;
     lblForPost.numberOfLines = 0;
     
-    frame = imgMedia.frame;
+    frame = btnImgMedia.frame;
     int intOriginY = 123.0;
 //    if(IS_IPHONE_5){
 //        intOriginY = 54.0f;
@@ -136,32 +137,32 @@
     
     if([post.mediaType intValue] == 1){
         frame.origin.y = [self calculateLabelHeightBasedOnString:[NSString stringWithFormat:@"%@",post.text]].size.height+intOriginY;
-        [imgMedia setFrame:frame];
-        imgMedia.image = [UIImage imageNamed:@"img_placeholder .jpg"];
+        [btnImgMedia setFrame:frame];
+        [btnImgMedia setBackgroundImage:[UIImage imageNamed:@"img_placeholder "] forState:UIControlStateNormal];
         NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
         if([post.mediaUrl length]>0){
             if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
-                imgMedia.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
+                [btnImgMedia setBackgroundImage:[UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]] forState:UIControlStateNormal];
             }
-            imgMedia.layer.borderColor = (__bridge CGColorRef)([UIColor blackColor]);
-            imgMedia.layer.borderWidth = 10.0;
-            [imgMedia setHidden:NO];
+            btnImgMedia.layer.borderColor = (__bridge CGColorRef)([UIColor blackColor]);
+            btnImgMedia.layer.borderWidth = 10.0;
+            [btnImgMedia setHidden:NO];
         }else{
-            [imgMedia setHidden:YES];
+            [btnImgMedia setHidden:YES];
         }
     }else if([post.mediaType intValue] == 2){
         frame.origin.y = [self calculateLabelHeightBasedOnString:[NSString stringWithFormat:@"%@",post.text]].size.height+intOriginY;
-        [imgMedia setFrame:frame];
-        imgMedia.image = [UIImage imageNamed:@"video-placeholder.png"];
-        imgMedia.layer.borderColor = (__bridge CGColorRef)([UIColor whiteColor]);
-        imgMedia.layer.borderWidth = 2.0;
+        [btnImgMedia setFrame:frame];
+        [btnImgMedia setBackgroundImage:[UIImage imageNamed:@"video-placeholder"] forState:UIControlStateNormal];
+        btnImgMedia.layer.borderColor = (__bridge CGColorRef)([UIColor whiteColor]);
+        btnImgMedia.layer.borderWidth = 2.0;
     }else{
-        [imgMedia setHidden:YES];
+        [btnImgMedia setHidden:YES];
         frame.origin.y = [self calculateLabelHeightBasedOnString:[NSString stringWithFormat:@"%@",post.text]].size.height;
-        [imgMedia setFrame:frame];
+        [btnImgMedia setFrame:frame];
     }
-    imgMedia.layer.cornerRadius = 5.0;
-    imgMedia.layer.masksToBounds = YES;
+    btnImgMedia.layer.cornerRadius = 5.0;
+    btnImgMedia.layer.masksToBounds = YES;
     lblCommentCount.text = [NSString stringWithFormat:@"%@",post.commentCount];
     [btnLike addTarget:self
                  action:@selector(btnLikeDislikeAction:)
@@ -181,7 +182,7 @@
         [btnDelete setHidden:YES];
         [btnEdit setHidden:YES];
     }
-    imgBg.frame = CGRectMake(imgBg.frame.origin.x, imgBg.frame.origin.y, imgBg.frame.size.width, imgMedia.frame.origin.y + imgMedia.frame.size.height + 5);
+    imgBg.frame = CGRectMake(imgBg.frame.origin.x, imgBg.frame.origin.y, imgBg.frame.size.width, btnImgMedia.frame.origin.y + btnImgMedia.frame.size.height + 5);
     imgBg.layer.cornerRadius = 5.0;
     imgBg.layer.masksToBounds = YES;
     return cell;
@@ -328,6 +329,64 @@
    [self getCityIdWithCountry:strCountry State:strState City:strCity];
 }
 
+- (IBAction)mediaBtnTapped:(UIButton *)sender {
+    UITableViewCell *cellForSelectedBtn = (UITableViewCell *)[[sender superview] superview];
+    NSIndexPath *indexPathForCell = [tblForCityPostList indexPathForCell:cellForSelectedBtn];
+    Post *post = [arrayForCityPostList objectAtIndex:indexPathForCell.section];
+    if([post.mediaType integerValue] == 2){
+        //Play Video
+        NSURL *urlForMedia = [NSURL URLWithString:[NSString stringWithFormat:@"%@",post.mediaUrl]];
+        if(urlForMedia){
+            MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc]initWithContentURL:urlForMedia];
+            [self presentMoviePlayerViewControllerAnimated:moviePlayer];
+        }
+    }else{
+        if (!isFullScreen) {
+            [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
+                //save previous frame
+                prevFrame = self.imgViewForFullScreenImage.frame;
+                self.imgViewForFullScreenImage.frame = CGRectMake(self.imgViewForFullScreenImage.frame.origin.x, 64, self.imgViewForFullScreenImage.frame.size.width,self.imgViewForFullScreenImage.frame.size.height);
+                NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+                if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                    [self.imgViewForFullScreenImage setImage:[UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]]];
+                }
+            }completion:^(BOOL finished){
+                isFullScreen = true;
+                self.tblForCityPostList.userInteractionEnabled = NO;
+            }];
+            return;
+        } else {
+            [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
+                [self.imgViewForFullScreenImage setFrame:prevFrame];
+            }completion:^(BOOL finished){
+                isFullScreen = false;
+                self.tblForCityPostList.userInteractionEnabled = YES;
+                self.imgViewForFullScreenImage.image = nil;
+            }];
+            return;
+        }    }
+}
+//
+//-(void)imgToFullScreen{
+//    if (!isFullScreen) {
+//        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
+//            //save previous frame
+//            prevFrame = yourImageView.frame;
+//            [yourImageView setFrame:[[UIScreen mainScreen] bounds]];
+//        }completion:^(BOOL finished){
+//            isFullScreen = true;
+//        }];
+//        return;
+//    } else {
+//        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
+//            [yourImageView setFrame:prevFrame];
+//        }completion:^(BOOL finished){
+//            isFullScreen = false;
+//        }];
+//        return;
+//    }
+//}
+//
 -(IBAction)btnLikeDislikeAction:(UIButton *)sender {
     NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
     Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
