@@ -13,6 +13,7 @@
 @end
 
 @implementation HomeViewController
+@synthesize btnFbLogin;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -25,20 +26,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self setFBLoginView];
+    if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
+        if([AppLogin sharedAppLogin].isUserLoggedIn){
+            [self loginWithExistingCredential];
+        }
+    }else{
+        [self networkNotReachable];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 }
 
--(void)setFBLoginView {
-    FBLoginView *loginView = [[FBLoginView alloc] init];
-    loginView.frame = CGRectOffset(loginView.frame, (self.view.center.x - (loginView.frame.size.width / 2)),self.view.center.y);
-    loginView.readPermissions = @[@"public_profile", @"email", @"user_friends",@"user_birthday",@"user_location",@"user_hometown"];
-    loginView.delegate = self;
-    [self.view addSubview:loginView];
-}
+//-(void)setFBLoginView {
+//    FBLoginView *loginView = [[FBLoginView alloc] init];
+//    loginView.frame = CGRectOffset(loginView.frame, (self.view.center.x - (loginView.frame.size.width / 2)),self.view.center.y);
+//    loginView.readPermissions = @[@"public_profile", @"email", @"user_friends",@"user_birthday",@"user_location",@"user_hometown"];
+//    loginView.delegate = self;
+//    [self.view addSubview:loginView];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -88,13 +95,36 @@
     
 }
 
-- (void)loginView:(FBLoginView *)loginView
-      handleError:(NSError *)error{
-        NSLog(@"%@",error.description);
-    if ([error code] == -(kCode_NSURLErrorNotConnectedToInternet)){
+//- (void)loginView:(FBLoginView *)loginView
+//      handleError:(NSError *)error{
+//        NSLog(@"%@",error.description);
+//    if ([error code] == -(kCode_NSURLErrorNotConnectedToInternet)){
+//        [self networkNotReachable];
+//        return;
+//    }
+//}
+//
+
+
+-(void)networkNotReachable{
+    [RSActivityIndicator hideIndicator];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_NoInternet delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+    [alert show];
+}
+
+
+#pragma mark - IBAction Methods
+- (IBAction)fbLoginBtnTapped:(id)sender {
+    if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
+        [[AppDelegate appDelegate] openSessionWithAllowLoginUI:YES];
+    }else{
         [self networkNotReachable];
-        return;
     }
+}
+
+#pragma mark - RestKit API Implementation
+-(void)loginWithExistingCredential{
+    
 }
 
 -(void)makeLoginUsingAuthCredential:(NSMutableDictionary *)dict {
@@ -111,8 +141,6 @@
             [[NSUserDefaults standardUserDefaults] synchronize];
             [self performSegueWithIdentifier:kPush_To_Question sender:nil];
         }
-        
-    
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *data  = [mappingResult.array objectAtIndex:0];
         User *user  = [[data.user allObjects] firstObject];
@@ -130,9 +158,4 @@
     }];
 }
 
--(void)networkNotReachable{
-    [RSActivityIndicator hideIndicator];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_NoInternet delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-    [alert show];
-}
 @end

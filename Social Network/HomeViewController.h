@@ -15,4 +15,6 @@
     
 }
 
+@property (weak, nonatomic) IBOutlet UIButton *btnFbLogin;
+- (IBAction)fbLoginBtnTapped:(id)sender;
 @end

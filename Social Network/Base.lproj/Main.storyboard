@@ -12,6 +12,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="G2l-xX-Dh6">
+                                <rect key="frame" x="16" y="269" width="288" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.21608244430000001" green="0.31928479440000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Facebook Login">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="fbLoginBtnTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="KPH-uZ-W6S"/>
+                                </connections>
+                            </button>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="3my-OS-Erv">
                                 <rect key="frame" x="142" y="265" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -22,6 +34,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Home" id="3Ki-yX-Ee2"/>
                     <connections>
+                        <outlet property="btnFbLogin" destination="G2l-xX-Dh6" id="uRf-Au-EvL"/>
                         <segue destination="jhJ-E8-seI" kind="push" identifier="pushToSlideBar" id="yGZ-1n-fiw"/>
                         <segue destination="BnG-3K-hsK" kind="push" identifier="pushToQuestion" id="eKe-pi-UOy"/>
                     </connections>
@@ -1382,9 +1395,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="s1d-TF-zWK"/>
-        <segue reference="tTA-7t-R4o"/>
         <segue reference="eKe-pi-UOy"/>
+        <segue reference="yGZ-1n-fiw"/>
+        <segue reference="s1d-TF-zWK"/>
         <segue reference="XHn-Qt-HWG"/>
         <segue reference="b4g-Ca-UKH"/>
     </inferredMetricsTieBreakers>
