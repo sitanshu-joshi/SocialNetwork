@@ -48,28 +48,41 @@
 /*
  Resource Path
  */
+
+//Home ViewController
 #define kResource_SignUp_Auth       @"signup/oauth"                             //POST
 #define kResource_Login             @"login"                                    //POST
+
+//Setting ViewController
 #define kLogout                     @"logout"
 
-#define kGetMyListOfCity            @"usercity/"                                 // GET
+//Question-Answer View Controller
+#define kGetMyListOfCity            @"usercity/"                                //GET
 #define kGetListOfCity              @"city?page=%d"                             //GET
-#define kGetCityId                  @"city?CITY_NAME=%@&STATE=%@&COUNTRY=%@"    //GET
 #define kAddCity                    @"city"                                     //POST
+#define kResource_mycity_delete     @"usercity/%@"                              //Delete
+
+// News View Controller
+#define kResource_GetNewsFeed       @"usercity/post?page=%d"    //GET
+
+//City Post View Controller
+#define kGetLikeCount               @"city/post/%@/like"                        //GET
+#define kGetCityId                  @"city?CITY_NAME=%@&STATE=%@&COUNTRY=%@"    //GET
 #define kWallPostOnUserCity         @"city/post/%@"                             //POST
 #define kGetPost                    @"city/post/%@?page=%d"                     //GET
-#define kUpdateWallPost             @"usercity/post/%@"                    //PUT
+#define kUpdateWallPost             @"usercity/post/%@"                         //PUT
 #define kDeleteWallPost             @"city/post/%@"                             //DELETE
 #define kResource_LikePost          @"city/post/%@/like"                        //POST
 #define kResource_UnLikePost        @"city/post/%@/unlike"                      //POST
-#define kGetLikeCount               @"city/post/%@/like"                        //GET
+
+//Comment View Controller
 #define kAddComment                 @"city/post/%@/comment"                     //POST
 #define kUpdateComment              @"city/post/%@/comment/%@"                  //PUT
 #define kResource_DeleteComment     @"city/post/%@/comment/%@"                  //DELETE
 #define kGetCommentsByPostId        @"city/post/%@/comment"                     //GET
-// News
-#define kResource_mycity_delete     @"usercity/%@"              //Delete
-#define kResource_GetNewsFeed       @"usercity/post?page=%d"    //GET
+
+
+//Notification View Controller
 #define kResource_NF_count          @"notification/count"
 #define kResource_NF_List           @"notification?page=1"
 #define kResource_NF_Read_Count     @"notification/count"
