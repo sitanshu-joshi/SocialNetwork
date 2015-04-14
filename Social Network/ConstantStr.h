@@ -20,6 +20,14 @@
 #define kCell_Notification                      @"cellForNotification"
 
 
+
+/*
+ NSNotification Identifier
+ */
+#define kNotifier_Facebook_Session_Closed        @"FacebookSessionClosedNotifier"
+#define kNotifier_Facebook_Session_Opened        @"FacebookSessionOpenedNotifier"
+
+
 #pragma mark Cell Components Tags
 
 // News feed

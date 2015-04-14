@@ -185,6 +185,9 @@
 #define kAlert_Enter_City                   @"Please Select City"
 #define kCameraAlert                        @"Camera is not available"
 #define kVideoLengthAlert                   @"Video length should be maximum of 20 Seconds.Please select another Video"
+#define kAlert_FacebookConnectionProblem            @"Error while connecting Facebook, please check your internet connection."
+#define kAlert_Facebook_Session_Closed              @"You have disallowed Facebook profile to providing access for your basic information. Please change your Facebook profile settings."
+
 
 // City
 #define  tagColorForCity        [UIColor colorWithRed:96.0/255.0 green:92.0/255.0 blue:168.0/255.0 alpha:1.0]

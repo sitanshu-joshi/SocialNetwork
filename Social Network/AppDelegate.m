@@ -69,61 +69,6 @@ static AppDelegate *appDelegate;
 }
 
 
-
-// This method will handle ALL the session state changes in the app
-- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error{
-    // If the session was opened successfully
-    if (!error && state == FBSessionStateOpen){
-        NSLog(@"Session opened");
-        [[FBRequest requestForMe] startWithCompletionHandler:^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
-            if (!error) {
-                
-            }
-        }];
-        return;
-    }
-    if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed){
-        // If the session is closed
-        NSLog(@"Session closed");
-    }
-    // Handle errors
-    if (error){
-        NSLog(@"Error");
-        NSString *alertText;
-        NSString *alertTitle;
-        if ([FBErrorUtility shouldNotifyUserForError:error] == YES){
-            alertTitle = @"Something went wrong";
-            alertText = [FBErrorUtility userMessageForError:error];
-            UIAlertView *aALert=[[UIAlertView alloc]initWithTitle:alertTitle message:alertText delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-            [aALert show];
-        }
-        else{
-            // If the user cancelled login, do nothing
-            if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled){
-                NSLog(@"User cancelled login");
-            }
-            else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession){
-                alertTitle = @"Session Error";
-                alertText = @"Your current session is no longer valid. Please log in again.";
-                UIAlertView *aALert=[[UIAlertView alloc]initWithTitle:alertTitle message:alertText delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                [aALert show];
-            }
-            else{
-                NSDictionary *errorInformation = [[[error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"] objectForKey:@"body"] objectForKey:@"error"];
-                // Show the user an error message
-                alertTitle = @"Something went wrong";
-                alertText = [NSString stringWithFormat:@"Please retry. \n\n If the problem persists contact us and mention this error code: %@", [errorInformation objectForKey:@"message"]];
-                UIAlertView *aALert=[[UIAlertView alloc]initWithTitle:alertTitle message:alertText delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                [aALert show];
-            }
-        }
-        // Clear this token
-        [FBSession.activeSession closeAndClearTokenInformation];
-        // Show the user the logged-out UI
-        NSLog(@"USER LOGGED OUT SUCCESSFULLY!!");
-    }
-}
-
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
     [FBSession.activeSession setStateChangeHandler:
@@ -134,29 +79,112 @@ static AppDelegate *appDelegate;
     return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
 }
 
+
+#pragma mark - Facebook Session Handler Methods
+
+//This will call to Start Facebook Session by Passing Permission
 - (BOOL)openSessionWithAllowLoginUI:(BOOL)allowLoginUI{
-    // If the session state is any of the two "open" states when the button is clicked
-    if (FBSession.activeSession.state == FBSessionStateOpen
-        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
-        
-        // Close the session and remove the access token from the cache
-        // The session state handler (in the app delegate) will be called automatically
-        [FBSession.activeSession closeAndClearTokenInformation];
-        
-        // If the session state is not any of the two "open" states when the button is clicked
-    } else {
-        // Open a session showing the user the login UI
-        // You must ALWAYS ask for public_profile permissions when opening a session
-        [FBSession openActiveSessionWithReadPermissions:@[@"email",@"user_likes",@"user_friends",@"user_birthday"]allowLoginUI:YES
-                                      completionHandler:
-         ^(FBSession *session, FBSessionState state, NSError *error) {
-             
-            // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
-             [appDelegate sessionStateChanged:session state:state error:error];
-         }];
-    }
+    //[FBSession.activeSession closeAndClearTokenInformation];
+    return [FBSession openActiveSessionWithReadPermissions:
+            @[@"email",@"user_friends"] allowLoginUI:YES completionHandler:
+            ^(FBSession *session, FBSessionState state, NSError *error) {
+                // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+                [self sessionStateChanged:session state:state error:error];
+            }];
     return NO;
 }
+
+// This method will handle ALL the session state changes in the app
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error{
+    @autoreleasepool {
+        // If the session was opened successfully
+        if (!error && state == FBSessionStateOpen){
+            NSLog(@"Session opened");
+            [[FBRequest requestForMe] startWithCompletionHandler:^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
+                if (!error) {
+                    //set AppUserInfo
+                    AppUserInfo *appUserInfo = [AppUserInfo sharedAppUserInfo];
+                    appUserInfo.userName = user.name;
+                    appUserInfo.firstName = user.first_name;
+                    appUserInfo.lastName = user.last_name;
+                    appUserInfo.userEmail = [user objectForKey:@"email"];
+                    appUserInfo.userId = user.objectID;
+                    appUserInfo.birthday = user.birthday;
+                    
+                    //set AppLogin Details
+                    AppLogin *appLoginInfo = [AppLogin sharedAppLogin];
+                    NSString *strToken  = [NSString stringWithFormat:@"%@",[FBSession activeSession].accessTokenData.accessToken];
+                    NSString *strPassword = [strToken substringFromIndex:[strToken length] - 8];
+                    appLoginInfo.userEmail = [user objectForKey:@"email"];
+                    appLoginInfo.password = strPassword;
+                    appLoginInfo.isUserLoggedIn = TRUE;
+                    
+                    NSString *fbAccessToken = [[[FBSession activeSession]accessTokenData]accessToken];
+                    NSString *firstName = user.first_name;
+                    NSString *lastName = user.last_name;
+                    NSString *userName = user.username;
+                    NSString *birthday = user.birthday;
+                    NSString *userId = [user objectForKey:@"id"];
+                    NSString *email = [user objectForKey:@"email"];
+                    
+                    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+                    userName ? [dict setValue:firstName forKey:kUSER_NAME] : [dict setValue:@"" forKey:kUSER_NAME];
+                    firstName ? [dict setValue:firstName forKey:kUSER_FIRST_NAME] : [dict setValue:@"" forKey:kUSER_FIRST_NAME];
+                    lastName ? [dict setValue:lastName forKey:kUSER_LAST_NAME] : [dict setValue:@"" forKey:kUSER_LAST_NAME];
+                    email ? [dict setValue:email forKey:kUSER_EMAIL] : [dict setValue:@"" forKey:kUSER_EMAIL];
+                    fbAccessToken ? [dict setValue:fbAccessToken forKey:kUSER_AUTH_TOKEN] : [dict setValue:@"" forKey:kUSER_AUTH_TOKEN];
+                    [dict setValue:kAuth_FB forKey:kUSER_TYPE];
+                    [dict setValue:[[NSTimeZone localTimeZone] name] forKey:kUSER_TIMEZONE];
+                    birthday ? [dict setValue:birthday forKey:kUSER_BDAY] : [dict setValue:@"" forKey:kUSER_BDAY];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kNotifier_Facebook_Session_Opened object:dict];
+                }else{
+                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_FacebookConnectionProblem delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+            }];
+            return;
+        }
+        if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed){
+            NSLog(@"Facebook Session closed");
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNotifier_Facebook_Session_Closed object:nil];
+        }
+        // Handle errors
+        if (error){
+            NSLog(@"Error");
+            NSString *alertText;
+            NSString *alertTitle;
+            if ([FBErrorUtility shouldNotifyUserForError:error] == YES){
+                alertTitle = @"Something went wrong";
+                alertText = [FBErrorUtility userMessageForError:error];
+                UIAlertView *aALert=[[UIAlertView alloc]initWithTitle:alertTitle message:alertText delegate:nil cancelButtonTitle:kCancelButton otherButtonTitles:kOkButton, nil];
+                [aALert show];
+            }else{
+                // If the user cancelled login, do nothing
+                if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled){
+                    UIAlertView *alertView =[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Facebook_Session_Closed delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+                    [alertView show];
+                }
+                else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession){
+                    alertText = @"Your current session is no longer valid. Please log in again.";
+                    UIAlertView *aALert=[[UIAlertView alloc]initWithTitle:kAppTitle message:alertText delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+                    [aALert show];
+                }
+                else{
+                    NSDictionary *errorInformation = [[[error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"] objectForKey:@"body"] objectForKey:@"error"];
+                    // Show the user an error message
+                    alertText = [NSString stringWithFormat:@"Please retry. \n\n If the problem persists contact us and mention this error code: %@", [errorInformation objectForKey:@"message"]];
+                    UIAlertView *aALert=[[UIAlertView alloc]initWithTitle:kAppTitle message:alertText delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+                    [aALert show];
+                }
+            }
+            // Clear this token
+            [FBSession.activeSession closeAndClearTokenInformation];
+            // Show the user the logged-out UI
+            NSLog(@"USER LOGGED OUT SUCCESSFULLY!!");
+        }
+    }
+}
+
 
 // ============================== Core Data - RestKit =========================
 #pragma mark Do Not Back APP local Data

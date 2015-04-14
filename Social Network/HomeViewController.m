@@ -37,74 +37,19 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideActivityIndicator) name:kNotifier_Facebook_Session_Closed object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeLoginUsingAuthCredential:) name:kNotifier_Facebook_Session_Opened object:nil];
+    BOOL isLogin = [AppLogin sharedAppLogin].isUserLoggedIn;
+    if(isLogin){
+         [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+        [self loginWithExistingCredential];
+    }
 }
-
-//-(void)setFBLoginView {
-//    FBLoginView *loginView = [[FBLoginView alloc] init];
-//    loginView.frame = CGRectOffset(loginView.frame, (self.view.center.x - (loginView.frame.size.width / 2)),self.view.center.y);
-//    loginView.readPermissions = @[@"public_profile", @"email", @"user_friends",@"user_birthday",@"user_location",@"user_hometown"];
-//    loginView.delegate = self;
-//    [self.view addSubview:loginView];
-//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
-#pragma mark - FBLoginView Delegate Methods
-- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
-    if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
-        if([FBSession activeSession].isOpen){
-            //set AppUserInfo
-            AppUserInfo *appUserInfo = [AppUserInfo sharedAppUserInfo];
-            appUserInfo.userName = user.name;
-            appUserInfo.firstName = user.first_name;
-            appUserInfo.lastName = user.last_name;
-            appUserInfo.userEmail = [user objectForKey:@"email"];
-            appUserInfo.userId = user.id;
-            appUserInfo.birthday = user.birthday;
-        
-            //set AppLogin Details
-            AppLogin *appLoginInfo = [AppLogin sharedAppLogin];
-            NSString *strToken  = [NSString stringWithFormat:@"%@",[FBSession activeSession].accessTokenData.accessToken];
-            NSString *strPassword = [strToken substringFromIndex:[strToken length] - 8];
-            appLoginInfo.userEmail = [user objectForKey:@"email"];
-            appLoginInfo.password = strPassword;
-            appLoginInfo.isUserLoggedIn = TRUE;
-            
-            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-            [dict setValue:user.username forKey:kUSER_NAME];
-            [dict setValue:user.first_name forKey:kUSER_FIRST_NAME];
-            [dict setValue:user.last_name forKey:kUSER_LAST_NAME];
-            [dict setValue:[user objectForKey:@"email"] forKey:kUSER_EMAIL];
-            [dict setValue:[FBSession activeSession].accessTokenData.accessToken forKey:kUSER_AUTH_TOKEN];
-            [dict setValue:kAuth_FB forKey:kUSER_TYPE];
-            [dict setValue:[[NSTimeZone localTimeZone] name] forKey:kUSER_TIMEZONE];
-            [dict setValue:user.birthday forKey:kUSER_BDAY];
-            if ([[AppDelegate appDelegate] isNetworkReachableToInternet]) {
-                [self makeLoginUsingAuthCredential:dict];
-            } else {
-                [self networkNotReachable];
-            }
-        }
-    }else{
-        [self networkNotReachable];
-    }
-    
-}
-
-//- (void)loginView:(FBLoginView *)loginView
-//      handleError:(NSError *)error{
-//        NSLog(@"%@",error.description);
-//    if ([error code] == -(kCode_NSURLErrorNotConnectedToInternet)){
-//        [self networkNotReachable];
-//        return;
-//    }
-//}
-//
-
 
 -(void)networkNotReachable{
     [RSActivityIndicator hideIndicator];
@@ -157,5 +102,11 @@
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
+
+#pragma mark - Helper Methods
+-(void)hideActivityIndicator{
+    [RSActivityIndicator hideIndicator];
+}
+
 
 @end
