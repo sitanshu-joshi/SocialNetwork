@@ -10,9 +10,8 @@
 #import "AppLogin.h"
 #import "AppUserInfo.h"
 
-
-@interface HomeViewController : UIViewController<FBLoginViewDelegate>{
-    
+@interface HomeViewController : UIViewController{
+    NSString *strLoginPath;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *btnFbLogin;

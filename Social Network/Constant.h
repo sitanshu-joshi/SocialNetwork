@@ -117,6 +117,7 @@
 #define kUSER_LAST_NAME     @"USER_LAST_NAME"
 #define kUSER_EMAIL         @"USER_EMAIL"
 #define kUSER_NAME          @"USER_NAME"
+#define kUSER_PASSWORD      @"PASSWORD"
 #define kUSER_AUTH_TOKEN    @"USER_AUTH_TOKEN"
 #define kUSER_TYPE          @"USER_TYPE"
 #define kUSER_TIMEZONE      @"USER_TIMEZONE"

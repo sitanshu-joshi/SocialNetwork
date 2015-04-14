@@ -315,6 +315,7 @@
         [RSActivityIndicator hideIndicator];
     }];
 }
+
 -(void)sendRequestToGetCityListFromDatabase{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kGetListOfCity,pageCount];

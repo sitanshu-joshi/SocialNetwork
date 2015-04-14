@@ -28,7 +28,9 @@
     // Do any additional setup after loading the view.
     if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
         if([AppLogin sharedAppLogin].isUserLoggedIn){
-            [self loginWithExistingCredential];
+            strLoginPath = kResource_Login;
+        }else{
+            strLoginPath = kResource_SignUp_Auth;
         }
     }else{
         [self networkNotReachable];
@@ -41,8 +43,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeLoginUsingAuthCredential:) name:kNotifier_Facebook_Session_Opened object:nil];
     BOOL isLogin = [AppLogin sharedAppLogin].isUserLoggedIn;
     if(isLogin){
-         [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-        [self loginWithExistingCredential];
+        [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+        NSString *strEmail = @"admin@troyage.com"; //[AppLogin sharedAppLogin].userEmail;
+        NSString *strPassword = @"password" ; // [AppLogin sharedAppLogin].password;
+        NSMutableDictionary *dictForLogin = [NSMutableDictionary dictionary];
+        [dictForLogin setObject:strEmail forKey:kUSER_NAME];
+        [dictForLogin setObject:strPassword forKey:kUSER_PASSWORD];
+        [self sendRequestForLoginUsingAuthCredential:dictForLogin];
     }
 }
 
@@ -51,16 +58,23 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)networkNotReachable{
-    [RSActivityIndicator hideIndicator];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_NoInternet delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-    [alert show];
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    
+}
+
+#pragma mark - PrepareForSegue Methods
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:kNotifier_Facebook_Session_Opened object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:kNotifier_Facebook_Session_Closed object:nil];
 }
 
 
 #pragma mark - IBAction Methods
 - (IBAction)fbLoginBtnTapped:(id)sender {
     if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
+        [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
         [[AppDelegate appDelegate] openSessionWithAllowLoginUI:YES];
     }else{
         [self networkNotReachable];
@@ -68,13 +82,15 @@
 }
 
 #pragma mark - RestKit API Implementation
--(void)loginWithExistingCredential{
-    
+
+-(void)makeLoginUsingAuthCredential:(NSNotification *)notification {
+    NSDictionary *loginAuthDictionary = notification.object;
+    [self sendRequestForLoginUsingAuthCredential:loginAuthDictionary];
 }
 
--(void)makeLoginUsingAuthCredential:(NSMutableDictionary *)dict {
+-(void)sendRequestForLoginUsingAuthCredential:(NSDictionary *)authDictionary{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-    [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kResource_SignUp_Auth parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [[AppDelegate appDelegate].rkomForLogin postObject:nil path:strLoginPath parameters:authDictionary success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
         {
@@ -92,8 +108,7 @@
         NSLog(@"%@",user.description);
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        // Transport error or server error handled by errorDescriptor
-        //NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         NSLog(@"%@",error.localizedDescription);
         [RSActivityIndicator hideIndicator];
         NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
@@ -102,11 +117,16 @@
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
-
 #pragma mark - Helper Methods
+
 -(void)hideActivityIndicator{
     [RSActivityIndicator hideIndicator];
 }
 
+-(void)networkNotReachable{
+    [RSActivityIndicator hideIndicator];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_NoInternet delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
+    [alert show];
+}
 
 @end

@@ -124,7 +124,6 @@ static AppDelegate *appDelegate;
                     NSString *lastName = user.last_name;
                     NSString *userName = user.username;
                     NSString *birthday = user.birthday;
-                    NSString *userId = [user objectForKey:@"id"];
                     NSString *email = [user objectForKey:@"email"];
                     
                     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -416,5 +415,26 @@ static AppDelegate *appDelegate;
     if([[arrViewControllers objectAtIndex:0] isKindOfClass:[HomeViewController class]]){
         [nav popToViewController:[arrViewControllers objectAtIndex:0] animated:YES];
     }
+}
+
+#pragma mark - AutoLogin Methods
+-(void)loginWithExistingCredential{
+    NSString *strEmail = [AppLogin sharedAppLogin].userEmail;
+    NSString *strPassword = [AppLogin sharedAppLogin].password;
+    NSMutableDictionary *dictForLogin = [NSMutableDictionary dictionary];
+    [dictForLogin setObject:strEmail forKey:kUSER_NAME];
+    [dictForLogin setObject:strPassword forKey:kUSER_PASSWORD];
+    
+    [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kResource_Login parameters:dictForLogin success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *data  = [mappingResult.array objectAtIndex:0];
+        User *user  = [[data.user allObjects] firstObject];
+        NSLog(@"%@",user.description);
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        //NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSLog(@"%@",error.localizedDescription);
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
 }
 @end
