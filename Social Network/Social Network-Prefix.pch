@@ -38,6 +38,7 @@
     #import "FileUtility.h"
     #import "IconDownloader.h"
     #import "UtilityMethods.h"
+    #import "ResponseStatus.h"
 
     // Slide View
     #import "CustomSlideViewController.h"

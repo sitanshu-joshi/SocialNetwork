@@ -55,7 +55,7 @@
  */
 - (void)sessionStateChanged :(FBSession *)session state:(FBSessionState) state error:(NSError *)error;
 - (BOOL)openSessionWithAllowLoginUI:(BOOL)allowLoginUI;
-
+- (void)loginWithExistingCredential;
 //To check Network Rechability
 -(BOOL)isNetworkReachableToInternet;
 -(void)backToRootView;

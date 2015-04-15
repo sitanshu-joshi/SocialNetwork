@@ -575,15 +575,44 @@
             [tblForCityPostList reloadData];
         }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSData *responseData = [[NSString stringWithFormat:@"%@",operation.HTTPRequestOperation.responseString]dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:nil];
-        NSString *errorMessage = [responseDict valueForKey:@"msg"];
-        //NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            //[self getNewsForHomeTown];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        //[self getNewsForHomeTown];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                    }
+                }else{
+                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
@@ -624,12 +653,44 @@
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.post);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            //[self getNewsForHomeTown];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        //[self getNewsForHomeTown];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                    }
+                }else{
+                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
@@ -649,14 +710,43 @@
         self.strCityId = cityId;
         [self getPostDetailsForCity:cityId pageNumber:page];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingMutableContainers error:&error];
-        if(dictResponse){
-            NSString *message = [NSString stringWithFormat:@"%@",[dictResponse valueForKey:@"msg"]];
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:message delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-            [alert show];
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            //[self getNewsForHomeTown];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        //[self getNewsForHomeTown];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                    }
+                }else{
+                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
         }
         RKLogError(@"Operation failed with error: %@", error);
     }];
@@ -693,6 +783,42 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            //[self getNewsForHomeTown];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        //[self getNewsForHomeTown];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                    }
+                }else{
+                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
     }];
     [[AppDelegate appDelegate].rkomForPost enqueueObjectRequestOperation:operation];
 }
@@ -707,16 +833,43 @@
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSData *data = [operation.HTTPRequestOperation.responseString dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-        if([[dict valueForKey:@"code"]integerValue] == 2000){
-            NSString *message = [dict valueForKey:@"msg"];
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:message delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-            [alert show];
-            [self getPostDetailsForCity:self.strCityId pageNumber:page];
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            //[self getNewsForHomeTown];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        //[self getNewsForHomeTown];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                    }
+                }else{
+                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
         }
         RKLogError(@"Operation failed with error: %@", error);
     }];
@@ -732,12 +885,44 @@
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.post);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            //[self getNewsForHomeTown];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        //[self getNewsForHomeTown];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                    }
+                }else{
+                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
@@ -762,10 +947,44 @@
         [btnLike setSelected:YES];
         [self.tblForCityPostList reloadData];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            //[self getNewsForHomeTown];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        //[self getNewsForHomeTown];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                    }
+                }else{
+                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
         int likecount = [lblLikeCount.text intValue] + 1;
         lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
         [btnLike setSelected:YES];
@@ -794,10 +1013,44 @@
         lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
         [btnLike setSelected:NO];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            //[self getNewsForHomeTown];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        //[self getNewsForHomeTown];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                    }
+                }else{
+                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
         int likecount = [lblLikeCount.text intValue] - 1;
         lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
         [btnLike setSelected:NO];
@@ -815,12 +1068,44 @@
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.post);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        // Transport error or server error handled by errorDescriptor
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSString *errorMessage = [NSString stringWithFormat:@"%@",error.localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:errorMessage delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-        [alert show];
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            //[self getNewsForHomeTown];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        //[self getNewsForHomeTown];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                    }
+                }else{
+                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
@@ -847,9 +1132,44 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         NSString *strResponse = operation.HTTPRequestOperation.responseString;
         NSLog(@"%@",strResponse);
-        
-        
-        
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            //[self getNewsForHomeTown];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        //[self getNewsForHomeTown];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                    }
+                }else{
+                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
     }];
 }
 

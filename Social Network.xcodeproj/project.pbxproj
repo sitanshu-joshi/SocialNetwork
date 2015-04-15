@@ -209,6 +209,7 @@
 		A409F1331A83894100A994DA /* Result.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Result.m; sourceTree = "<group>"; };
 		A409F1341A83894100A994DA /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		A409F1351A83894100A994DA /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		A48642C51ADE306600534D35 /* ResponseStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResponseStatus.h; sourceTree = "<group>"; };
 		D56C01C0EE12F015CC28D226 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D84DCCF61A87F2DD0057003E /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		D86DDADC1A81583000E7FA24 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -632,6 +633,7 @@
 				F4876F6E1AA3791000E0F0BD /* ConstantStr.h */,
 				F4D679B01AAC5B7B00066836 /* UtilityMethods.h */,
 				F4D679B11AAC5B7B00066836 /* UtilityMethods.m */,
+				A48642C51ADE306600534D35 /* ResponseStatus.h */,
 			);
 			name = Utility;
 			sourceTree = "<group>";

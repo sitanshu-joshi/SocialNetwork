@@ -58,13 +58,33 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         NSLog(@"%@",error.localizedDescription);
         [RSActivityIndicator hideIndicator];
-        if ([error code] == -(kCode_NSURLErrorNotConnectedToInternet)){
-            [self networkNotReachable];
-            return;
+        // Transport error or server error handled by errorDescriptor
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_logout){
+                         [self closeSession];
+                         [[AppDelegate appDelegate] backToRootView];
+                    }else{
+                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                    }
+                }else{
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
         }
         RKLogError(@"Operation failed with error: %@", error);
     }];
-    [[AppDelegate appDelegate] backToRootView];
+   
 }
 
 

@@ -13,10 +13,10 @@
     UIEdgeInsets contentInsets;
     NSMutableArray *resultArray;
     NSMutableArray *cityArray;
-    
+    City *city;
     NSMutableArray *arrayOfVisited;
     NSMutableArray *arrayOfWantTovisit;
-    
+    NSMutableDictionary *dictForAnswer;
     int pageCount;
 }
 

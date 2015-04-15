@@ -63,7 +63,7 @@
 #define kResource_mycity_delete     @"usercity/%@"                              //Delete
 
 // News View Controller
-#define kResource_GetNewsFeed       @"usercity/post?page=%d"    //GET
+#define kResource_GetNewsFeed       @"usercity/post?page=%d"                    //GET
 
 //City Post View Controller
 #define kGetLikeCount               @"city/post/%@/like"                        //GET
@@ -199,9 +199,10 @@
 #define kAlert_Enter_City                   @"Please Select City"
 #define kCameraAlert                        @"Camera is not available"
 #define kVideoLengthAlert                   @"Video length should be maximum of 20 Seconds.Please select another Video"
-#define kAlert_FacebookConnectionProblem            @"Error while connecting Facebook, please check your internet connection."
-#define kAlert_Facebook_Session_Closed              @"You have disallowed Facebook profile to providing access for your basic information. Please change your Facebook profile settings."
-
+#define kAlert_FacebookConnectionProblem    @"Error while connecting Facebook, please check your internet connection."
+#define kAlert_Facebook_Session_Closed      @"You have disallowed Facebook profile to providing access for your basic information. Please change your Facebook profile settings."
+#define kAlert_Server_Not_Rechable                  @"Could not connect to the server."
+#define kAlert_Request_TimeOut                      @"CloseBy server is not reachable now, please try after some time."
 
 // City
 #define  tagColorForCity        [UIColor colorWithRed:96.0/255.0 green:92.0/255.0 blue:168.0/255.0 alpha:1.0]
