@@ -18,8 +18,10 @@
     NSMutableArray *arrayOfWantTovisit;
     NSMutableDictionary *dictForAnswer;
     int pageCount;
+    NSIndexPath *indexToDelete;
 }
 
+@property (weak, nonatomic) IBOutlet UILabel *lblNoDataExist;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewForResult;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewForCityList;
@@ -31,7 +33,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
 
 - (IBAction)btnSkipTapped:(id)sender;
-- (IBAction)nextButtonTapped:(id)sender;
 - (IBAction)valueForSegmentChange:(id)sender;
 
 @end

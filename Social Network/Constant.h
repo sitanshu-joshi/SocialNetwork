@@ -203,7 +203,7 @@
 #define kAlert_Facebook_Session_Closed      @"You have disallowed Facebook profile to providing access for your basic information. Please change your Facebook profile settings."
 #define kAlert_Server_Not_Rechable                  @"Could not connect to the server."
 #define kAlert_Request_TimeOut                      @"CloseBy server is not reachable now, please try after some time."
-
+#define kConfirmAert                  @"Are you sure?"
 // City
 #define  tagColorForCity        [UIColor colorWithRed:96.0/255.0 green:92.0/255.0 blue:168.0/255.0 alpha:1.0]
 
