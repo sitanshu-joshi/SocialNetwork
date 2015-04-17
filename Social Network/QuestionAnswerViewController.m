@@ -26,6 +26,7 @@
     pageCount = 1;
     cityArray = [NSMutableArray array];
     lblQuestion.text = Question1;
+    [tableViewForCityList setHidden:YES];
     //[self sendRequestToGetCityListFromDatabase];
 }
 
@@ -72,10 +73,10 @@
     UITableViewCell *cell = (UITableViewCell *)[[btn superview] superview];
     NSIndexPath *indexPath = [tableViewForCityList indexPathForCell:cell];
     
-    if (segmentForCityType.selectedSegmentIndex == 0) {
+    if (indexPath.section == 0) {
         city = [arrayOfWantTovisit objectAtIndex:indexPath.row];
-    } else if (segmentForCityType.selectedSegmentIndex == 1) {
-        city = [arrayOfWantTovisit objectAtIndex:indexPath.row];
+    } else if (indexPath.section == 1) {
+        city = [arrayOfVisited objectAtIndex:indexPath.row];
     }
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kAppTitle message:kConfirmAert delegate:self cancelButtonTitle:kNoButton otherButtonTitles:kYesButton, nil];
     alert.tag = 1;
@@ -410,12 +411,15 @@
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        [tableViewForCityList setHidden:YES];
+                        lblNoDataExist.text = @"Data Not Found.";
+                        [lblNoDataExist setHidden:NO];
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [tableViewForCityList setHidden:YES];
+                    lblNoDataExist.text = kAlert_Server_Not_Rechable;
+                    [lblNoDataExist setHidden:NO];
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
