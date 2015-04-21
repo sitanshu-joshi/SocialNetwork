@@ -16,9 +16,11 @@
 @synthesize tblViewForComments;
 @synthesize post;
 @synthesize btnLike,btnPost,lblCommentCount,txtViewForComment,txtViewForPostDetail;
-@synthesize lblLikeCount,lblUserName;
+@synthesize lblLikeCount,lblUserName,lblNoComments;
 @synthesize imgPostContent;
 @synthesize btnPlay;
+
+#pragma mark - LifeCycle Methods
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -38,39 +40,6 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)setUpUserInterface{
-    self.containerView.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:55.0/255.0 green:81.0/255.0 blue:255.0/255.0 alpha:1.0]);
-    self.containerView.layer.borderWidth = 2.0;
-    
-    // Set Post content data to the UI
-    [btnPlay setHidden:YES];
-    txtViewForPostDetail.text = post.text;
-    lblLikeCount.text = [NSString stringWithFormat:@"%@",post.likeCount];
-    lblCommentCount.text = [NSString stringWithFormat:@"%@",post.commentCount];
-    lblUserName.text = post.username;
-    BOOL ismyLike = [post.isMyLike boolValue];
-    if (ismyLike == true) {
-        [btnLike setSelected:YES];
-    } else {
-        [btnLike setSelected:NO];
-    }
-    if([post.mediaType intValue] == 1){
-        imgPostContent.image = [UIImage imageNamed:@"img_placeholder .jpg"];
-        if (post.mediaUrl != nil) {
-            BOOL isImage = [[UtilityMethods utilityMethods] isUrlForImage:post.mediaUrl];
-            if (isImage == true) {
-                NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
-                if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
-                    imgPostContent.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
-                }
-            } else {
-                [self generateImage:post.mediaUrl];
-            }
-        }
-    }else if ([post.mediaType intValue] == 2){
-        imgPostContent.image = [UIImage imageNamed:@"video-placeholder.png"];
-    }
-}
 
 #pragma mark - UITableView DataSource Methods
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -88,7 +57,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCell_Comment];
     }
     
-    Comment *comment = [arrayOfComments objectAtIndex:indexPath.row];
+    comment = [arrayOfComments objectAtIndex:indexPath.row];
     UITextView *txtView = (UITextView *)[cell viewWithTag:kCell_comment_text];
     txtView.text = comment.text;
     
@@ -109,9 +78,20 @@
 }
 
 #pragma mark IBAction Event
+
+-(IBAction)btnPlayVideo:(id)sender {
+    player = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:test_mp4]];
+    player.fullscreen = YES;
+    [player setMovieSourceType:MPMovieSourceTypeStreaming];
+    //    [self.view addSubview:player.view];
+    
+    [player play];
+}
+
 -(IBAction)btnDeleteActionEvent:(id)sender {
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-    Comment *comment = [arrayOfComments objectAtIndex:[sender tag]];
+    comment = [arrayOfComments objectAtIndex:[sender tag]];
+    [self deleteCommentForPost:post.ids withCommentId:comment.ids];
+    /*
     [[AppDelegate appDelegate].rkomForComment deleteObject:comment path:[NSString stringWithFormat:kResource_DeleteComment,post.ids,comment.ids] parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -156,7 +136,7 @@
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
         [arrayOfComments removeObject:comment];
@@ -164,12 +144,11 @@
         lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
         [tblViewForComments reloadData];
     }];
-    
-
+    */
 }
 - (IBAction)btnEditTapped:(UIButton *)sender{
      NSIndexPath* indexPath = [self.tblViewForComments indexPathForRowAtPoint:[self.tblViewForComments convertPoint:sender.center fromView:sender.superview]];
-    Comment *comment = [arrayOfComments objectAtIndex:indexPath.row];
+    comment = [arrayOfComments objectAtIndex:indexPath.row];
     strCommentId = comment.ids;
     [UIView animateWithDuration:0.5 animations:^{
         self.viewForEditComment.frame = CGRectMake(0,140, self.viewForEditComment.frame.size.width, self.viewForEditComment.frame.size.height);
@@ -183,11 +162,11 @@
 }
 - (IBAction)btnPostTapped:(id)sender {
     [txtViewForComment resignFirstResponder];
-    NSString *strCommentText = self.txtViewForComment.text;
+    strCommentText = self.txtViewForComment.text;
     txtViewForComment.text = @"";
     if(strCommentText){
-        NSDictionary *dict = [NSDictionary dictionaryWithObject:strCommentText forKey:kCOMMENT_TEXT];
-        [self addComment:dict ForPost:post.ids];
+       dictForPostComment = [NSDictionary dictionaryWithObject:strCommentText forKey:kCOMMENT_TEXT];
+        [self addComment:dictForPostComment ForPost:post.ids];
     }else{
         [[[UIAlertView alloc]initWithTitle:kAppTitle message:@"Please add comment for given post" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
     }
@@ -197,16 +176,16 @@
         // Do it for dislike
         [self unLikePostwithPostId:post.ids];
     } else {
-        // Do it for dislike
+        // Do it for like
         [self likePostwithPostId:post.ids];
     }
 }
 
 - (IBAction)updateCommentBtnTapped:(id)sender {
     //Call update comment method
-    NSMutableDictionary *dictOfCommnent =[NSMutableDictionary dictionary];
-    [dictOfCommnent setObject:self.txtViewToUpdateComment.text forKey:kCOMMENT_TEXT];
-    [self updateComment:dictOfCommnent ForPost:self.post.ids withCommentId:strCommentId];
+    dictForUpdateCommnent =[NSMutableDictionary dictionary];
+    [dictForUpdateCommnent setObject:self.txtViewToUpdateComment.text forKey:kCOMMENT_TEXT];
+    [self updateComment:dictForUpdateCommnent ForPost:self.post.ids withCommentId:strCommentId];
 }
 
 #pragma mark - UITextView Delegate Methods
@@ -227,7 +206,9 @@
     }
     return true;
 }
-#pragma mark - To get Comment
+
+#pragma mark - RestKit Request/Response Delegate Methods
+
 -(void)getCommentsDetailsForPostId:(NSString *)postId {
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kGetCommentsByPostId,postId];
@@ -236,12 +217,17 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *data  = [mappingResult.array objectAtIndex:0];
         arrayOfComments = [[NSMutableArray alloc] initWithArray:[data.comment allObjects]];
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"updatedDate" ascending:NO];
-        NSArray *sortedArray = [arrayOfComments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-        arrayOfComments = [[NSMutableArray alloc] initWithArray:sortedArray];
-        
-        [tblViewForComments reloadData];
-        
+        if(arrayOfComments.count > 0){
+            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"updatedDate" ascending:NO];
+            NSArray *sortedArray = [arrayOfComments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+            arrayOfComments = [[NSMutableArray alloc] initWithArray:sortedArray];
+            [tblViewForComments reloadData];
+            [tblViewForComments setHidden:NO];
+            [lblNoComments setHidden:YES];
+        }else{
+            [tblViewForComments setHidden:YES];
+            [lblNoComments setHidden:NO];
+        }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -254,7 +240,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self getCommentsDetailsForPostId:post.ids];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -265,27 +251,206 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self getCommentsDetailsForPostId:post.ids];
                         return;
-                        
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        [tblViewForComments setHidden:YES];
+                        [lblNoComments setHidden:NO];
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                        [tblViewForComments setHidden:NO];
+                        [lblNoComments setHidden:YES];
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [tblViewForComments setHidden:YES];
+                    [lblNoComments setHidden:NO];
+                    lblNoComments.text = kAlert_Server_Not_Rechable;
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [tblViewForComments setHidden:YES];
+                [lblNoComments setHidden:NO];
+                lblNoComments.text = kAlert_Server_Not_Rechable;
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
 
-#pragma mark - To Like Post
+/**
+ *  It will add Comment for current post.
+ */
+
+-(void)addComment:(NSDictionary *)dict ForPost:(NSString *)postId {
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    NSString *strPath = [NSString stringWithFormat:kAddComment,postId];
+    DataForResponse *data;
+    [[AppDelegate appDelegate].rkomForComment postObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
+        NSLog(@"%@",dataResponse.comment);
+        int commentcount = [lblCommentCount.text intValue] + 1;
+        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
+        [self getCommentsDetailsForPostId:post.ids];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            [self addComment:dictForPostComment ForPost:post.ids];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        [self addComment:dictForPostComment ForPost:post.ids];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        NSLog(@"Data Not Exist");
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        dictForPostComment = nil;
+                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                        [self getCommentsDetailsForPostId:post.ids];
+                    }
+                }else{
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
+        int commentcount = [lblCommentCount.text intValue] + 1;
+        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
+        [self getCommentsDetailsForPostId:post.ids];
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
+
+/**
+ *  It will Delete Comment for current post.
+ */
+
+-(void)deleteCommentForPost:(NSString *)postId withCommentId:(NSString *)commentId {
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    NSString *strPath = [NSString stringWithFormat:kResource_DeleteComment, postId, commentId];
+    [[AppDelegate appDelegate].rkomForComment deleteObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
+        NSLog(@"%@",dataResponse.comment);
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            [self deleteCommentForPost:post.ids withCommentId:comment.ids];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        [self deleteCommentForPost:post.ids withCommentId:comment.ids];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        NSLog(@"Data Not Exist");
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                        [self getCommentsDetailsForPostId:post.ids];
+                    }
+                }else{
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
+
+
+/**
+ *  It will Update Comment for current post.
+ */
+-(void)updateComment:(NSDictionary *)dict ForPost:(NSString *)postId withCommentId:(NSString *)commentId {
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [self.txtViewToUpdateComment resignFirstResponder];
+    NSString *strPath = [NSString stringWithFormat:kUpdateComment,postId,commentId];
+    DataForResponse *data;
+    [[AppDelegate appDelegate].rkomForComment putObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            [self updateComment:dictForUpdateCommnent ForPost:self.post.ids withCommentId:strCommentId];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        [self updateComment:dictForUpdateCommnent ForPost:self.post.ids withCommentId:strCommentId];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                         NSLog(@"Data Not Exist");
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                        [self getCommentsDetailsForPostId:post.ids];
+                    }
+                }else{
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
+
+
 /**
  *  This will set like post by logged in user
  *
@@ -312,7 +477,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self likePostwithPostId:post.ids];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -323,20 +488,20 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self likePostwithPostId:post.ids];
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                        [self getCommentsDetailsForPostId:post.ids];
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
         int likecount = [lblLikeCount.text intValue] + 1;
@@ -345,7 +510,6 @@
     }];
 }
 
-#pragma mark - To UnLike Post
 /**
  *  It will set post unliked by current logged in user.
  *
@@ -373,7 +537,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self unLikePostwithPostId:post.ids];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -384,20 +548,20 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self unLikePostwithPostId:post.ids];
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                        [self getCommentsDetailsForPostId:post.ids];
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
         int likecount = [lblLikeCount.text intValue] - 1;
@@ -406,177 +570,43 @@
     }];
 }
 
-#pragma mark - To Add Comment
--(void)addComment:(NSDictionary *)dict ForPost:(NSString *)postId {
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-    NSString *strPath = [NSString stringWithFormat:kAddComment,postId];
-    DataForResponse *data;
-    [[AppDelegate appDelegate].rkomForComment postObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [RSActivityIndicator hideIndicator];
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
-        NSLog(@"%@",dataResponse.comment);
-        int commentcount = [lblCommentCount.text intValue] + 1;
-        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
-        [self getCommentsDetailsForPostId:post.ids];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [RSActivityIndicator hideIndicator];
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        if(error.code == -(kRequest_Server_Not_Rechable)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-        }else if(error.code == -(kRequest_TimeOut)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
-            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
-            [[AppDelegate appDelegate] loginWithExistingCredential];
-            sleep(5);
-            [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
-            return;
-        }else{
-            if(operation.HTTPRequestOperation.responseData){
-                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
-                if(dictResponse){
-                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
-                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
-                        [[AppDelegate appDelegate] loginWithExistingCredential];
-                        sleep(5);
-                        [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
-                        return;
-                        
-                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
-                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
-                    }
-                }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
-                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+
+#pragma mark - Helper Methods
+
+-(void)setUpUserInterface{
+    self.containerView.layer.borderColor = (__bridge CGColorRef)([UIColor colorWithRed:55.0/255.0 green:81.0/255.0 blue:255.0/255.0 alpha:1.0]);
+    self.containerView.layer.borderWidth = 2.0;
+    
+    // Set Post content data to the UI
+    [btnPlay setHidden:YES];
+    txtViewForPostDetail.text = post.text;
+    lblLikeCount.text = [NSString stringWithFormat:@"%@",post.likeCount];
+    lblCommentCount.text = [NSString stringWithFormat:@"%@",post.commentCount];
+    lblUserName.text = post.username;
+    BOOL ismyLike = [post.isMyLike boolValue];
+    if (ismyLike == true) {
+        [btnLike setSelected:YES];
+    } else {
+        [btnLike setSelected:NO];
+    }
+    if([post.mediaType intValue] == 1){
+        imgPostContent.image = [UIImage imageNamed:@"img_placeholder .jpg"];
+        if (post.mediaUrl != nil) {
+            BOOL isImage = [[UtilityMethods utilityMethods] isUrlForImage:post.mediaUrl];
+            if (isImage == true) {
+                NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+                if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                    imgPostContent.image = [UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]];
                 }
-            }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            } else {
+                [self generateImage:post.mediaUrl];
             }
         }
-        int commentcount = [lblCommentCount.text intValue] + 1;
-        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
-        [self getCommentsDetailsForPostId:post.ids];
-        RKLogError(@"Operation failed with error: %@", error);
-    }];
+    }else if ([post.mediaType intValue] == 2){
+        imgPostContent.image = [UIImage imageNamed:@"video-placeholder.png"];
+    }
 }
 
-#pragma mark - To Delete Comment
--(void)deleteCommentForPost:(NSString *)postId withCommentId:(NSString *)commentId {
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-    NSString *strPath = [NSString stringWithFormat:kResource_DeleteComment, postId, commentId];
-    [[AppDelegate appDelegate].rkomForComment deleteObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
-        [RSActivityIndicator hideIndicator];
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
-        NSLog(@"%@",dataResponse.comment);
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [RSActivityIndicator hideIndicator];
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        if(error.code == -(kRequest_Server_Not_Rechable)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-        }else if(error.code == -(kRequest_TimeOut)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
-            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
-            [[AppDelegate appDelegate] loginWithExistingCredential];
-            sleep(5);
-            [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
-            return;
-        }else{
-            if(operation.HTTPRequestOperation.responseData){
-                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
-                if(dictResponse){
-                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
-                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
-                        [[AppDelegate appDelegate] loginWithExistingCredential];
-                        sleep(5);
-                        [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
-                        return;
-                        
-                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
-                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
-                    }
-                }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
-                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-                }
-            }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-            }
-        }
-        RKLogError(@"Operation failed with error: %@", error);
-    }];
-}
-
-
-#pragma mark - To Update Comment
--(void)updateComment:(NSDictionary *)dict ForPost:(NSString *)postId withCommentId:(NSString *)commentId {
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-    [self.txtViewToUpdateComment resignFirstResponder];
-    NSString *strPath = [NSString stringWithFormat:kUpdateComment,postId,commentId];
-    DataForResponse *data;
-    [[AppDelegate appDelegate].rkomForComment putObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [RSActivityIndicator hideIndicator];
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [RSActivityIndicator hideIndicator];
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        if(error.code == -(kRequest_Server_Not_Rechable)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-        }else if(error.code == -(kRequest_TimeOut)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
-            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
-            [[AppDelegate appDelegate] loginWithExistingCredential];
-            sleep(5);
-            [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
-            return;
-        }else{
-            if(operation.HTTPRequestOperation.responseData){
-                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
-                if(dictResponse){
-                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
-                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
-                        [[AppDelegate appDelegate] loginWithExistingCredential];
-                        sleep(5);
-                        [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
-                        return;
-                        
-                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
-                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
-                    }
-                }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
-                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-                }
-            }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-            }
-        }
-        NSData *data = [operation.HTTPRequestOperation.responseString dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-        if([[dict valueForKey:@"code"]integerValue] == 2000){
-            NSString *message = [dict valueForKey:@"msg"];
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:kAppTitle message:message delegate:self cancelButtonTitle:kOkButton otherButtonTitles:nil, nil];
-            [alert show];
-            [self getCommentsDetailsForPostId:self.post.ids];
-        }
-        RKLogError(@"Operation failed with error: %@", error);
-    }];
-}
 
 /**
  *  This will generate thumbnail of live URL. 
@@ -605,13 +635,6 @@
     
 }
 
--(IBAction)btnPlayVideo:(id)sender {
-    player = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:test_mp4]];
-    player.fullscreen = YES;
-    [player setMovieSourceType:MPMovieSourceTypeStreaming];
-//    [self.view addSubview:player.view];
-    
-    [player play];
-}
+
 
 @end

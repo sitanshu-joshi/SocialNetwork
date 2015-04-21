@@ -12,6 +12,7 @@
 
 @interface CityPageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, CustomSlideViewControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate>{
     int page;
+    NSString *cityIdForCurrentCity;
     NSMutableArray *arrOfCellHeight;
     NSMutableArray *arrayForCityPostList;
     UIImagePickerController *imagePicker;
@@ -25,7 +26,7 @@
     UIImage *imageToPost;
     NSString* myFilePath;
     CommentsViewController *commentsViewController;
-    Post *selectedPost;
+    Post *post;
     NSMutableDictionary *dictOfPost;
     UIButton *btnLike;
     UILabel *lblLikeCount;
@@ -34,7 +35,9 @@
     BOOL isFullScreen;
     CGRect prevFrame;
     BOOL isNFCount;
+    NSMutableDictionary *dictOfUpdatePostData;
 }
+@property (weak, nonatomic) IBOutlet UILabel *lblNoPostFound;
 @property (strong, nonatomic) NSString *strCityId;
 @property (strong,nonatomic) NSString *strAddress;
 @property (weak, nonatomic) IBOutlet UITableView *tblForCityPostList;

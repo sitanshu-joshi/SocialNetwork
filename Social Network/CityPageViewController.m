@@ -14,8 +14,10 @@
 
 @implementation CityPageViewController
 @synthesize btnVideoSharing,btnPhotoSharing,btnShare,btnMainMenu,btnBarNews,btnBarNotification,btnBarNotificationCount,btnBarPost;
-@synthesize tblForCityPostList;
+@synthesize tblForCityPostList,lblNoPostFound;
 @synthesize txtViewForPost,txtViewForUpdatePost;
+
+#pragma mark - UILifeCycle Methods
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -24,7 +26,6 @@
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
     NSLog(@"Address:%@",self.strAddress);
-    dictOfPost = [NSMutableDictionary dictionary];
     [tblForCityPostList setHidden:YES];
     btnBarNotificationCount.layer.cornerRadius = 14.0;
     [btnBarNotificationCount setHidden:YES];
@@ -60,16 +61,11 @@
     [super viewWillDisappear:animated];
     isNFCount = false;
 }
--(void)mainMenuBtnClicked {
-    [self.revealViewController revealToggle:btnMainMenu];
-}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(void)setUpUserInterface{
-    btnShare.layer.cornerRadius = 7.0;
 }
 
 
@@ -90,7 +86,7 @@
     if(cell == nil){
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    Post *post = [arrayForCityPostList objectAtIndex:indexPath.section];
+   post = [arrayForCityPostList objectAtIndex:indexPath.section];
     UIImageView *imgBg = (UIImageView *)[cell viewWithTag:kCell_city_user_Background];
     //UIImageView *imgProfile = (UIImageView *)[cell viewWithTag:kCell_city_user_profile];
     UILabel *lblUserName = (UILabel *)[cell viewWithTag:kCell_city_user_name];
@@ -187,20 +183,13 @@
     imgBg.layer.masksToBounds = YES;
     return cell;
 }
+
 #pragma mark - UITableView Delegate Methods
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.txtViewForPost resignFirstResponder];
     //Get Post id of selected Post and pass to comment page to get comments for particular post
-    Post *post = [arrayForCityPostList objectAtIndex:indexPath.section];
-    selectedPost = post;
+    post = [arrayForCityPostList objectAtIndex:indexPath.section];
     [self performSegueWithIdentifier:kPush_To_Comment sender:nil];
-}
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if([segue.identifier isEqualToString:kPush_To_Comment]){
-        commentsViewController = (CommentsViewController *)[segue destinationViewController];
-        commentsViewController.post = selectedPost;
-    }
 }
 
 //- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -210,8 +199,8 @@
 //    CGRect rectForDescription = [postText boundingRectWithSize:CGSizeMake(300.f, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionaryForDescription context:nil];
 //    CGFloat heightOfCell = rectForDescription.origin.y + rectForDescription.size.height + 240;
 //    return heightOfCell;
-//    
-//    
+//
+//
 //}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -238,6 +227,17 @@
     return viewForHeader;
 }
 
+#pragma mark - Segue Identifier Method
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:kPush_To_Comment]){
+        commentsViewController = (CommentsViewController *)[segue destinationViewController];
+        commentsViewController.post = post;
+    }
+}
+
+
+
 #pragma mark - UITextView Delegate Methods
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     if([text isEqualToString:@"\n"]) {
@@ -260,163 +260,11 @@
     return YES;
 }
 
-
-- (IBAction)captureVideoBtnTapped:(UIButton *)button{
-    //[self hideKeyboard];
-    @autoreleasepool {
-        if(button.tag == 0){
-           //Photo
-           
-        }else{
-        //Video
-           
-        }
-       
-    }
+#pragma mark - Helper Methods
+-(void)setUpUserInterface{
+    btnShare.layer.cornerRadius = 7.0;
 }
 
-- (IBAction)uploadPhotoButtonTapped:(id)sender {
-     actionSheetButtonTitle = kPhotoLibrary;
-    [UIView animateWithDuration:0.5 animations:^{
-        UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakePhoto delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:actionSheetButtonTitle,kCamera,nil];
-        [actionSheet showInView:self.view];
-    }];
-}
-
-- (IBAction)uploadVideoButtonTapped:(id)sender {
-     actionSheetButtonTitle = kVideoLibrary;
-    [UIView animateWithDuration:0.5 animations:^{
-        UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakeVideo delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:actionSheetButtonTitle,kCamera,nil];
-        [actionSheet showInView:self.view];
-    }];
-}
-
-- (IBAction)shareButtonTapped:(id)sender {
-
-    [dictOfPost setObject:self.txtViewForPost.text forKey:kPost_Text];
-    [self postOnCityWall:dictOfPost withCityId:self.strCityId];
-}
-
-- (IBAction)likeButtonTapped:(id)sender {
-}
-
-- (IBAction)deleteButtonTapped:(UIButton *)sender {
-    NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
-    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
-    [self deleteWallPost:post.ids];
-}
-
-- (IBAction)updatePostBtnTapped:(id)sender {
-    NSMutableDictionary *dictOfPostData =[NSMutableDictionary dictionary];
-    [dictOfPostData setObject:self.txtViewForUpdatePost.text forKey:kPost_Text];
-    [self updateWallPost:dictOfPostData withPostId:myPostId];
-}
-
-
-
-- (IBAction)btnUpdatePostTapped:(UIButton *)sender {
-    NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
-    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
-   myPostId= post.ids;
-    [UIView animateWithDuration:0.5 animations:^{
-        self.viewForUpdatePost.frame = CGRectMake(0,140, self.viewForUpdatePost.frame.size.width, self.viewForUpdatePost.frame.size.height);
-        self.txtViewForUpdatePost.text = post.text;
-        [self.txtViewForUpdatePost becomeFirstResponder];
-    }];
-}
-
-- (IBAction)refreshBtnTapped:(id)sender {
-   [self getCityIdWithCountry:strCountry State:strState City:strCity];
-}
-
-- (IBAction)mediaBtnTapped:(UIButton *)sender {
-    UITableViewCell *cellForSelectedBtn = (UITableViewCell *)[[sender superview] superview];
-    NSIndexPath *indexPathForCell = [tblForCityPostList indexPathForCell:cellForSelectedBtn];
-    Post *post = [arrayForCityPostList objectAtIndex:indexPathForCell.section];
-    if([post.mediaType integerValue] == 2){
-        //Play Video
-        NSURL *urlForMedia = [NSURL URLWithString:[NSString stringWithFormat:@"%@",post.mediaUrl]];
-        if(urlForMedia){
-            MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc]initWithContentURL:urlForMedia];
-            [self presentMoviePlayerViewControllerAnimated:moviePlayer];
-        }
-    }else{
-        if (!isFullScreen) {
-            [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
-                //save previous frame
-                prevFrame = self.imgViewForFullScreenImage.frame;
-                self.imgViewForFullScreenImage.frame = CGRectMake(self.imgViewForFullScreenImage.frame.origin.x, 64, self.imgViewForFullScreenImage.frame.size.width,self.imgViewForFullScreenImage.frame.size.height);
-                NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
-                if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
-                    [self.imgViewForFullScreenImage setImage:[UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]]];
-                }
-            }completion:^(BOOL finished){
-                isFullScreen = true;
-                self.tblForCityPostList.userInteractionEnabled = NO;
-            }];
-            return;
-        } else {
-            [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
-                [self.imgViewForFullScreenImage setFrame:prevFrame];
-            }completion:^(BOOL finished){
-                isFullScreen = false;
-                self.tblForCityPostList.userInteractionEnabled = YES;
-                self.imgViewForFullScreenImage.image = nil;
-            }];
-            return;
-        }    }
-}
-//
-//-(void)imgToFullScreen{
-//    if (!isFullScreen) {
-//        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
-//            //save previous frame
-//            prevFrame = yourImageView.frame;
-//            [yourImageView setFrame:[[UIScreen mainScreen] bounds]];
-//        }completion:^(BOOL finished){
-//            isFullScreen = true;
-//        }];
-//        return;
-//    } else {
-//        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
-//            [yourImageView setFrame:prevFrame];
-//        }completion:^(BOOL finished){
-//            isFullScreen = false;
-//        }];
-//        return;
-//    }
-//}
-//
--(IBAction)btnLikeDislikeAction:(UIButton *)sender {
-    NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
-    Post *post = [arrayForCityPostList objectAtIndex:indexPath.row];
-    if (sender.selected) {
-        // Do it for dislike
-        [self unLikePostwithPostId:post.ids];
-    } else {
-        // Do it for dislike
-        [self likePostwithPostId:post.ids];
-    }
-}
-
-#pragma mark - UIActionSheet Delegate Methods
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(buttonIndex == 0){
-        @autoreleasepool {
-            //PHOTO ALBUM
-            if([actionSheetButtonTitle isEqualToString:kPhotoLibrary]){
-                [self startCameraControllerFromViewController:self usingDelegate:self sourceType:(int)buttonIndex selectedSource:kPhotoLibrary];
-            }else if([actionSheetButtonTitle isEqualToString:kVideoLibrary]){
-                [self startCameraControllerFromViewController:self usingDelegate:self sourceType:(int)buttonIndex selectedSource:kVideoLibrary];
-            }
-        }
-    }else if(buttonIndex == 1){
-        @autoreleasepool {
-            //CAMERA
-            [self startCameraControllerFromViewController:self usingDelegate:self sourceType:(int)buttonIndex selectedSource:kCamera];
-        }
-    }
-}
 
 //This will call to capture video from camera or import from Library
 -(BOOL)startCameraControllerFromViewController:(UIViewController*)controller usingDelegate:(id )delegate sourceType:(int)source selectedSource:(NSString *)strSourceType
@@ -477,6 +325,213 @@
     }
 }
 
+
+-(CGRect)calculateLabelHeightBasedOnString:(NSString *)strDesc {
+    NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          [UIFont fontWithName:@"Helventica Neue" size:15.0], NSFontAttributeName,
+                                          nil];
+    int intOfDefaultWidth = 300.0;
+    //    if(IS_IPHONE_5){
+    //        intOfDefaultWidth = 250.0f;
+    //    }
+    CGRect rect = [strDesc boundingRectWithSize:CGSizeMake(intOfDefaultWidth, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionary context:nil];
+    return rect;
+}
+
+
+
+-(void)downloadPostImages:(NSMutableArray *)array {
+    for (int iForElse = 0; iForElse<[array count]; iForElse++) {
+        @autoreleasepool {
+            post = [array objectAtIndex:iForElse];
+            NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+            if([post.mediaUrl length]>0){
+                if(![[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                    IconDownloader *iconDownloader;
+                    if (iconDownloader == nil) {
+                        iconDownloader = [[IconDownloader alloc] init];
+                        iconDownloader.strIconURL = post.mediaUrl;
+                        [iconDownloader setCompletionHandler:^(UIImage *image){
+                            NSData *data = UIImagePNGRepresentation(image);
+                            
+                            [[FileUtility utility] createFile:strFileName atFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withData:data];
+                            [tblForCityPostList reloadData];
+                        }];
+                        [iconDownloader startDownload];
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+//
+//-(void)imgToFullScreen{
+//    if (!isFullScreen) {
+//        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
+//            //save previous frame
+//            prevFrame = yourImageView.frame;
+//            [yourImageView setFrame:[[UIScreen mainScreen] bounds]];
+//        }completion:^(BOOL finished){
+//            isFullScreen = true;
+//        }];
+//        return;
+//    } else {
+//        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
+//            [yourImageView setFrame:prevFrame];
+//        }completion:^(BOOL finished){
+//            isFullScreen = false;
+//        }];
+//        return;
+//    }
+//}
+//
+
+#pragma mark - IBAction Methods
+
+-(void)mainMenuBtnClicked {
+    [self.revealViewController revealToggle:btnMainMenu];
+}
+
+
+- (IBAction)captureVideoBtnTapped:(UIButton *)button{
+    //[self hideKeyboard];
+    @autoreleasepool {
+        if(button.tag == 0){
+           //Photo
+           
+        }else{
+        //Video
+           
+        }
+       
+    }
+}
+
+- (IBAction)uploadPhotoButtonTapped:(id)sender {
+     actionSheetButtonTitle = kPhotoLibrary;
+    [UIView animateWithDuration:0.5 animations:^{
+        UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakePhoto delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:actionSheetButtonTitle,kCamera,nil];
+        [actionSheet showInView:self.view];
+    }];
+}
+
+- (IBAction)uploadVideoButtonTapped:(id)sender {
+     actionSheetButtonTitle = kVideoLibrary;
+    [UIView animateWithDuration:0.5 animations:^{
+        UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakeVideo delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:actionSheetButtonTitle,kCamera,nil];
+        [actionSheet showInView:self.view];
+    }];
+}
+
+- (IBAction)shareButtonTapped:(id)sender {
+     dictOfPost = [NSMutableDictionary dictionary];
+    [dictOfPost setObject:self.txtViewForPost.text forKey:kPost_Text];
+    [self postOnCityWall:dictOfPost withCityId:self.strCityId];
+}
+
+- (IBAction)likeButtonTapped:(id)sender {
+}
+
+- (IBAction)deleteButtonTapped:(UIButton *)sender {
+    NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
+    post = [arrayForCityPostList objectAtIndex:indexPath.row];
+    [self deleteWallPost:post.ids];
+}
+
+- (IBAction)updatePostBtnTapped:(id)sender {
+    dictOfUpdatePostData =[NSMutableDictionary dictionary];
+    [dictOfUpdatePostData setObject:self.txtViewForUpdatePost.text forKey:kPost_Text];
+    [self updateWallPost:dictOfUpdatePostData withPostId:myPostId];
+}
+
+
+
+- (IBAction)btnUpdatePostTapped:(UIButton *)sender {
+    NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
+    post = [arrayForCityPostList objectAtIndex:indexPath.row];
+   myPostId= post.ids;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.viewForUpdatePost.frame = CGRectMake(0,140, self.viewForUpdatePost.frame.size.width, self.viewForUpdatePost.frame.size.height);
+        self.txtViewForUpdatePost.text = post.text;
+        [self.txtViewForUpdatePost becomeFirstResponder];
+    }];
+}
+
+- (IBAction)refreshBtnTapped:(id)sender {
+   [self getCityIdWithCountry:strCountry State:strState City:strCity];
+}
+
+- (IBAction)mediaBtnTapped:(UIButton *)sender {
+    UITableViewCell *cellForSelectedBtn = (UITableViewCell *)[[sender superview] superview];
+    NSIndexPath *indexPathForCell = [tblForCityPostList indexPathForCell:cellForSelectedBtn];
+    post = [arrayForCityPostList objectAtIndex:indexPathForCell.section];
+    if([post.mediaType integerValue] == 2){
+        //Play Video
+        NSURL *urlForMedia = [NSURL URLWithString:[NSString stringWithFormat:@"%@",post.mediaUrl]];
+        if(urlForMedia){
+            MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc]initWithContentURL:urlForMedia];
+            [self presentMoviePlayerViewControllerAnimated:moviePlayer];
+        }
+    }else{
+        if (!isFullScreen) {
+            [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
+                //save previous frame
+                prevFrame = self.imgViewForFullScreenImage.frame;
+                self.imgViewForFullScreenImage.frame = CGRectMake(self.imgViewForFullScreenImage.frame.origin.x, 64, self.imgViewForFullScreenImage.frame.size.width,self.imgViewForFullScreenImage.frame.size.height);
+                NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+                if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                    [self.imgViewForFullScreenImage setImage:[UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]]];
+                }
+            }completion:^(BOOL finished){
+                isFullScreen = true;
+                self.tblForCityPostList.userInteractionEnabled = NO;
+            }];
+            return;
+        } else {
+            [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
+                [self.imgViewForFullScreenImage setFrame:prevFrame];
+            }completion:^(BOOL finished){
+                isFullScreen = false;
+                self.tblForCityPostList.userInteractionEnabled = YES;
+                self.imgViewForFullScreenImage.image = nil;
+            }];
+            return;
+        }    }
+}
+
+-(IBAction)btnLikeDislikeAction:(UIButton *)sender {
+    NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
+    post = [arrayForCityPostList objectAtIndex:indexPath.row];
+    if (sender.selected) {
+        // Do it for dislike
+        [self unLikePostwithPostId:post.ids];
+    } else {
+        // Do it for dislike
+        [self likePostwithPostId:post.ids];
+    }
+}
+
+#pragma mark - UIActionSheet Delegate Methods
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex == 0){
+        @autoreleasepool {
+            //PHOTO ALBUM
+            if([actionSheetButtonTitle isEqualToString:kPhotoLibrary]){
+                [self startCameraControllerFromViewController:self usingDelegate:self sourceType:(int)buttonIndex selectedSource:kPhotoLibrary];
+            }else if([actionSheetButtonTitle isEqualToString:kVideoLibrary]){
+                [self startCameraControllerFromViewController:self usingDelegate:self sourceType:(int)buttonIndex selectedSource:kVideoLibrary];
+            }
+        }
+    }else if(buttonIndex == 1){
+        @autoreleasepool {
+            //CAMERA
+            [self startCameraControllerFromViewController:self usingDelegate:self sourceType:(int)buttonIndex selectedSource:kCamera];
+        }
+    }
+}
+
 #pragma mark - UIImagePickerController Delegate Methods
 //THis will call when Video Captured.
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -512,7 +567,8 @@
             //NSString *imagePath = (NSString *)[[info objectForKey:UIImagePickerControllerMediaType] path];
             imageURL = [info objectForKey:@"UIImagePickerControllerReferenceURL"];
             //myFilePath = imagePath;
-            imageToPost = (UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage];
+            UIImage *imgToScale = (UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage];
+            imageToPost = [[UtilityMethods utilityMethods] scaleImageForIconicPic:imgToScale];
             //imageURL = [NSURL fileURLWithPath:imagePath];
             NSDateFormatter *myDateFormat= [[NSDateFormatter alloc]init];
             [myDateFormat setDateFormat:@"ddMMYYYYHHmmss"];
@@ -532,7 +588,9 @@
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
-#pragma mark - To get Post Data
+#pragma mark - RestKit Request/Response Delegate Methods
+
+//To get Post Details for Current City
 -(void)getPostDetailsForCity:(NSString *)cityId pageNumber:(int)pageNumber{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kGetPost,cityId,pageNumber];
@@ -543,13 +601,13 @@
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.post);
         arrayForCityPostList = [NSMutableArray arrayWithArray:[dataResponse.post allObjects]];
-        if (arrayForCityPostList.count >= 1) {
+        if (arrayForCityPostList.count > 0) {
             NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"updatedDate" ascending:NO];
             NSArray *sortedArray = [arrayForCityPostList sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
             arrayForCityPostList = [[NSMutableArray alloc] initWithArray:sortedArray];
             [self downloadPostImages:arrayForCityPostList];
             for (int i=0;i<[arrayForCityPostList count]; i++) {
-                Post *post = [arrayForCityPostList objectAtIndex:i];
+                post = [arrayForCityPostList objectAtIndex:i];
                 
                 NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
                                                       [UIFont fontWithName:@"Helventica Neue" size:13], NSFontAttributeName,
@@ -573,6 +631,10 @@
             }
             [tblForCityPostList setHidden:NO];
             [tblForCityPostList reloadData];
+            [lblNoPostFound setHidden:YES];
+        }else{
+            [lblNoPostFound setHidden:NO];
+            [tblForCityPostList setHidden:YES];
         }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
@@ -586,7 +648,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -597,98 +659,27 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        [lblNoPostFound setHidden:NO];
+                        [tblForCityPostList setHidden:YES];
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                        [lblNoPostFound setHidden:YES];
+                        [tblForCityPostList setHidden:NO];
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [tblForCityPostList setHidden:YES];
+                    [lblNoPostFound setHidden:NO];
+                    lblNoPostFound.text = kAlert_Server_Not_Rechable;
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-            }
-        }
-        RKLogError(@"Operation failed with error: %@", error);
-    }];
-}
-
--(void)downloadPostImages:(NSMutableArray *)array {
-    for (int iForElse = 0; iForElse<[array count]; iForElse++) {
-        @autoreleasepool {
-            Post *post = [array objectAtIndex:iForElse];
-            NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
-            if([post.mediaUrl length]>0){
-                if(![[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
-                    IconDownloader *iconDownloader;
-                    if (iconDownloader == nil) {
-                        iconDownloader = [[IconDownloader alloc] init];
-                        iconDownloader.strIconURL = post.mediaUrl;
-                        [iconDownloader setCompletionHandler:^(UIImage *image){
-                            NSData *data = UIImagePNGRepresentation(image);
-                            
-                            [[FileUtility utility] createFile:strFileName atFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withData:data];
-                            [tblForCityPostList reloadData];
-                        }];
-                        [iconDownloader startDownload];
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-#pragma mark - To get City List
--(void)getListOfCities:(int)pageNumber{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-    NSString *strPath = [NSString stringWithFormat:kGetListOfCity,pageNumber];
-    [[AppDelegate appDelegate].rkomForPost getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [RSActivityIndicator hideIndicator];
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
-        NSLog(@"%@",dataResponse.post);
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [RSActivityIndicator hideIndicator];
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        if(error.code == -(kRequest_Server_Not_Rechable)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-        }else if(error.code == -(kRequest_TimeOut)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
-            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
-            [[AppDelegate appDelegate] loginWithExistingCredential];
-            sleep(5);
-            [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
-            return;
-        }else{
-            if(operation.HTTPRequestOperation.responseData){
-                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
-                if(dictResponse){
-                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
-                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
-                        [[AppDelegate appDelegate] loginWithExistingCredential];
-                        sleep(5);
-                        [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
-                        return;
-                        
-                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
-                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
-                    }
-                }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
-                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-                }
-            }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [tblForCityPostList setHidden:YES];
+                [lblNoPostFound setHidden:NO];
+                lblNoPostFound.text = kAlert_Server_Not_Rechable;
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
         RKLogError(@"Operation failed with error: %@", error);
@@ -696,7 +687,7 @@
 }
 
 
-#pragma mark - To get City Id
+// To get City Id
 -(void)getCityIdWithCountry:(NSString *)country State:(NSString *)state City:(NSString *)city{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kGetCityId,city,state,country];
@@ -706,9 +697,9 @@
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.city);
         City *city = [[dataResponse.city allObjects]firstObject];
-        NSString *cityId = city.ids;
-        self.strCityId = cityId;
-        [self getPostDetailsForCity:cityId pageNumber:page];
+        cityIdForCurrentCity = city.ids;
+        self.strCityId = cityIdForCurrentCity;
+        [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -721,7 +712,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self getCityIdWithCountry:strCountry State:strState City:strCity];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -732,27 +723,26 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self getCityIdWithCountry:strCountry State:strState City:strCity];
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
                         //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
 
-#pragma mark - To Post Data on City Wall
+// To Post Data on City Wall
 -(void)postOnCityWall:(NSDictionary *)dict withCityId:(NSString *)cityId{
     // Hide Keyboards
     [txtViewForUpdatePost resignFirstResponder];
@@ -792,7 +782,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self postOnCityWall:dictOfPost withCityId:self.strCityId];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -803,27 +793,26 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self postOnCityWall:dictOfPost withCityId:self.strCityId];
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                       [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
     }];
     [[AppDelegate appDelegate].rkomForPost enqueueObjectRequestOperation:operation];
 }
 
-#pragma mark - To Update Wall Post
+// To Update Wall Post
 -(void)updateWallPost:(NSDictionary *)dict withPostId:(NSString *)postId{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     [self.txtViewForUpdatePost resignFirstResponder];
@@ -844,7 +833,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self updateWallPost:dictOfUpdatePostData withPostId:myPostId];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -855,27 +844,27 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self updateWallPost:dictOfUpdatePostData withPostId:myPostId];
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dict valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                        [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
 
-#pragma mark - To Delete Wall Post
+// To Delete Wall Post
 -(void)deleteWallPost:(NSString *)postId {
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kDeleteWallPost,postId];
@@ -896,7 +885,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self deleteWallPost:post.ids];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -907,32 +896,28 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self deleteWallPost:post.ids];
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                        [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
 
-#pragma mark - To Like Post
-/**
- *  This will set like post by logged in user
- *
- *  @param postId
- */
+// To Like Post
+
 -(void)likePostwithPostId:(NSString *)postId{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kResource_LikePost,postId];
@@ -958,7 +943,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self likePostwithPostId:post.ids];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -969,20 +954,20 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self likePostwithPostId:post.ids];
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                         [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
         int likecount = [lblLikeCount.text intValue] + 1;
@@ -993,13 +978,8 @@
     }];
 }
 
-#pragma mark - To UnLike Post
-/**
- *  It will set post unliked by current logged in user.
- *
- *  @param dict
- *  @param postId
- */
+// To UnLike Post
+
 -(void)unLikePostwithPostId:(NSString *)postId{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kResource_UnLikePost,postId];
@@ -1024,7 +1004,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self unLikePostwithPostId:post.ids];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -1035,20 +1015,20 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self unLikePostwithPostId:post.ids];
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                        [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
         int likecount = [lblLikeCount.text intValue] - 1;
@@ -1058,7 +1038,72 @@
     }];
 }
 
-#pragma mark - To get Like Count
+
+// To get Notification Count
+-(void)getNotificationCount {
+    NSLog(@"Executed...");
+    [[AppDelegate appDelegate].rkomForNotification getObjectsAtPath:kResource_NF_count parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSString *strResponse = operation.HTTPRequestOperation.responseString;
+         NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[strResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
+        
+        NSArray *nfCount = [[jsonObject valueForKey:@"data"] valueForKey:@"count"];
+        int nf_count = [[nfCount firstObject] intValue];
+        if (nf_count >= 1) {
+            btnBarNotificationCount.titleLabel.text = [NSString stringWithFormat:@"%d",nf_count];
+            [btnBarNotificationCount setHidden:NO];
+        } else {
+            [btnBarNotificationCount setHidden:YES];
+        }
+        
+        if (isNFCount) {
+            [self performSelector:@selector(getNotificationCount) withObject:nil afterDelay:20.0];
+        }
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        NSString *strResponse = operation.HTTPRequestOperation.responseString;
+        NSLog(@"%@",strResponse);
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            [self getNotificationCount];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        [self getNotificationCount];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        NSLog(@"Data Not Exist");
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        NSLog(@"Notification Count Operation Completed Successfully");
+                    }
+                }else{
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
+    }];
+}
+
+
+// To get Like Count
 -(void)getLikeCountForPost:(NSString *)postId{
     [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
     NSString *strPath = [NSString stringWithFormat:kGetLikeCount,postId];
@@ -1103,35 +1148,24 @@
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
 
--(void)getNotificationCount {
-    NSLog(@"Executed...");
-    [[AppDelegate appDelegate].rkomForNotification getObjectsAtPath:kResource_NF_count parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSString *strResponse = operation.HTTPRequestOperation.responseString;
-         NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:[strResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
-        
-        NSArray *nfCount = [[jsonObject valueForKey:@"data"] valueForKey:@"count"];
-        int nf_count = [[nfCount firstObject] intValue];
-        if (nf_count >= 1) {
-            btnBarNotificationCount.titleLabel.text = [NSString stringWithFormat:@"%d",nf_count];
-            [btnBarNotificationCount setHidden:NO];
-        } else {
-            [btnBarNotificationCount setHidden:YES];
-        }
-        
-        if (isNFCount) {
-            [self performSelector:@selector(getNotificationCount) withObject:nil afterDelay:20.0];
-        }
-        
+
+// To get City List
+-(void)getListOfCities:(int)pageNumber{
+    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    NSString *strPath = [NSString stringWithFormat:kGetListOfCity,pageNumber];
+    [[AppDelegate appDelegate].rkomForPost getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
+        NSLog(@"%@",dataResponse.post);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        NSString *strResponse = operation.HTTPRequestOperation.responseString;
-        NSLog(@"%@",strResponse);
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         if(error.code == -(kRequest_Server_Not_Rechable)){
@@ -1167,24 +1201,12 @@
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
+        RKLogError(@"Operation failed with error: %@", error);
     }];
 }
 
-#pragma mark - Dynamic Height Calculation Method
-
--(CGRect)calculateLabelHeightBasedOnString:(NSString *)strDesc {
-    NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                          [UIFont fontWithName:@"Helventica Neue" size:15.0], NSFontAttributeName,
-                                          nil];
-    int intOfDefaultWidth = 300.0;
-//    if(IS_IPHONE_5){
-//        intOfDefaultWidth = 250.0f;
-//    }
-    CGRect rect = [strDesc boundingRectWithSize:CGSizeMake(intOfDefaultWidth, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributesDictionary context:nil];
-    return rect;
-}
 
 @end

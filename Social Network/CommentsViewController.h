@@ -13,9 +13,14 @@
     NSMutableArray *arrayOfComments;
     MPMoviePlayerController *player;
     NSString *strCommentId;
+    NSString *strCommentText;
+    NSDictionary *dictForPostComment;
+    NSMutableDictionary *dictForUpdateCommnent;
+    Comment *comment;
 }
 
 @property (strong,nonatomic) Post *post;
+@property (weak, nonatomic) IBOutlet UILabel *lblNoComments;
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *imgPostContent;

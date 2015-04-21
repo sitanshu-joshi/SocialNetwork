@@ -15,8 +15,10 @@
     NSMutableArray *resultArray;
     Post *selectedPost;
     MPMoviePlayerController *player;
+    NSString *strSearchAddress;
 }
 
+@property (weak, nonatomic) IBOutlet UILabel *lblNoNewsFound;
 @property (strong, nonatomic) NSMutableArray *arrayForNewsfeed;
 @property (nonatomic) int currentPageCount;
 

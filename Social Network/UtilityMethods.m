@@ -34,8 +34,8 @@ static UtilityMethods *utilityMethods;
     @autoreleasepool {
         float actualHeight = image.size.height;
         float actualWidth = image.size.width;
-        float maxHeight = 200.0;
-        float maxWidth = 200.0;
+        float maxHeight = 128.0;
+        float maxWidth = 300.0;
         float imgRatio = actualWidth/actualHeight;
         float maxRatio = maxWidth/maxHeight;
         float compressionQuality = 0.5;//50 percent compression

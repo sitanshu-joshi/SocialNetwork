@@ -14,8 +14,11 @@
 
 @implementation NewsFeedViewController
 @synthesize btnMainMenu,containerViewForCityInput;
-@synthesize newsTableView,tableViewForCityResult;
+@synthesize newsTableView,tableViewForCityResult,lblNoNewsFound;
 @synthesize arrayForNewsfeed,currentPageCount;
+
+
+#pragma mark - LifeCycle Methods
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -26,23 +29,18 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self getNewsForHomeTown];
-    
-    /*
-     Temporary hide cause it fails to load in simulator
-    player = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:test_mp4]];
-    player.fullscreen = YES;
-    [player setMovieSourceType:MPMovieSourceTypeStreaming];
-    [self.view addSubview:player.view];
-    
-    [player play];
-     */
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
 }
 
-#pragma mark
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Helper Methods
 -(void)setupInitUI {
     [btnMainMenu addTarget:self action: @selector(mainMenuBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
@@ -51,17 +49,80 @@
     self.tableViewForCityResult.layer.cornerRadius = 7.0;
     self.tableViewForCityResult.layer.masksToBounds = YES;
 }
+
 -(int)getCurrentPageNumber {
     currentPageCount = 1;
     return currentPageCount;
 }
+
+-(void)downloadPostImages:(NSMutableArray *)array {
+    for (int iForElse = 0; iForElse<[array count]; iForElse++) {
+        @autoreleasepool {
+            Post *post = [array objectAtIndex:iForElse];
+            NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+            if([post.mediaUrl length]>0){
+                if(![[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+                    IconDownloader *iconDownloader;
+                    if (iconDownloader == nil) {
+                        iconDownloader = [[IconDownloader alloc] init];
+                        iconDownloader.strIconURL = post.mediaUrl;
+                        [iconDownloader setCompletionHandler:^(UIImage *image){
+                            NSData *data = UIImagePNGRepresentation(image);
+                            
+                            [[FileUtility utility] createFile:strFileName atFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withData:data];
+                            [newsTableView reloadData];
+                        }];
+                        [iconDownloader startDownload];
+                    }
+                }
+            }
+        }
+    }
+}
+
+//Hide City Input View
+-(void)hideCityInputView{
+    [UIView animateWithDuration:0.5 animations:^{
+        self.containerViewForCityInput.frame = CGRectMake(5, 1000, self.containerViewForCityInput.frame.size.width, self.containerViewForCityInput.frame.size.height);
+    }];
+    isInputViewVisible = NO;
+    [self hidekeyBoard];
+}
+
+-(void)showCityInputView{
+    [UIView animateWithDuration:0.5 animations:^{
+        self.containerViewForCityInput.frame = CGRectMake(5, 72, self.containerViewForCityInput.frame.size.width, self.containerViewForCityInput.frame.size.height);
+    }];
+    isInputViewVisible = YES;
+    [self.tableViewForCityResult setHidden:YES];
+}
+
+//To hide Keyboard
+-(void)hidekeyBoard {
+    
+    [self.searchBar resignFirstResponder];
+    [self.tableViewForCityResult setHidden:YES];
+}
+
+
+#pragma mark - IBAction Methods
 
 -(void)mainMenuBtnClicked {
     [self hidekeyBoard];
     [self.revealViewController revealToggle:self.btnMainMenu];
 }
 
+
+- (IBAction)cityBtnTapped:(id)sender {
+    if(!isInputViewVisible){
+        [self showCityInputView];
+    }else{
+        [self hideCityInputView];
+    }
+}
+
 #pragma mark - UITableView DataSource Methods
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(tableView == self.tableViewForCityResult){
         return [resultArray count];
@@ -148,18 +209,7 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)cityBtnTapped:(id)sender {
-    if(!isInputViewVisible){
-        [self showCityInputView];
-    }else{
-        [self hideCityInputView];
-    }
-}
+#pragma mark - Segue Identifier Method
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
@@ -176,7 +226,8 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     NSLog(@"============== %@",searchText);
-    [self getPlaceForAddress:searchText];
+    strSearchAddress = searchText;
+    [self getPlaceForAddress:strSearchAddress];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchbar {
@@ -190,65 +241,7 @@
     [self hideCityInputView];
 }
 
-//To search place
--(void)getPlaceForAddress:(NSString *)searchString {
-    searchString = [searchString stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
-    NSString *str = [NSString stringWithFormat:kResource_Place,searchString,kPlace_API_Key];
-    [[AppDelegate appDelegate].rkomForPlaces getObject:nil path:str parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        DataFromGoogle *dataFromGoogle = [mappingResult firstObject];
-        NSLog(@"%@",dataFromGoogle.results);
-        resultArray = [NSMutableArray arrayWithArray:[dataFromGoogle.results allObjects]];
-        if (resultArray.count >= 7) {
-            [self.tableViewForCityResult setFrame:CGRectMake(self.tableViewForCityResult.frame.origin.x, self.tableViewForCityResult.frame.origin.y, self.tableViewForCityResult.frame.size.width,240)];
-            [self.tableViewForCityResult setHidden:NO];
-        } else {
-            [self.tableViewForCityResult setFrame:CGRectMake(self.tableViewForCityResult.frame.origin.x, self.tableViewForCityResult.frame.origin.y, self.tableViewForCityResult.frame.size.width, resultArray.count*40)];
-            [self.tableViewForCityResult setHidden:NO];
-        }
-        [self.tableViewForCityResult reloadData];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [RSActivityIndicator hideIndicator];
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        if(error.code == -(kRequest_Server_Not_Rechable)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-        }else if(error.code == -(kRequest_TimeOut)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
-            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
-            [[AppDelegate appDelegate] loginWithExistingCredential];
-            sleep(5);
-            [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
-            return;
-        }else{
-            if(operation.HTTPRequestOperation.responseData){
-                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
-                if(dictResponse){
-                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
-                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
-                        [[AppDelegate appDelegate] loginWithExistingCredential];
-                        sleep(5);
-                        [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
-                        return;
-                        
-                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
-                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
-                    }
-                }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
-                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-                }
-            }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-            }
-        }
 
-    }];
-}
 
 #pragma mark - RestKit Request/Response Delegate Methods
 -(void)getNewsForHomeTown{
@@ -264,8 +257,12 @@
             NSArray *sortedArray = [arrayForNewsfeed sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
             arrayForNewsfeed = [[NSMutableArray alloc] initWithArray:sortedArray];
             [self downloadPostImages:arrayForNewsfeed];
-            
             [newsTableView reloadData];
+            [lblNoNewsFound setHidden:YES];
+            [newsTableView setHidden:NO];
+        }else{
+            [lblNoNewsFound setHidden:NO];
+            [newsTableView setHidden:YES];
         }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
@@ -294,6 +291,68 @@
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
+                        [lblNoNewsFound setHidden:NO];
+                        [newsTableView setHidden:YES];
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        [lblNoNewsFound setHidden:YES];
+                        [newsTableView setHidden:NO];
+                    }
+                }else{
+                    [lblNoNewsFound setHidden:NO];
+                    [newsTableView setHidden:YES];
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                }
+            }else{
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+            }
+        }
+        RKLogError(@"Operation failed with error: %@", error);
+    }];
+}
+
+-(void)getPlaceForAddress:(NSString *)searchString {
+    searchString = [searchString stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+    NSString *str = [NSString stringWithFormat:kResource_Place,searchString,kPlace_API_Key];
+    [[AppDelegate appDelegate].rkomForPlaces getObject:nil path:str parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        DataFromGoogle *dataFromGoogle = [mappingResult firstObject];
+        NSLog(@"%@",dataFromGoogle.results);
+        resultArray = [NSMutableArray arrayWithArray:[dataFromGoogle.results allObjects]];
+        if (resultArray.count >= 7) {
+            [self.tableViewForCityResult setFrame:CGRectMake(self.tableViewForCityResult.frame.origin.x, self.tableViewForCityResult.frame.origin.y, self.tableViewForCityResult.frame.size.width,240)];
+            [self.tableViewForCityResult setHidden:NO];
+        } else {
+            [self.tableViewForCityResult setFrame:CGRectMake(self.tableViewForCityResult.frame.origin.x, self.tableViewForCityResult.frame.origin.y, self.tableViewForCityResult.frame.size.width, resultArray.count*40)];
+            [self.tableViewForCityResult setHidden:NO];
+        }
+        [self.tableViewForCityResult reloadData];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [RSActivityIndicator hideIndicator];
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        if(error.code == -(kRequest_Server_Not_Rechable)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(error.code == -(kRequest_TimeOut)){
+            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        }else if(operation.HTTPRequestOperation.response.statusCode == kRequest_Forbidden_Unauthorized){
+            [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+            [[AppDelegate appDelegate] loginWithExistingCredential];
+            sleep(5);
+            [RSActivityIndicator hideIndicator];
+            [self getPlaceForAddress:strSearchAddress];
+            return;
+        }else{
+            if(operation.HTTPRequestOperation.responseData){
+                NSDictionary *dictResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingAllowFragments error:&error];
+                if(dictResponse){
+                    if ([[dictResponse valueForKey:@"code"] intValue] == kINVALID_SESSION){
+                        [RSActivityIndicator showIndicatorWithTitle:@"Please Wait"];
+                        [[AppDelegate appDelegate] loginWithExistingCredential];
+                        sleep(5);
+                        [RSActivityIndicator hideIndicator];
+                        [self getPlaceForAddress:strSearchAddress];
+                        return;
+                        
+                    }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
                         //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
                         //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
@@ -306,56 +365,10 @@
                 [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
-        RKLogError(@"Operation failed with error: %@", error);
+        
     }];
 }
--(void)downloadPostImages:(NSMutableArray *)array {
-    for (int iForElse = 0; iForElse<[array count]; iForElse++) {
-        @autoreleasepool {
-            Post *post = [array objectAtIndex:iForElse];
-            NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
-            if([post.mediaUrl length]>0){
-                if(![[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
-                    IconDownloader *iconDownloader;
-                    if (iconDownloader == nil) {
-                        iconDownloader = [[IconDownloader alloc] init];
-                        iconDownloader.strIconURL = post.mediaUrl;
-                        [iconDownloader setCompletionHandler:^(UIImage *image){
-                            NSData *data = UIImagePNGRepresentation(image);
-                            
-                            [[FileUtility utility] createFile:strFileName atFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withData:data];
-                            [newsTableView reloadData];
-                        }];
-                        [iconDownloader startDownload];
-                    }
-                }
-            }
-        }
-    }
-}
 
-//Hide City Input View
--(void)hideCityInputView{
-    [UIView animateWithDuration:0.5 animations:^{
-        self.containerViewForCityInput.frame = CGRectMake(5, 1000, self.containerViewForCityInput.frame.size.width, self.containerViewForCityInput.frame.size.height);
-    }];
-    isInputViewVisible = NO;
-    [self hidekeyBoard];
-}
 
--(void)showCityInputView{
-    [UIView animateWithDuration:0.5 animations:^{
-        self.containerViewForCityInput.frame = CGRectMake(5, 72, self.containerViewForCityInput.frame.size.width, self.containerViewForCityInput.frame.size.height);
-    }];
-    isInputViewVisible = YES;
-    [self.tableViewForCityResult setHidden:YES];
-}
-
-//To hide Keyboard
--(void)hidekeyBoard {
-    
-    [self.searchBar resignFirstResponder];
-    [self.tableViewForCityResult setHidden:YES];
-}
 
 @end

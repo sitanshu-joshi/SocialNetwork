@@ -16,5 +16,5 @@
 + (UtilityMethods *)utilityMethods;
 
 -(BOOL)isUrlForImage:(NSString *)strUtl;
-
+-(UIImage *)scaleImageForIconicPic:(UIImage *)image;
 @end

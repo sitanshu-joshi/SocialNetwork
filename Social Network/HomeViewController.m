@@ -73,6 +73,7 @@
 
 #pragma mark - IBAction Methods
 - (IBAction)fbLoginBtnTapped:(id)sender {
+    strLoginPath = kResource_SignUp_Auth;
     if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
         [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
         [[AppDelegate appDelegate] openSessionWithAllowLoginUI:YES];
@@ -102,16 +103,25 @@
         NSLog(@"%@",user.description);
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSLog(@"%@",error.localizedDescription);
         [RSActivityIndicator hideIndicator];
-        if(error.code == -(kRequest_Server_Not_Rechable)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-            return;
-        }else if(error.code == -(kRequest_TimeOut)){
-            [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-            return;
+        NSLog(@"%@",operation.HTTPRequestOperation.responseString);
+        NSDictionary *dictForResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingMutableContainers error:&error];
+        if(dictForResponse){
+            if([[dictForResponse valueForKey:@"code"] integerValue] == kINVALID_USENAME_PASSWORD){
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Invalid_User delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                return;
+            }
+        }else{
+            if(error.code == -(kRequest_Server_Not_Rechable)){
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                return;
+            }else if(error.code == -(kRequest_TimeOut)){
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                return;
+            }
         }
+        
+        
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }

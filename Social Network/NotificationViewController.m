@@ -17,6 +17,8 @@
 @synthesize tableForNotification;
 @synthesize lblNoData;
 
+#pragma mark - LifeCycle Methods
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -34,17 +36,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - IBAction Methods
+-(IBAction)btnBackAction:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
-#pragma mark UITableView
+#pragma mark - UITableView DataSource Methods
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -68,7 +67,8 @@
 }
 
 
-#pragma mark Get Notification 
+#pragma mark - RestKit Request/Response Delegate Methods
+
 -(void)getNotificationList {
     [[AppDelegate appDelegate].rkomForNotification getObjectsAtPath:kResource_NF_List parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSString *strResponse = operation.HTTPRequestOperation.responseString;
@@ -84,7 +84,6 @@
             [tableForNotification reloadData];
             [lblNoData setHidden:YES];
         }
-        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -97,7 +96,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self getNotificationList];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -108,20 +107,24 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self getNotificationList];
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        [lblNoData setHidden:NO];
+                        [tableForNotification setHidden:YES];
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                        NSLog(@"Opertaion Completed Successfully");
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
+                    [lblNoData setHidden:NO];
+                    [tableForNotification setHidden:YES];
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [lblNoData setHidden:NO];
+                [tableForNotification setHidden:YES];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
     }];
@@ -133,8 +136,6 @@
         NSString *strResponse = operation.HTTPRequestOperation.responseString;
         NSLog(@"%@",strResponse);
         DataForResponse *data = [mappingResult.array firstObject];
-        
-        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -147,7 +148,7 @@
             [[AppDelegate appDelegate] loginWithExistingCredential];
             sleep(5);
             [RSActivityIndicator hideIndicator];
-            //[self getNewsForHomeTown];
+            [self getReadNotification];
             return;
         }else{
             if(operation.HTTPRequestOperation.responseData){
@@ -158,26 +159,22 @@
                         [[AppDelegate appDelegate] loginWithExistingCredential];
                         sleep(5);
                         [RSActivityIndicator hideIndicator];
-                        //[self getNewsForHomeTown];
+                        [self getReadNotification];
                         return;
                         
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
-                        //lblForMyPostNotFound.text = kLbl_Error_Message_MyPost;
+                        NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        //lblForMyPostNotFound.text = [dictResponse valueForKey:@"msg"];
+                        NSLog(@"Opertaion Completed Successfully");
                     }
                 }else{
-                    //lblForMyPostNotFound.text = kAlert_Server_Not_Rechable;
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                 }
             }else{
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
     }];
-}
--(IBAction)btnBackAction:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
