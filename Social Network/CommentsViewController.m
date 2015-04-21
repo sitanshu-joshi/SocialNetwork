@@ -17,7 +17,7 @@
 @synthesize post;
 @synthesize btnLike,btnPost,lblCommentCount,txtViewForComment,txtViewForPostDetail;
 @synthesize lblLikeCount,lblUserName,lblNoComments;
-@synthesize imgPostContent;
+@synthesize imgPostContent,isNeedToRefreshPage;
 @synthesize btnPlay;
 
 #pragma mark - LifeCycle Methods
@@ -34,6 +34,7 @@
     if(self.post){
         [self getCommentsDetailsForPostId:post.ids];
     }
+    isNeedToRefreshPage = false;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -300,6 +301,7 @@
         NSLog(@"%@",dataResponse.comment);
         int commentcount = [lblCommentCount.text intValue] + 1;
         lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
+        isNeedToRefreshPage = true;
         [self getCommentsDetailsForPostId:post.ids];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
@@ -331,6 +333,7 @@
                         NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
                         dictForPostComment = nil;
+                        isNeedToRefreshPage = true;
                         [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                         [self getCommentsDetailsForPostId:post.ids];
                     }
@@ -360,6 +363,7 @@
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
         DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
         NSLog(@"%@",dataResponse.comment);
+        isNeedToRefreshPage = true;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -391,6 +395,7 @@
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
                         [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                         [self getCommentsDetailsForPostId:post.ids];
+                        isNeedToRefreshPage = true;
                     }
                 }else{
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
@@ -473,6 +478,7 @@
         int likecount = [lblLikeCount.text intValue] + 1;
         lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
         [btnLike setSelected:YES];
+        isNeedToRefreshPage = true;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -504,6 +510,7 @@
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
                         [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                         [self getCommentsDetailsForPostId:post.ids];
+                        isNeedToRefreshPage = true;
                     }
                 }else{
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
@@ -533,6 +540,7 @@
         int likecount = [lblLikeCount.text intValue] - 1;
         lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
         [btnLike setSelected:NO];
+        isNeedToRefreshPage = true;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -564,6 +572,7 @@
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
                         [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                         [self getCommentsDetailsForPostId:post.ids];
+                        isNeedToRefreshPage = true;
                     }
                 }else{
                     [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];

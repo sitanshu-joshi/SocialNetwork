@@ -709,6 +709,7 @@
                                 </state>
                                 <connections>
                                     <action selector="backButtonTapped:" destination="odT-Am-5eH" eventType="touchUpInside" id="jtp-Cb-cZB"/>
+                                    <segue destination="Q1Z-KN-0Qk" kind="unwind" unwindAction="unwindSegueFromCommentController:" id="Icv-c1-8Sj"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -734,6 +735,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XdX-9G-eey" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Q1Z-KN-0Qk" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-52" y="-229"/>
         </scene>

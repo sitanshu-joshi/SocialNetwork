@@ -27,7 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForPostDetail;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewToUpdateComment;
-
+@property (nonatomic) BOOL isNeedToRefreshPage;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewForComment;
 @property (weak, nonatomic) IBOutlet UIButton *btnPost;
 @property (weak, nonatomic) IBOutlet UIButton *btnLike;

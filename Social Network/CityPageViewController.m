@@ -236,7 +236,18 @@
     }
 }
 
-
+-(IBAction)unwindSegueFromCommentController:(UIStoryboardSegue *)segue{
+    if([segue.sourceViewController isKindOfClass:[CommentsViewController class]]){
+        CommentsViewController *commentsVC = (CommentsViewController *)segue.sourceViewController;
+        NSLog(@"Bool = %d",commentsVC.isNeedToRefreshPage);
+        if(commentsVC.isNeedToRefreshPage){
+            commentsVC.isNeedToRefreshPage = false;
+            if([[AppDelegate appDelegate] isNetworkReachableToInternet]){
+               [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
+            }
+        }
+    }
+}
 
 #pragma mark - UITextView Delegate Methods
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {

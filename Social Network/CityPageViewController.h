@@ -68,6 +68,7 @@
 - (IBAction)btnUpdatePostTapped:(id)sender;
 - (IBAction)refreshBtnTapped:(id)sender;
 - (IBAction)mediaBtnTapped:(UIButton *)sender;
+-(IBAction)unwindSegueFromCommentController:(UIStoryboardSegue *)segue;
 
 
 @end
