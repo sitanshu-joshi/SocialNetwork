@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setTextColor:[UIColor blackColor]];
-    [mainMenuButton addTarget:self action: @selector(mainMenuBtnClickAtProfile) forControlEvents:UIControlEventTouchUpInside];
+    [mainMenuButton addTarget:self action: @selector(mainMenuBtnClickd) forControlEvents:UIControlEventTouchUpInside];
     self.revealViewController.delegate = self;
     [self setTableViewHeightZero];
     pageCount = 1;
@@ -52,7 +52,7 @@
 
 #pragma mark - IBAction Methods
 
--(void)mainMenuBtnClickAtProfile {
+-(void)mainMenuBtnClickd {
     [self.revealViewController revealToggle:self.mainMenuButton];
 }
 

@@ -56,11 +56,13 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnBarPost;
 @property (weak, nonatomic) IBOutlet UIButton *btnBarNotification;
 @property (weak, nonatomic) IBOutlet UIButton *btnBarNotificationCount;
+@property (weak, nonatomic) IBOutlet UIView *viewForFullSizeImage;
 
+- (IBAction)closeBtnTapped:(id)sender;
 - (IBAction)uploadPhotoButtonTapped:(id)sender;
 - (IBAction)uploadVideoButtonTapped:(id)sender;
 - (IBAction)shareButtonTapped:(id)sender;
-- (IBAction)likeButtonTapped:(id)sender;
+- (IBAction)likeDislikeBtnTapped:(id)sender;
 - (IBAction)deleteButtonTapped:(id)sender;
 - (IBAction)updatePostBtnTapped:(id)sender;
 - (IBAction)btnUpdatePostTapped:(id)sender;

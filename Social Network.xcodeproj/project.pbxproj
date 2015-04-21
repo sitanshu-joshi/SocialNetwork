@@ -70,6 +70,7 @@
 		A409F13A1A83894100A994DA /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F1311A83894100A994DA /* Post.m */; };
 		A409F13B1A83894100A994DA /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F1331A83894100A994DA /* Result.m */; };
 		A409F13C1A83894100A994DA /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F1351A83894100A994DA /* User.m */; };
+		A4E61AE21AE67D66000A62AB /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = A4E61AE11AE67D66000A62AB /* close.png */; };
 		D84DCCF71A87F2DD0057003E /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = D84DCCF61A87F2DD0057003E /* delete.png */; };
 		D86DDADE1A81583000E7FA24 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86DDADD1A81583000E7FA24 /* ProfileViewController.m */; };
 		F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F4224F6A1A594061003A353E /* troyage.xcdatamodeld */; };
@@ -210,6 +211,7 @@
 		A409F1341A83894100A994DA /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		A409F1351A83894100A994DA /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		A48642C51ADE306600534D35 /* ResponseStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResponseStatus.h; sourceTree = "<group>"; };
+		A4E61AE11AE67D66000A62AB /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		D56C01C0EE12F015CC28D226 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D84DCCF61A87F2DD0057003E /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		D86DDADC1A81583000E7FA24 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 		56FCEF481A7424E3006B7374 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				A4E61AE11AE67D66000A62AB /* close.png */,
 				5691990A1ACDACE5006D45EA /* Quesion_ANswer.png */,
 				566A9CCC1ACB2752006CE388 /* img_placeholder .jpg */,
 				566A9CCA1ACB1D7D006CE388 /* video-placeholder.png */,
@@ -734,6 +737,7 @@
 				566A9CCB1ACB1D7D006CE388 /* video-placeholder.png in Resources */,
 				A40328DE1A8202720040D282 /* RobotoCondensed-Regular.ttf in Resources */,
 				56FCEF4D1A7425ED006B7374 /* menu.png in Resources */,
+				A4E61AE21AE67D66000A62AB /* close.png in Resources */,
 				A40328F71A82466E0040D282 /* share_video.png in Resources */,
 				A40328E51A8219A20040D282 /* icon_close.png in Resources */,
 				5691990B1ACDACE5006D45EA /* Quesion_ANswer.png in Resources */,

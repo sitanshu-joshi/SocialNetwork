@@ -14,7 +14,7 @@
 
 @implementation CityPageViewController
 @synthesize btnVideoSharing,btnPhotoSharing,btnShare,btnMainMenu,btnBarNews,btnBarNotification,btnBarNotificationCount,btnBarPost;
-@synthesize tblForCityPostList,lblNoPostFound;
+@synthesize tblForCityPostList,lblNoPostFound,viewForFullSizeImage,imgViewForFullScreenImage;
 @synthesize txtViewForPost,txtViewForUpdatePost;
 
 #pragma mark - UILifeCycle Methods
@@ -160,9 +160,9 @@
     btnImgMedia.layer.cornerRadius = 5.0;
     btnImgMedia.layer.masksToBounds = YES;
     lblCommentCount.text = [NSString stringWithFormat:@"%@",post.commentCount];
-    [btnLike addTarget:self
-                 action:@selector(btnLikeDislikeAction:)
-       forControlEvents:UIControlEventTouchUpInside];
+//    [btnLike addTarget:self
+//                 action:@selector(btnLikeDislikeAction:)
+//       forControlEvents:UIControlEventTouchUpInside];
     BOOL ismyLike = [post.isMyLike boolValue];
     if (ismyLike == true) {
         [btnLike setSelected:YES];
@@ -409,6 +409,16 @@
     }
 }
 
+- (IBAction)closeBtnTapped:(id)sender {
+    [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
+        [viewForFullSizeImage setFrame:prevFrame];
+    }completion:^(BOOL finished){
+        isFullScreen = false;
+        self.tblForCityPostList.userInteractionEnabled = YES;
+        self.imgViewForFullScreenImage.image = nil;
+    }];
+}
+
 - (IBAction)uploadPhotoButtonTapped:(id)sender {
      actionSheetButtonTitle = kPhotoLibrary;
     [UIView animateWithDuration:0.5 animations:^{
@@ -431,12 +441,25 @@
     [self postOnCityWall:dictOfPost withCityId:self.strCityId];
 }
 
-- (IBAction)likeButtonTapped:(id)sender {
+- (IBAction)likeDislikeBtnTapped:(id)sender {
+    UIButton *btnLikeDislike = (UIButton *)sender;
+    UITableViewCell *cellForSelectedBtn = (UITableViewCell *)[[sender superview] superview];
+    NSIndexPath *indexPathForCell = [tblForCityPostList indexPathForCell:cellForSelectedBtn];
+    post = [arrayForCityPostList objectAtIndex:indexPathForCell.section];
+    if (btnLikeDislike.selected) {
+        // Do it for dislike
+        [self unLikePostwithPostId:post.ids];
+    } else {
+        // Do it for like
+        [self likePostwithPostId:post.ids];
+    }
+
 }
 
 - (IBAction)deleteButtonTapped:(UIButton *)sender {
-    NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
-    post = [arrayForCityPostList objectAtIndex:indexPath.row];
+    UITableViewCell *cellForSelectedBtn = (UITableViewCell *)[[sender superview] superview];
+    NSIndexPath *indexPathForCell = [tblForCityPostList indexPathForCell:cellForSelectedBtn];
+    post = [arrayForCityPostList objectAtIndex:indexPathForCell.section];
     [self deleteWallPost:post.ids];
 }
 
@@ -449,8 +472,9 @@
 
 
 - (IBAction)btnUpdatePostTapped:(UIButton *)sender {
-    NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
-    post = [arrayForCityPostList objectAtIndex:indexPath.row];
+    UITableViewCell *cellForSelectedBtn = (UITableViewCell *)[[sender superview] superview];
+    NSIndexPath *indexPathForCell = [tblForCityPostList indexPathForCell:cellForSelectedBtn];
+    post = [arrayForCityPostList objectAtIndex:indexPathForCell.section];
    myPostId= post.ids;
     [UIView animateWithDuration:0.5 animations:^{
         self.viewForUpdatePost.frame = CGRectMake(0,140, self.viewForUpdatePost.frame.size.width, self.viewForUpdatePost.frame.size.height);
@@ -478,8 +502,8 @@
         if (!isFullScreen) {
             [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
                 //save previous frame
-                prevFrame = self.imgViewForFullScreenImage.frame;
-                self.imgViewForFullScreenImage.frame = CGRectMake(self.imgViewForFullScreenImage.frame.origin.x, 64, self.imgViewForFullScreenImage.frame.size.width,self.imgViewForFullScreenImage.frame.size.height);
+                prevFrame = viewForFullSizeImage.frame;
+                viewForFullSizeImage.frame = CGRectMake(viewForFullSizeImage.frame.origin.x, 64, viewForFullSizeImage.frame.size.width,viewForFullSizeImage.frame.size.height);
                 NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
                 if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
                     [self.imgViewForFullScreenImage setImage:[UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]]];
@@ -491,7 +515,7 @@
             return;
         } else {
             [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
-                [self.imgViewForFullScreenImage setFrame:prevFrame];
+                [viewForFullSizeImage setFrame:prevFrame];
             }completion:^(BOOL finished){
                 isFullScreen = false;
                 self.tblForCityPostList.userInteractionEnabled = YES;
@@ -503,7 +527,7 @@
 
 -(IBAction)btnLikeDislikeAction:(UIButton *)sender {
     NSIndexPath* indexPath = [self.tblForCityPostList indexPathForRowAtPoint:[self.tblForCityPostList convertPoint:sender.center fromView:sender.superview]];
-    post = [arrayForCityPostList objectAtIndex:indexPath.row];
+    post = [arrayForCityPostList objectAtIndex:indexPath.section];
     if (sender.selected) {
         // Do it for dislike
         [self unLikePostwithPostId:post.ids];
@@ -850,7 +874,7 @@
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
                         NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
-                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dict valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                        [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
                         [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
                     }
                 }else{
@@ -987,11 +1011,12 @@
     [[AppDelegate appDelegate].rkomForPost postObject:data path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
-        NSLog(@"%@",dataResponse.post);
-        int likecount = [lblLikeCount.text intValue] - 1;
-        lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
-        [btnLike setSelected:NO];
+//        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
+//        NSLog(@"%@",dataResponse);
+        //int likecount = [lblLikeCount.text intValue] - 1;
+        //lblLikeCount.text = [NSString stringWithFormat:@"%d",likecount];
+        //[self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
+        //[btnLike setSelected:NO];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);

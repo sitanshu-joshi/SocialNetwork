@@ -189,6 +189,13 @@
 }
 
 #pragma mark - UITextView Delegate Methods
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+    if(textView == txtViewForPostDetail){
+        return false;
+    }
+    return true;
+}
+
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView{
     [textView resignFirstResponder];
     [UIView animateWithDuration:0.5 animations:^{
@@ -196,6 +203,7 @@
     }];
     return YES;
 }
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if([text isEqualToString:@"\n"]){
         [textView resignFirstResponder];
