@@ -44,8 +44,8 @@
     BOOL isLogin = [AppLogin sharedAppLogin].isUserLoggedIn;
     if(isLogin){
         [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
-        NSString *strEmail = @"admin@troyage.com"; //[AppLogin sharedAppLogin].userEmail;
-        NSString *strPassword = @"password" ; // [AppLogin sharedAppLogin].password;
+        NSString *strEmail = [AppLogin sharedAppLogin].userEmail; //@"admin@troyage.com"; //
+        NSString *strPassword = [AppLogin sharedAppLogin].password; //@"password" ; //
         NSMutableDictionary *dictForLogin = [NSMutableDictionary dictionary];
         [dictForLogin setObject:strEmail forKey:kUSER_NAME];
         [dictForLogin setObject:strPassword forKey:kUSER_PASSWORD];
