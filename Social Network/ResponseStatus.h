@@ -15,6 +15,7 @@
 //REQUEST TIME OUT
 #define kRequest_TimeOut                    1001
 #define kRequest_Server_Not_Rechable        1004
+
 //SUCCESS 200X
 #define kSusscessully_Operation_Complete    2000
 #define kSusscessully_Login                 2001

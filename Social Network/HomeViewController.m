@@ -105,23 +105,27 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        NSDictionary *dictForResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingMutableContainers error:&error];
-        if(dictForResponse){
-            if([[dictForResponse valueForKey:@"code"] integerValue] == kINVALID_USENAME_PASSWORD){
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Invalid_User delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-                return;
+        if(error){
+            if(error.code == -kCode_Network_Connection_Lost){
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
             }
         }else{
-            if(error.code == -(kRequest_Server_Not_Rechable)){
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-                return;
-            }else if(error.code == -(kRequest_TimeOut)){
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
-                return;
+            NSDictionary *dictForResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingMutableContainers error:&error];
+            if(dictForResponse){
+                if([[dictForResponse valueForKey:@"code"] integerValue] == kINVALID_USENAME_PASSWORD){
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Invalid_User delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                    return;
+                }
+            }else{
+                if(error.code == -(kRequest_Server_Not_Rechable)){
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                    return;
+                }else if(error.code == -(kRequest_TimeOut)){
+                    [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Request_TimeOut delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                    return;
+                }
             }
         }
-        
-        
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }

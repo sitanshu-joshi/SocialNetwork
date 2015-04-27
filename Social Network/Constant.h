@@ -112,6 +112,7 @@
 #define kUserNotAuthenticate        1012
 #define kCode_Request_Time_Out          1001
 #define kCode_Could_Not_Connect_Server  1004
+#define kCode_Network_Connection_Lost   1005
 #define kCode_NSURLErrorNotConnectedToInternet 1009
 
 /*
