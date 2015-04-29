@@ -114,7 +114,7 @@ static AppDelegate *appDelegate;
                     //set AppLogin Details
                     AppLogin *appLoginInfo = [AppLogin sharedAppLogin];
                     NSString *strToken  = [NSString stringWithFormat:@"%@",[FBSession activeSession].accessTokenData.accessToken];
-                    NSString *strPassword = [strToken substringFromIndex:[strToken length] - 8];
+                    NSString *strPassword = [strToken substringToIndex:8];
                     appLoginInfo.userEmail = [user objectForKey:@"email"];
                     appLoginInfo.password = strPassword;
                     appLoginInfo.isUserLoggedIn = TRUE;
