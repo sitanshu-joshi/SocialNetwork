@@ -232,7 +232,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     NSLog(@"============== %@",searchText);
-    strSearchAddress = searchText;
+    strSearchAddress = [searchText stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
     [self getPlaceForAddress:strSearchAddress];
 }
 

@@ -63,8 +63,11 @@
 -(void)setUpUserInterface{
     self.lblName.text = [AppUserInfo sharedAppUserInfo].userName;
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:kFBProfilePicURL,[AppUserInfo sharedAppUserInfo].userId]];
-    [self.imgViewForProfile setImageWithURL:url placeholderImage:[UIImage imageNamed:@"profile_pic"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                            }];
+    [self.imgViewForProfile sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"profile_pic"] options:SDWebImageRefreshCached completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        if(image){
+            self.imgViewForProfile.image = image;
+        }
+    }];
     self.imgViewForProfile.layer.cornerRadius = (self.imgViewForProfile.frame.size.width/2);
     self.imgViewForProfile.layer.masksToBounds = YES;
 }
