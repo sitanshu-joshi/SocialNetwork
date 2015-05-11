@@ -14,7 +14,7 @@
 // App Title
 #define kAppTitle               @"Troyage"
 // Base URL
-#define kBase_URL               @"http://52.11.4.241:8080/Troyage/ws/"
+#define kBase_URL               @"http://52.24.46.209:8080/Troyage/ws/"
 #define kBase_Place_URL         @"https://maps.googleapis.com/maps/api/place/textsearch/"
 
 #define kDB_Store               @"troyage.sqlite"

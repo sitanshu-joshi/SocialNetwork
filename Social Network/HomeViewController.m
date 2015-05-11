@@ -105,11 +105,7 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        if(error){
-            if(error.code == -kCode_Network_Connection_Lost){
-                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
-            }
-        }else{
+        if(operation.HTTPRequestOperation.responseData){
             NSDictionary *dictForResponse = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:NSJSONReadingMutableContainers error:&error];
             if(dictForResponse){
                 if([[dictForResponse valueForKey:@"code"] integerValue] == kINVALID_USENAME_PASSWORD){
@@ -125,7 +121,12 @@
                     return;
                 }
             }
+        }else{
+            if(error.code == -kCode_Network_Connection_Lost){
+                [[[UIAlertView alloc]initWithTitle:kAppTitle message:error.localizedDescription delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil]show];
+            }
         }
+        
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }

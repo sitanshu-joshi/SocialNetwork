@@ -137,9 +137,12 @@
         [btnImgMedia setBackgroundImage:[UIImage imageNamed:@"img_placeholder "] forState:UIControlStateNormal];
         NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
         if([post.mediaUrl length]>0){
-            if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
-                [btnImgMedia setBackgroundImage:[UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]] forState:UIControlStateNormal];
-            }
+//            if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
+//                [btnImgMedia setBackgroundImage:[UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]] forState:UIControlStateNormal];
+//            }
+            [btnImgMedia.imageView sd_setImageWithURL:[NSURL URLWithString:post.mediaUrl]
+                        placeholderImage:[UIImage imageNamed:@"img_placeholder "]
+                                 options:SDWebImageRefreshCached];
             btnImgMedia.layer.borderColor = (__bridge CGColorRef)([UIColor blackColor]);
             btnImgMedia.layer.borderWidth = 10.0;
             [btnImgMedia setHidden:NO];

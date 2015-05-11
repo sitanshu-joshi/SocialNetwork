@@ -178,12 +178,10 @@
         UIImageView *imgMedia = (UIImageView *)[cell viewWithTag:kCell_News_Feed_imgContent];
         imgMedia.image = nil;
         if([post.mediaType intValue] == 1){
-            [imgMedia sd_setImageWithURL:[NSURL URLWithString:post.mediaUrl] placeholderImage:[UIImage imageNamed:@"img_placeholder "] options:SDWebImageRefreshCached completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                if(image){
-                    NSLog(@"Image Found");
-                    imgMedia.image = image;
-                }
-            }];
+            
+            [imgMedia sd_setImageWithURL:[NSURL URLWithString:post.mediaUrl]
+                                  placeholderImage:[UIImage imageNamed:@"img_placeholder "]
+                                           options:SDWebImageRefreshCached];
 //            imgMedia.image = [UIImage imageNamed:@"img_placeholder .jpg"];
 //            NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
 //            if([post.mediaUrl length]>0){
