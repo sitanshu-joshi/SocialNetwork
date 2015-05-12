@@ -43,7 +43,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeLoginUsingAuthCredential:) name:kNotifier_Facebook_Session_Opened object:nil];
     BOOL isLogin = [AppLogin sharedAppLogin].isUserLoggedIn;
     if(isLogin){
-        [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+        [RSActivityIndicator showIndicator];
         NSString *strEmail = [AppLogin sharedAppLogin].userEmail; //@"admin@troyage.com"; //
         NSString *strPassword = [AppLogin sharedAppLogin].password; //@"password" ; //
         NSMutableDictionary *dictForLogin = [NSMutableDictionary dictionary];
@@ -75,7 +75,7 @@
 - (IBAction)fbLoginBtnTapped:(id)sender {
     strLoginPath = kResource_SignUp_Auth;
     if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
-        [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+        [RSActivityIndicator showIndicator];
         [[AppDelegate appDelegate] openSessionWithAllowLoginUI:YES];
     }else{
         [self networkNotReachable];
@@ -84,7 +84,7 @@
 
 #pragma mark - RestKit API Implementation
 -(void)sendRequestForLoginUsingAuthCredential:(NSDictionary *)authDictionary{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     [[AppDelegate appDelegate].rkomForLogin postObject:nil path:strLoginPath parameters:authDictionary success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])

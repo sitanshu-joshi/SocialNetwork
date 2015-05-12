@@ -25,6 +25,7 @@
 		56BFACF61A76A0A500CADEDF /* RSActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 56BFACF11A76A0A500CADEDF /* RSActivityIndicator.m */; };
 		56BFACF71A76A0A500CADEDF /* UILabel+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 56BFACF31A76A0A500CADEDF /* UILabel+Additions.m */; };
 		56BFACF81A76A0A500CADEDF /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 56BFACF51A76A0A500CADEDF /* UIView+Additions.m */; };
+		56E1A4141B02765600260A9F /* libPods-SDWebImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 56E1A4131B02765600260A9F /* libPods-SDWebImage.a */; };
 		56FCEF471A73F30E006B7374 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FCEF461A73F30E006B7374 /* FacebookSDK.framework */; };
 		56FCEF4A1A7424E3006B7374 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 56FCEF491A7424E3006B7374 /* back.png */; };
 		56FCEF4D1A7425ED006B7374 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 56FCEF4B1A7425ED006B7374 /* menu.png */; };
@@ -57,7 +58,6 @@
 		A409F13B1A83894100A994DA /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F1331A83894100A994DA /* Result.m */; };
 		A409F13C1A83894100A994DA /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = A409F1351A83894100A994DA /* User.m */; };
 		A4E61AE21AE67D66000A62AB /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = A4E61AE11AE67D66000A62AB /* close.png */; };
-		A4E61AE41AE683FE000A62AB /* SDWebImage in Resources */ = {isa = PBXBuildFile; fileRef = A4E61AE31AE683FE000A62AB /* SDWebImage */; };
 		D84DCCF71A87F2DD0057003E /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = D84DCCF61A87F2DD0057003E /* delete.png */; };
 		D86DDADE1A81583000E7FA24 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D86DDADD1A81583000E7FA24 /* ProfileViewController.m */; };
 		F4224F6C1A594061003A353E /* troyage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F4224F6A1A594061003A353E /* troyage.xcdatamodeld */; };
@@ -125,6 +125,7 @@
 		56BFACF31A76A0A500CADEDF /* UILabel+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Additions.m"; sourceTree = "<group>"; };
 		56BFACF41A76A0A500CADEDF /* UIView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
 		56BFACF51A76A0A500CADEDF /* UIView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
+		56E1A4131B02765600260A9F /* libPods-SDWebImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SDWebImage.a"; path = "Pods/../build/Debug-iphoneos/libPods-SDWebImage.a"; sourceTree = "<group>"; };
 		56FCEF461A73F30E006B7374 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		56FCEF491A7424E3006B7374 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		56FCEF4B1A7425ED006B7374 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
@@ -170,7 +171,6 @@
 		A409F1351A83894100A994DA /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		A48642C51ADE306600534D35 /* ResponseStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResponseStatus.h; sourceTree = "<group>"; };
 		A4E61AE11AE67D66000A62AB /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
-		A4E61AE31AE683FE000A62AB /* SDWebImage */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SDWebImage; sourceTree = "<group>"; };
 		D56C01C0EE12F015CC28D226 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D84DCCF61A87F2DD0057003E /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		D86DDADC1A81583000E7FA24 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -225,6 +225,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56E1A4141B02765600260A9F /* libPods-SDWebImage.a in Frameworks */,
 				F4BDDF841983A50500C52E97 /* CoreGraphics.framework in Frameworks */,
 				56FCEF471A73F30E006B7374 /* FacebookSDK.framework in Frameworks */,
 				F4BDDF861983A50500C52E97 /* UIKit.framework in Frameworks */,
@@ -476,6 +477,7 @@
 		F4BDDF801983A50500C52E97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				56E1A4131B02765600260A9F /* libPods-SDWebImage.a */,
 				F4BDDF811983A50500C52E97 /* Foundation.framework */,
 				F4BDDF831983A50500C52E97 /* CoreGraphics.framework */,
 				F4BDDF851983A50500C52E97 /* UIKit.framework */,
@@ -488,7 +490,6 @@
 		F4BDDF871983A50500C52E97 /* Social Network */ = {
 			isa = PBXGroup;
 			children = (
-				A4E61AE31AE683FE000A62AB /* SDWebImage */,
 				F436261B1ACE71BF0098EEBA /* TableCell */,
 				A409F1271A83894100A994DA /* MappingObjects */,
 				A40328E81A8225660040D282 /* Reachability */,
@@ -648,7 +649,6 @@
 				56FCEF541A742B4C006B7374 /* add.png in Resources */,
 				56FCEF531A742B4C006B7374 /* like.png in Resources */,
 				D84DCCF71A87F2DD0057003E /* delete.png in Resources */,
-				A4E61AE41AE683FE000A62AB /* SDWebImage in Resources */,
 				A40328E71A821D540040D282 /* search_City.png in Resources */,
 				56BFACD81A762DEF00CADEDF /* news1.png in Resources */,
 				56943F791AB9EFFD00AF8615 /* edit.png in Resources */,
@@ -903,7 +903,7 @@
 				);
 				INFOPLIST_FILE = "Social Network/Social Network-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/build/Debug-iphoneos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -931,7 +931,7 @@
 				);
 				INFOPLIST_FILE = "Social Network/Social Network-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/build/Debug-iphoneos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

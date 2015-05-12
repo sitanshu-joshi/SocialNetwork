@@ -249,7 +249,7 @@
 
 #pragma mark - RestKit Request/Response Delegate Methods
 -(void)getNewsForHomeTown{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kResource_GetNewsFeed,(int)[self currentPageCount]];
     [[AppDelegate appDelegate].rkomForPost getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];

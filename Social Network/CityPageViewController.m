@@ -140,9 +140,8 @@
 //            if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
 //                [btnImgMedia setBackgroundImage:[UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]] forState:UIControlStateNormal];
 //            }
-            [btnImgMedia.imageView sd_setImageWithURL:[NSURL URLWithString:post.mediaUrl]
-                        placeholderImage:[UIImage imageNamed:@"img_placeholder "]
-                                 options:SDWebImageRefreshCached];
+            
+            [btnImgMedia sd_setImageWithURL:[NSURL URLWithString:post.mediaUrl] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"img_placeholder "] options:SDWebImageRefreshCached];
             btnImgMedia.layer.borderColor = (__bridge CGColorRef)([UIColor blackColor]);
             btnImgMedia.layer.borderWidth = 10.0;
             [btnImgMedia setHidden:NO];
@@ -630,7 +629,7 @@
 
 //To get Post Details for Current City
 -(void)getPostDetailsForCity:(NSString *)cityId pageNumber:(int)pageNumber{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kGetPost,cityId,pageNumber];
     [[AppDelegate appDelegate].rkomForPost getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
@@ -727,7 +726,7 @@
 
 // To get City Id
 -(void)getCityIdWithCountry:(NSString *)country State:(NSString *)state City:(NSString *)city{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kGetCityId,city,state,country];
     [[AppDelegate appDelegate].rkomForCity getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         //[RSActivityIndicator hideIndicator];
@@ -786,7 +785,7 @@
     [txtViewForUpdatePost resignFirstResponder];
     [txtViewForPost resignFirstResponder];
     
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kWallPostOnUserCity,cityId];
     
     //UIImage *image = imageToPost;
@@ -852,7 +851,7 @@
 
 // To Update Wall Post
 -(void)updateWallPost:(NSDictionary *)dict withPostId:(NSString *)postId{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     [self.txtViewForUpdatePost resignFirstResponder];
     NSString *strPath = [NSString stringWithFormat:kUpdateWallPost,postId];
     DataForResponse *data;
@@ -904,7 +903,7 @@
 
 // To Delete Wall Post
 -(void)deleteWallPost:(NSString *)postId {
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kDeleteWallPost,postId];
     [[AppDelegate appDelegate].rkomForPost deleteObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         [RSActivityIndicator hideIndicator];
@@ -957,7 +956,7 @@
 // To Like Post
 
 -(void)likePostwithPostId:(NSString *)postId{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kResource_LikePost,postId];
     DataForResponse *data;
     [[AppDelegate appDelegate].rkomForPost postObject:data path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -1019,7 +1018,7 @@
 // To UnLike Post
 
 -(void)unLikePostwithPostId:(NSString *)postId{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kResource_UnLikePost,postId];
     DataForResponse *data;
     [[AppDelegate appDelegate].rkomForPost postObject:data path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -1144,7 +1143,7 @@
 
 // To get Like Count
 -(void)getLikeCountForPost:(NSString *)postId{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kGetLikeCount,postId];
     [[AppDelegate appDelegate].rkomForPost getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
@@ -1197,7 +1196,7 @@
 
 // To get City List
 -(void)getListOfCities:(int)pageNumber{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kGetListOfCity,pageNumber];
     [[AppDelegate appDelegate].rkomForPost getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];

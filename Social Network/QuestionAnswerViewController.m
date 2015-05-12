@@ -236,7 +236,7 @@
 -(void)updateSelectedCityToServerWithAddress:(NSString *)address{
     if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
         if(![address isEqualToString:@""]){
-            [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+            [RSActivityIndicator showIndicator];
             NSArray *arrOfAddress = [address componentsSeparatedByString:@","];
             NSString *strCity, *strCountry, *strState;
             strCountry = [NSString stringWithFormat:@"%@",[arrOfAddress lastObject]];
@@ -364,7 +364,7 @@
 
 #pragma mark - RestKit Request/Response Delegate Methods
 -(void)getMyListOfCities {
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     [[AppDelegate appDelegate].rkomForCity getObjectsAtPath:kGetMyListOfCity parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
@@ -431,7 +431,7 @@
 }
 
 -(void)sendRequestToGetCityListFromDatabase{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kGetListOfCity,pageCount];
     [[AppDelegate appDelegate].rkomForPost getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
@@ -534,7 +534,7 @@
 
 
 -(void)submitAnswer:(NSMutableDictionary *)dict {
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     [[AppDelegate appDelegate].rkomForLogin postObject:nil path:kAddCity parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);

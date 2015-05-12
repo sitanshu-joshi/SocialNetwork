@@ -108,7 +108,7 @@ static AppDelegate *appDelegate;
                     appUserInfo.firstName = user.first_name;
                     appUserInfo.lastName = user.last_name;
                     appUserInfo.userEmail = [user objectForKey:@"email"];
-                    appUserInfo.userId = user.objectID;
+                    appUserInfo.userId = [user objectForKey:@"id"];
                     appUserInfo.birthday = user.birthday;
                     
                     //set AppLogin Details

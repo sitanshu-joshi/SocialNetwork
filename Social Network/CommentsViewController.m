@@ -219,7 +219,7 @@
 #pragma mark - RestKit Request/Response Delegate Methods
 
 -(void)getCommentsDetailsForPostId:(NSString *)postId {
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kGetCommentsByPostId,postId];
     [[AppDelegate appDelegate].rkomForComment getObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
@@ -291,7 +291,7 @@
  */
 
 -(void)addComment:(NSDictionary *)dict ForPost:(NSString *)postId {
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kAddComment,postId];
     DataForResponse *data;
     [[AppDelegate appDelegate].rkomForComment postObject:data path:strPath parameters:dict success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -356,7 +356,7 @@
  */
 
 -(void)deleteCommentForPost:(NSString *)postId withCommentId:(NSString *)commentId {
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kResource_DeleteComment, postId, commentId];
     [[AppDelegate appDelegate].rkomForComment deleteObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         [RSActivityIndicator hideIndicator];
@@ -413,7 +413,7 @@
  *  It will Update Comment for current post.
  */
 -(void)updateComment:(NSDictionary *)dict ForPost:(NSString *)postId withCommentId:(NSString *)commentId {
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     [self.txtViewToUpdateComment resignFirstResponder];
     NSString *strPath = [NSString stringWithFormat:kUpdateComment,postId,commentId];
     DataForResponse *data;
@@ -470,7 +470,7 @@
  *  @param postId
  */
 -(void)likePostwithPostId:(NSString *)postId{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kResource_LikePost,postId];
     [[AppDelegate appDelegate].rkObjectManager postObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];
@@ -532,7 +532,7 @@
  *  @param postId
  */
 -(void)unLikePostwithPostId:(NSString *)postId{
-    [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+    [RSActivityIndicator showIndicator];
     NSString *strPath = [NSString stringWithFormat:kResource_UnLikePost,postId];
     [[AppDelegate appDelegate].rkObjectManager postObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [RSActivityIndicator hideIndicator];

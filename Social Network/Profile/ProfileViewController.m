@@ -29,7 +29,7 @@
     [super viewWillAppear:animated];
     if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
             if([FBSession activeSession].isOpen){
-                [RSActivityIndicator showIndicatorWithTitle:kActivityIndicatorMessage];
+                [RSActivityIndicator showIndicator];
                     [self getProfileInfo];
                 }
     }else{
@@ -50,9 +50,7 @@
     self.lblName.text = [AppUserInfo sharedAppUserInfo].userName;
     self.lblEmail.text = [AppUserInfo sharedAppUserInfo].userEmail;
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:kFBProfilePicURL,[AppUserInfo sharedAppUserInfo].userId]];
-    [imgViewForProPic setImageWithURL:url placeholderImage:[UIImage imageNamed:@"profile_pic"]
-                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
-                             }];
+    [imgViewForProPic sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"profile_pic"] options:SDWebImageRefreshCached];
     imgViewForProPic.layer.cornerRadius = (imgViewForProPic.frame.size.width/2);
     imgViewForProPic.layer.masksToBounds = YES;
     [[FBRequest requestForMe] startWithCompletionHandler:^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
