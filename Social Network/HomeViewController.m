@@ -28,7 +28,7 @@
     // Do any additional setup after loading the view.
     if([[AppDelegate appDelegate]isNetworkReachableToInternet]){
         if([AppLogin sharedAppLogin].isUserLoggedIn){
-            strLoginPath = kResource_Login;
+            strLoginPath = kResource_SignUp_Auth;
         }else{
             strLoginPath = kResource_SignUp_Auth;
         }
@@ -44,12 +44,13 @@
     BOOL isLogin = [AppLogin sharedAppLogin].isUserLoggedIn;
     if(isLogin){
         [RSActivityIndicator showIndicator];
-        NSString *strEmail = [AppLogin sharedAppLogin].userEmail; //@"admin@troyage.com"; //
-        NSString *strPassword = [AppLogin sharedAppLogin].password; //@"password" ; //
-        NSMutableDictionary *dictForLogin = [NSMutableDictionary dictionary];
-        [dictForLogin setObject:strEmail forKey:kUSER_NAME];
-        [dictForLogin setObject:strPassword forKey:kUSER_PASSWORD];
-        [self sendRequestForLoginUsingAuthCredential:dictForLogin];
+        [[AppDelegate appDelegate] openSessionWithAllowLoginUI:YES];
+//        NSString *strEmail = [AppLogin sharedAppLogin].userEmail; //@"admin@troyage.com"; //
+//        NSString *strPassword = [AppLogin sharedAppLogin].password; //@"password" ; //
+//        NSMutableDictionary *dictForLogin = [NSMutableDictionary dictionary];
+//        [dictForLogin setObject:strEmail forKey:kUSER_NAME];
+//        [dictForLogin setObject:strPassword forKey:kUSER_PASSWORD];
+//        [self sendRequestForLoginUsingAuthCredential:dictForLogin];
     }
 }
 
