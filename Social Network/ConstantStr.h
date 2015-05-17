@@ -31,6 +31,7 @@
 #pragma mark Cell Components Tags
 
 // News feed
+#define kCell_News_Feed_Background              100
 #define kCell_News_Feed_UserProfile             101
 #define kCell_News_Feed_postText                102
 #define kCell_News_Feed_likebtn                 103

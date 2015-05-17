@@ -335,6 +335,9 @@
                         dictForPostComment = nil;
                         isNeedToRefreshPage = true;
                         [[[UIAlertView alloc]initWithTitle:kAppTitle message:[dictResponse valueForKey:@"msg"] delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+                        int commentcount = [lblCommentCount.text intValue] + 1;
+                        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
+                        isNeedToRefreshPage = true;
                         [self getCommentsDetailsForPostId:post.ids];
                     }
                 }else{
@@ -344,9 +347,9 @@
                 [[[UIAlertView alloc]initWithTitle:kAppTitle message:kAlert_Server_Not_Rechable delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
             }
         }
-        int commentcount = [lblCommentCount.text intValue] + 1;
-        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
-        [self getCommentsDetailsForPostId:post.ids];
+//        int commentcount = [lblCommentCount.text intValue] + 1;
+//        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
+//        [self getCommentsDetailsForPostId:post.ids];
         RKLogError(@"Operation failed with error: %@", error);
     }];
 }
@@ -361,8 +364,9 @@
     [[AppDelegate appDelegate].rkomForComment deleteObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
-        NSLog(@"%@",dataResponse.comment);
+        int commentcount = [lblCommentCount.text intValue] - 1;
+        lblCommentCount.text = [NSString stringWithFormat:@"%d",commentcount];
+        [self getCommentsDetailsForPostId:post.ids];
         isNeedToRefreshPage = true;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];

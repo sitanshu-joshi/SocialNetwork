@@ -13,6 +13,7 @@
     BOOL isInputViewVisible;
     NSString *strAddress;
     NSMutableArray *resultArray;
+    NSMutableArray *arrOfCellHeight;;
     Post *selectedPost;
     MPMoviePlayerController *player;
     NSString *strSearchAddress;

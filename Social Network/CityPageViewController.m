@@ -134,8 +134,7 @@
     if([post.mediaType intValue] == 1){
         frame.origin.y = [self calculateLabelHeightBasedOnString:[NSString stringWithFormat:@"%@",post.text]].size.height+intOriginY;
         [btnImgMedia setFrame:frame];
-        [btnImgMedia setBackgroundImage:[UIImage imageNamed:@"img_placeholder "] forState:UIControlStateNormal];
-        NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
+//        NSString *strFileName = [[post.mediaUrl componentsSeparatedByString:@"/"] lastObject];
         if([post.mediaUrl length]>0){
 //            if([[FileUtility utility] checkFileIsExistOnDocumentDirectoryFolder:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:kDD_Images] withFileName:strFileName]){
 //                [btnImgMedia setBackgroundImage:[UIImage imageWithContentsOfFile:[[[FileUtility utility] documentDirectoryPath] stringByAppendingString:[NSString stringWithFormat:@"%@/%@",kDD_Images,strFileName]]] forState:UIControlStateNormal];
@@ -143,7 +142,8 @@
             
             [btnImgMedia sd_setImageWithURL:[NSURL URLWithString:post.mediaUrl] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"img_placeholder "] options:SDWebImageRefreshCached];
             btnImgMedia.layer.borderColor = (__bridge CGColorRef)([UIColor blackColor]);
-            btnImgMedia.layer.borderWidth = 10.0;
+            btnImgMedia.layer.borderWidth = 2.0;
+            btnImgMedia.clipsToBounds = YES;
             [btnImgMedia setHidden:NO];
         }else{
             [btnImgMedia setHidden:YES];
@@ -154,6 +154,7 @@
         [btnImgMedia setBackgroundImage:[UIImage imageNamed:@"video-placeholder"] forState:UIControlStateNormal];
         btnImgMedia.layer.borderColor = (__bridge CGColorRef)([UIColor whiteColor]);
         btnImgMedia.layer.borderWidth = 2.0;
+        btnImgMedia.clipsToBounds = YES ;
     }else{
         [btnImgMedia setHidden:YES];
         frame.origin.y = [self calculateLabelHeightBasedOnString:[NSString stringWithFormat:@"%@",post.text]].size.height;
@@ -434,6 +435,8 @@
 
 - (IBAction)uploadPhotoButtonTapped:(id)sender {
      actionSheetButtonTitle = kPhotoLibrary;
+    [txtViewForPost resignFirstResponder];
+    [txtViewForUpdatePost resignFirstResponder];
     [UIView animateWithDuration:0.5 animations:^{
         UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakePhoto delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:actionSheetButtonTitle,kCamera,nil];
         [actionSheet showInView:self.view];
@@ -442,6 +445,8 @@
 
 - (IBAction)uploadVideoButtonTapped:(id)sender {
      actionSheetButtonTitle = kVideoLibrary;
+    [txtViewForPost resignFirstResponder];
+    [txtViewForUpdatePost resignFirstResponder];
     [UIView animateWithDuration:0.5 animations:^{
         UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:kTakeVideo delegate:self cancelButtonTitle:kCancelButton destructiveButtonTitle:nil otherButtonTitles:actionSheetButtonTitle,kCamera,nil];
         [actionSheet showInView:self.view];
@@ -450,8 +455,12 @@
 
 - (IBAction)shareButtonTapped:(id)sender {
      dictOfPost = [NSMutableDictionary dictionary];
-    [dictOfPost setObject:self.txtViewForPost.text forKey:kPost_Text];
-    [self postOnCityWall:dictOfPost withCityId:self.strCityId];
+    if(![self.txtViewForPost.text isEqualToString:@""]){
+        [dictOfPost setObject:self.txtViewForPost.text forKey:kPost_Text];
+        [self postOnCityWall:dictOfPost withCityId:self.strCityId];
+    }else{
+        [[[UIAlertView alloc] initWithTitle:kAppTitle message:@"Please Enter post details" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil, nil] show];
+    }
 }
 
 - (IBAction)likeDislikeBtnTapped:(id)sender {
@@ -642,12 +651,12 @@
             NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"updatedDate" ascending:NO];
             NSArray *sortedArray = [arrayForCityPostList sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
             arrayForCityPostList = [[NSMutableArray alloc] initWithArray:sortedArray];
-            [self downloadPostImages:arrayForCityPostList];
+            //[self downloadPostImages:arrayForCityPostList];
             for (int i=0;i<[arrayForCityPostList count]; i++) {
                 post = [arrayForCityPostList objectAtIndex:i];
                 
                 NSDictionary *attributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                      [UIFont fontWithName:@"Helventica Neue" size:13], NSFontAttributeName,
+                                                      [UIFont fontWithName:@"Helventica Neue" size:15], NSFontAttributeName,
                                                       nil];
                 int intOfDefaultWidth = 300.0f;
 //                if(IS_IPHONE_5){
@@ -836,6 +845,10 @@
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kDATA_NOT_EXIST){
                         NSLog(@"Data Not Exist");
                     }else if([[dictResponse valueForKey:@"code"] intValue] == kSusscessully_Operation_Complete){
+                        mediaType = nil;
+                        fileType = nil;
+                        contentData = nil;
+                        txtViewForPost.text = nil;
                        [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
                     }
                 }else{
@@ -908,8 +921,8 @@
     [[AppDelegate appDelegate].rkomForPost deleteObject:nil path:strPath parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
-        DataForResponse *dataResponse  = [mappingResult.array objectAtIndex:0];
-        NSLog(@"%@",dataResponse.post);
+        [[[UIAlertView alloc]initWithTitle:kAppTitle message:@"Operation Completed Successfully" delegate:nil cancelButtonTitle:kOkButton otherButtonTitles:nil,nil]show];
+        [self getPostDetailsForCity:cityIdForCurrentCity pageNumber:page];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [RSActivityIndicator hideIndicator];
         NSLog(@"%@",operation.HTTPRequestOperation.responseString);
